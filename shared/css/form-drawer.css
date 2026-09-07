@@ -1,0 +1,123 @@
+/* ==========================================================================
+   MICROSOFT FORMS SIDE-DRAWER & MODAL STYLES
+   Side-by-side split screen viewing for MS Teams and web delivery
+   ========================================================================== */
+
+#forms-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--drawer-width);
+  height: 100vh;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+}
+
+#forms-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  height: 56px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+}
+
+.drawer-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.drawer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer-close-btn, .drawer-popout-btn {
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+
+.drawer-close-btn:hover, .drawer-popout-btn:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+.drawer-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.drawer-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Backdrop for Mobile / Small Screens */
+#drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 90;
+}
+
+#drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Quick Jump Section Badges inside drawer info banner */
+.drawer-notice {
+  background: #0f172a;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-notice strong {
+  color: var(--accent-cyan);
+}
+
+@media (max-width: 768px) {
+  #forms-drawer {
+    width: 100vw;
+  }
+}

@@ -1,0 +1,574 @@
+UNIT 19 – ELECTRONIC DEVICES AND CIRCUITS
+LEARNING AIM A
+
+TUTOR RESOURCE
+
+Week: 1
+Resource: W1-T04
+Title: Tutor Observation Checklist – Prototype Fault-Finding Challenge
+
+============================================================
+PURPOSE
+============================================================
+
+This checklist supports formative observation during the Week 1
+practical activity.
+
+The purpose is to identify:
+
+- Existing practical competence
+- Safety awareness
+- Troubleshooting approach
+- Measurement skills
+- Communication/teamwork
+- Areas requiring support
+- Appropriate stretch opportunities
+
+This is primarily a FORMATIVE observation tool.
+
+It should help inform future teaching and retrieval activities.
+
+============================================================
+1. LEARNER INFORMATION
+============================================================
+
+Learner name:
+
+____________________________________________________________
+
+Pair/team:
+
+____________________________________________________________
+
+Date:
+
+____________________________________________________________
+
+Circuit ID:
+
+____________________________________________________________
+
+Fault assigned:
+
+____________________________________________________________
+
+Tutor:
+
+____________________________________________________________
+
+============================================================
+2. RATING SCALE
+============================================================
+
+Use the following scale where appropriate.
+
+3 – SECURE
+Learner performs the skill independently and correctly.
+
+2 – DEVELOPING
+Learner performs the skill with some prompting or minor correction.
+
+1 – EMERGING
+Learner requires significant support.
+
+0 – NOT OBSERVED
+Opportunity did not arise during the session.
+
+N/A – NOT APPLICABLE
+
+============================================================
+3. SAFETY AND PROFESSIONAL PRACTICE
+============================================================
+
+| Observation | 3 | 2 | 1 | 0 | N/A | Notes |
+|-------------|---|---|---|---|-----|-------|
+| Follows laboratory instructions | | | | | | |
+| Identifies obvious hazards | | | | | | |
+| Knows when to stop | | | | | | |
+| Identifies isolation procedure | | | | | | |
+| Checks PSU before use | | | | | | |
+| Checks polarity | | | | | | |
+| Checks component orientation | | | | | | |
+| Checks wiring before power | | | | | | |
+| Avoids unsafe live adjustments | | | | | | |
+| Uses equipment responsibly | | | | | | |
+
+Tutor comments:
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+4. COMPONENT IDENTIFICATION
+============================================================
+
+| Skill | 3 | 2 | 1 | 0 | Notes |
+|-------|---|---|---|---|-------|
+| Identifies resistor | | | | | |
+| Identifies LED | | | | | |
+| Identifies switch | | | | | |
+| Identifies PSU connections | | | | | |
+| Matches physical component to symbol | | | | | |
+| Recognises polarity-sensitive component | | | | | |
+
+Tutor comments:
+
+____________________________________________________________
+
+============================================================
+5. SCHEMATIC INTERPRETATION
+============================================================
+
+Can the learner:
+
+[ ] Identify the supply?
+
+[ ] Identify 0 V/return?
+
+[ ] Identify the current path?
+
+[ ] Identify individual components?
+
+[ ] Interpret component connections?
+
+[ ] Relate the schematic to the breadboard?
+
+[ ] Explain what the circuit should do?
+
+Rating:
+
+3 / 2 / 1 / 0
+
+Evidence/comments:
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+6. BREADBOARDING
+============================================================
+
+| Skill | 3 | 2 | 1 | 0 | Notes |
+|-------|---|---|---|---|-------|
+| Identifies breadboard connected rows | | | | | |
+| Uses power rails correctly | | | | | |
+| Places components correctly | | | | | |
+| Maintains organised wiring | | | | | |
+| Avoids unintended shorts | | | | | |
+| Checks physical build against schematic | | | | | |
+| Makes controlled changes | | | | | |
+
+Tutor comments:
+
+____________________________________________________________
+
+============================================================
+7. MULTIMETER USE
+============================================================
+
+| Skill | 3 | 2 | 1 | 0 | Notes |
+|-------|---|---|---|---|-------|
+| Selects appropriate measurement | | | | | |
+| Selects appropriate meter mode | | | | | |
+| Uses leads correctly | | | | | |
+| Measures voltage safely | | | | | |
+| Uses continuity appropriately | | | | | |
+| Understands measurement points | | | | | |
+| Records units | | | | | |
+| Interprets the measurement | | | | | |
+
+Important safety observation:
+
+[ ] Safe
+
+[ ] Minor prompting required
+
+[ ] Unsafe practice observed
+
+If unsafe practice was observed, record action taken:
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+8. TROUBLESHOOTING PROCESS
+============================================================
+
+Observe:
+
+[ ] Learner identifies expected behaviour.
+
+[ ] Learner identifies actual symptom.
+
+Predict:
+
+[ ] Learner proposes a plausible cause.
+
+[ ] Learner provides a reason for the prediction.
+
+Test:
+
+[ ] Learner selects an appropriate test.
+
+[ ] Learner explains why the test is useful.
+
+Locate:
+
+[ ] Learner interprets the result.
+
+[ ] Learner rules out possible causes.
+
+Fix:
+
+[ ] Learner identifies an appropriate corrective action.
+
+Verify:
+
+[ ] Learner retests the repaired circuit.
+
+[ ] Learner proves that the repair worked.
+
+Overall troubleshooting rating:
+
+3 / 2 / 1 / 0
+
+Tutor comments:
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+9. EVIDENCE-BASED REASONING
+============================================================
+
+Look for statements such as:
+
+"The measurement suggests..."
+
+"This result rules out..."
+
+"I expected...but measured..."
+
+"This could indicate..."
+
+"I would test..."
+
+"I know the repair worked because..."
+
+Rate learner:
+
+3 – Consistently evidence-based
+
+2 – Usually evidence-based with prompting
+
+1 – Frequently guesses
+
+0 – Evidence-based reasoning not observed
+
+Tutor comments:
+
+____________________________________________________________
+
+============================================================
+10. TEAMWORK AND COMMUNICATION
+============================================================
+
+| Observation | 3 | 2 | 1 | 0 | Notes |
+|-------------|---|---|---|---|-------|
+| Shares equipment appropriately | | | | | |
+| Communicates clearly | | | | | |
+| Listens to partner | | | | | |
+| Explains reasoning | | | | | |
+| Accepts constructive feedback | | | | | |
+| Performs allocated role | | | | | |
+| Contributes to decision-making | | | | | |
+
+Tutor comments:
+
+____________________________________________________________
+
+============================================================
+11. ENGINEERING BEHAVIOURS
+============================================================
+
+Observe whether the learner:
+
+[ ] Works methodically.
+
+[ ] Takes care with components.
+
+[ ] Keeps the work area organised.
+
+[ ] Checks rather than assumes.
+
+[ ] Persists when the first test fails.
+
+[ ] Asks useful questions.
+
+[ ] Accepts that a first hypothesis may be wrong.
+
+[ ] Records information accurately.
+
+[ ] Takes responsibility for their work.
+
+[ ] Recognises when to ask for help.
+
+Overall:
+
+3 / 2 / 1 / 0
+
+============================================================
+12. PORTFOLIO OF EVIDENCE
+============================================================
+
+Did the learner produce:
+
+[ ] Safety/pre-power evidence
+
+[ ] Annotated schematic
+
+[ ] Circuit photograph
+
+[ ] Measurement record
+
+[ ] Fault diagnosis
+
+[ ] Repair record
+
+[ ] Verification evidence
+
+[ ] Reflection
+
+Portfolio status:
+
+[ ] Complete
+
+[ ] Nearly complete
+
+[ ] Significant evidence missing
+
+Tutor comments:
+
+____________________________________________________________
+
+============================================================
+13. INDIVIDUAL QUESTIONING
+============================================================
+
+Question:
+
+"What should happen before power is applied?"
+
+Response:
+
+____________________________________________________________
+
+Secure / Developing / Emerging
+
+Question:
+
+"Why did you choose that measurement?"
+
+Response:
+
+____________________________________________________________
+
+Secure / Developing / Emerging
+
+Question:
+
+"What evidence identifies the fault?"
+
+Response:
+
+____________________________________________________________
+
+Secure / Developing / Emerging
+
+Question:
+
+"How do you know the circuit now works?"
+
+Response:
+
+____________________________________________________________
+
+Secure / Developing / Emerging
+
+============================================================
+14. SUPPORT REQUIRED
+============================================================
+
+Which support was required?
+
+[ ] No additional support
+
+[ ] Visual prompts
+
+[ ] Written step-by-step guidance
+
+[ ] Tutor demonstration
+
+[ ] Repeated explanation
+
+[ ] Paired support
+
+[ ] Component identification support
+
+[ ] Schematic interpretation support
+
+[ ] Measurement support
+
+[ ] Troubleshooting support
+
+[ ] Technical vocabulary support
+
+[ ] Writing/reflection support
+
+[ ] SEND-specific support
+
+Details:
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+15. STRETCH OPPORTUNITY
+============================================================
+
+Was the learner ready for additional challenge?
+
+[ ] No
+
+[ ] Possibly
+
+[ ] Yes
+
+Challenge provided:
+
+[ ] Second fault
+
+[ ] Intermittent fault
+
+[ ] No schematic
+
+[ ] Explain test procedure
+
+[ ] Support another team
+
+[ ] Develop troubleshooting procedure
+
+[ ] Other:
+
+____________________________________________________________
+
+Learner response:
+
+____________________________________________________________
+
+============================================================
+16. RETRIEVAL INFORMATION
+============================================================
+
+Record concepts that should be revisited in the Week 2
+Engineering Toolbox.
+
+Concept 1:
+
+____________________________________________________________
+
+Concept 2:
+
+____________________________________________________________
+
+Concept 3:
+
+____________________________________________________________
+
+Common misconception observed:
+
+____________________________________________________________
+
+Students requiring targeted retrieval:
+
+____________________________________________________________
+
+============================================================
+17. END-OF-SESSION JUDGEMENT
+============================================================
+
+Overall practical starting point:
+
+[ ] Secure
+
+[ ] Developing
+
+[ ] Emerging
+
+[ ] Requires significant support
+
+Strongest skill observed:
+
+____________________________________________________________
+
+Priority for development:
+
+____________________________________________________________
+
+Recommended support before next practical:
+
+____________________________________________________________
+
+Recommended stretch for next practical:
+
+____________________________________________________________
+
+============================================================
+18. TUTOR REFLECTION
+============================================================
+
+What worked well?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What should be changed next time?
+
+____________________________________________________________
+
+____________________________________________________________
+
+Which part of the lesson took more/less time than expected?
+
+____________________________________________________________
+
+____________________________________________________________
+
+Were the faults appropriately challenging?
+
+____________________________________________________________
+
+============================================================
+FINAL NOTE
+============================================================
+
+This checklist is intended to support:
+
+- Formative assessment
+- Differentiation
+- SEND planning
+- Retrieval planning
+- Practical skills development
+- Portfolio monitoring
+- Tutor reflection
+
+It should not replace professional judgement or the college's
+formal assessment/observation procedures.
+
+END OF W1-T04

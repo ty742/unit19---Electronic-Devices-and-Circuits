@@ -1,0 +1,366 @@
+UNIT 19 – ELECTRONIC DEVICES AND CIRCUITS
+LEARNING AIM A
+
+STUDENT RESOURCE
+
+Week: 1
+Resource: W1-01
+Title: Engineering Challenge Brief – “Can You Make It Work?”
+
+============================================================
+YOUR ROLE
+============================================================
+
+You are joining an electronics engineering team as a:
+
+JUNIOR ELECTRONICS TECHNICIAN
+
+Your team works on the development and testing of electronic
+modules used in real products.
+
+Today you have been given a prototype circuit that has failed
+its production test.
+
+Your supervisor has asked you to investigate the problem.
+
+Your instruction is simple:
+
+                 “CAN YOU MAKE IT WORK?”
+
+============================================================
+THE ENGINEERING PROBLEM
+============================================================
+
+A prototype electronic circuit has been assembled on a breadboard.
+
+The circuit should perform a simple function when the power supply
+is connected.
+
+However:
+
+IT DOES NOT WORK AS EXPECTED.
+
+You have not been told what is wrong.
+
+Your job is to:
+
+1. Work safely.
+2. Understand what the circuit is supposed to do.
+3. Inspect the circuit.
+4. Predict possible causes.
+5. Carry out appropriate tests.
+6. Identify the fault.
+7. Correct the fault.
+8. Test the circuit again.
+9. Prove that the repair has worked.
+10. Record what you discovered.
+
+============================================================
+IMPORTANT ENGINEERING RULE
+============================================================
+
+DO NOT GUESS.
+
+DO NOT RANDOMLY REPLACE COMPONENTS.
+
+DO NOT POWER A CIRCUIT UNTIL YOU ARE SATISFIED THAT IT IS SAFE.
+
+A professional engineer uses evidence to make decisions.
+
+Your troubleshooting process is:
+
+OBSERVE
+   ↓
+PREDICT
+   ↓
+TEST
+   ↓
+LOCATE
+   ↓
+FIX
+   ↓
+VERIFY
+
+============================================================
+YOUR MISSION
+============================================================
+
+Complete the following stages.
+
+STAGE 1 – SAFETY
+
+Before touching the circuit:
+
+- Identify possible hazards.
+- Identify the correct isolation procedure.
+- Check the bench and equipment.
+- Confirm the power supply is OFF.
+- Follow your tutor's laboratory safety instructions.
+
+STAGE 2 – UNDERSTAND
+
+Study the circuit schematic.
+
+Identify:
+
+- Power supply
+- 0 V/ground
+- Resistors
+- LED
+- Switch
+- Jumper connections
+- Expected current path
+
+Ask yourself:
+
+“What should happen when this circuit is working?”
+
+STAGE 3 – INSPECT
+
+Before applying power:
+
+- Check component orientation.
+- Check component values.
+- Check wiring.
+- Check polarity.
+- Check breadboard connections.
+- Check for unintended shorts.
+- Check the power-supply setting.
+
+STAGE 4 – PREDICT
+
+Write down:
+
+“What do I think is wrong?”
+
+Give a reason.
+
+STAGE 5 – TEST
+
+Choose a measurement that could support or reject your idea.
+
+For every test, record:
+
+WHAT I TESTED:
+____________________________________________________________
+
+WHY I TESTED IT:
+____________________________________________________________
+
+WHAT I EXPECTED:
+____________________________________________________________
+
+WHAT I MEASURED:
+____________________________________________________________
+
+WHAT THE RESULT TELLS ME:
+____________________________________________________________
+
+STAGE 6 – LOCATE
+
+Use your evidence to identify the most likely fault.
+
+Do not change anything until you can explain why you are changing it.
+
+STAGE 7 – FIX
+
+Make the appropriate correction.
+
+Record exactly what you changed.
+
+STAGE 8 – VERIFY
+
+Test the circuit again.
+
+You must be able to prove that it now works.
+
+Answer:
+
+- What did you test?
+- What happened?
+- How do you know the repair was successful?
+
+============================================================
+THE ENGINEERING CHALLENGE
+============================================================
+
+Your team will be judged on more than whether the LED eventually
+lights.
+
+You will be successful if you can demonstrate:
+
+[ ] Safe working
+
+[ ] Correct schematic interpretation
+
+[ ] Good pre-power checking
+
+[ ] Appropriate use of test equipment
+
+[ ] Logical troubleshooting
+
+[ ] Evidence-based decision making
+
+[ ] Correct repair
+
+[ ] Verification of the repair
+
+[ ] Clear technical documentation
+
+============================================================
+TEAMWORK
+============================================================
+
+Work in pairs.
+
+Suggested roles:
+
+BUILDER
+- Checks the physical circuit.
+- Makes approved changes.
+- Carries out construction tasks.
+
+TESTER
+- Performs measurements.
+- Operates test equipment.
+- Records test results.
+
+RECORDER
+- Records observations and decisions.
+- Maintains the investigation record.
+
+If you are working in pairs, combine the Recorder role with
+Builder or Tester as agreed by your tutor.
+
+Rotate roles where possible.
+
+============================================================
+ENGINEERING TOOLBOX
+============================================================
+
+Before starting the practical, answer these questions.
+
+1. What should you check before powering an electronic circuit?
+
+____________________________________________________________
+
+2. What does a multimeter allow an engineer to measure?
+
+____________________________________________________________
+
+3. Why is component polarity important?
+
+____________________________________________________________
+
+4. What is the difference between a guess and an
+   evidence-based diagnosis?
+
+____________________________________________________________
+
+5. If the circuit does not work, what should you do first?
+
+____________________________________________________________
+
+============================================================
+CHALLENGE LEVELS
+============================================================
+
+CORE CHALLENGE
+
+Find and repair the fault using the schematic and troubleshooting
+process.
+
+STRETCH CHALLENGE 1
+
+Your circuit contains two faults.
+
+Can you identify both?
+
+STRETCH CHALLENGE 2
+
+The circuit has an intermittent fault.
+
+Can you identify the likely cause?
+
+STRETCH CHALLENGE 3
+
+You are given a circuit without a schematic.
+
+Can you determine enough about the circuit to diagnose the problem?
+
+STRETCH CHALLENGE 4
+
+Write a troubleshooting procedure that another technician could
+follow to diagnose the same fault.
+
+============================================================
+EVIDENCE FOR YOUR PORTFOLIO
+============================================================
+
+Create:
+
+POE 01 – PROTOTYPE FAULT INVESTIGATION
+
+Your evidence should include:
+
+1. Safety/pre-power checklist
+2. Annotated circuit schematic
+3. Photograph of your circuit
+4. Measurement results
+5. Fault diagnosis
+6. Description of the repair
+7. Verification test
+8. Short reflection
+
+Your Portfolio of Evidence will develop throughout Learning Aim A.
+
+It is your engineering record of what you have done, tested,
+discovered and improved.
+
+============================================================
+REFLECTION
+============================================================
+
+Complete these statements after the challenge.
+
+I originally thought the fault was:
+____________________________________________________________
+
+I tested:
+____________________________________________________________
+
+The evidence showed:
+____________________________________________________________
+
+The actual fault was:
+____________________________________________________________
+
+The repair was:
+____________________________________________________________
+
+I verified the repair by:
+____________________________________________________________
+
+One thing I learned about troubleshooting was:
+____________________________________________________________
+
+One thing I will do differently next time is:
+____________________________________________________________
+
+============================================================
+ENGINEER'S FINAL QUESTION
+============================================================
+
+Would you be confident signing off this repair for another engineer?
+
+YES / NO / NOT YET
+
+Explain your decision:
+
+____________________________________________________________
+
+____________________________________________________________
+
+____________________________________________________________
+
+END OF W1-01

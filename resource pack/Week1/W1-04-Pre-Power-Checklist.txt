@@ -1,0 +1,312 @@
+UNIT 19 – ELECTRONIC DEVICES AND CIRCUITS
+LEARNING AIM A
+
+STUDENT RESOURCE
+
+Week: 1
+Resource: W1-04
+Title: Pre-Power Safety Checklist
+
+============================================================
+YOUR ROLE
+============================================================
+
+You are about to power a prototype electronic circuit.
+
+Your responsibility is to make sure the circuit is safe and ready
+for testing before connecting the power supply.
+
+DO NOT POWER THE CIRCUIT UNTIL THE CHECKLIST HAS BEEN COMPLETED.
+
+============================================================
+1. WORK AREA CHECK
+============================================================
+
+[ ] Work area is clean and organised.
+
+[ ] Unnecessary equipment has been removed.
+
+[ ] Wires are arranged so they cannot easily be pulled out.
+
+[ ] No damaged equipment is being used.
+
+[ ] There are no loose metal objects near the circuit.
+
+[ ] I know where the electrical isolation/emergency stop is.
+
+[ ] I know what to do in an emergency.
+
+============================================================
+2. POWER SUPPLY CHECK
+============================================================
+
+[ ] The correct power supply has been selected.
+
+[ ] The supply is switched OFF before connecting the circuit.
+
+[ ] The supply voltage has been checked.
+
+Required supply voltage:
+
+____________________ V
+
+Actual supply setting:
+
+____________________ V
+
+[ ] The supply current limit has been set appropriately where
+    applicable.
+
+[ ] The power leads are connected to the correct terminals.
+
+[ ] Polarity has been checked.
+
+============================================================
+3. CIRCUIT CHECK
+============================================================
+
+[ ] The physical circuit matches the schematic.
+
+[ ] Components are in the correct positions.
+
+[ ] Component values have been checked.
+
+[ ] Polarity-sensitive components have been checked.
+
+Examples:
+
+- LED
+- Diode
+- Electrolytic capacitor
+- Transistor
+- IC/op-amp
+
+[ ] Resistor values have been checked.
+
+[ ] Jumper wires are correctly positioned.
+
+[ ] Breadboard connections have been checked.
+
+[ ] There are no unintended shorts.
+
+[ ] Components are seated correctly.
+
+============================================================
+4. SCHEMATIC CHECK
+============================================================
+
+Can you identify the complete current path?
+
+[ ] YES
+
+Can you identify the supply and return?
+
+[ ] YES
+
+Can you identify the expected function of the circuit?
+
+[ ] YES
+
+Can you identify the main test points?
+
+[ ] YES
+
+Can you explain what should happen when power is applied?
+
+[ ] YES
+
+If any answer is NO:
+
+STOP and ask your tutor.
+
+============================================================
+5. COMPONENT CHECK
+============================================================
+
+Complete the following.
+
+| Component | Correct type? | Correct value? | Correct orientation? |
+|-----------|---------------|----------------|----------------------|
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+
+============================================================
+6. MULTIMETER CHECK
+============================================================
+
+Before connecting the multimeter:
+
+[ ] I know what I am measuring.
+
+[ ] I know whether I need voltage, current, resistance or continuity.
+
+[ ] I have selected the correct meter function.
+
+[ ] The leads are connected to the correct meter terminals.
+
+[ ] I know where the probes will be placed.
+
+[ ] I know approximately what reading I expect.
+
+IMPORTANT:
+
+Never place an ammeter directly across a voltage supply.
+
+============================================================
+7. PREDICTION BEFORE POWER
+============================================================
+
+What should happen when the circuit is powered?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What should happen when the switch/input is activated?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What voltage do you expect at the supply?
+
+____________________________________________________________
+
+What other measurement could confirm that the circuit is operating
+correctly?
+
+____________________________________________________________
+
+============================================================
+8. FINAL SAFETY STOP
+============================================================
+
+Before requesting permission to power the circuit, confirm:
+
+[ ] I understand the circuit.
+
+[ ] I understand the expected behaviour.
+
+[ ] I have checked the supply.
+
+[ ] I have checked polarity.
+
+[ ] I have checked component values.
+
+[ ] I have checked the wiring.
+
+[ ] I have checked for shorts.
+
+[ ] I have selected the correct meter settings.
+
+[ ] I know what I will measure.
+
+[ ] I know how to isolate the supply.
+
+[ ] I am confident that the circuit is ready to test.
+
+============================================================
+9. STOP / CHECK / ASK
+============================================================
+
+If you are unsure about any part of the circuit:
+
+STOP.
+
+Do not guess.
+
+Do not power the circuit.
+
+Ask your tutor.
+
+A professional engineer would rather delay a test than damage
+equipment, components or people.
+
+============================================================
+10. TUTOR SIGN-OFF
+============================================================
+
+I have completed the pre-power checks.
+
+Student name:
+
+____________________________________________________________
+
+Student signature/initials:
+
+____________________________________________________________
+
+Tutor check:
+
+[ ] SAFE TO POWER
+
+[ ] NOT YET – FURTHER CHECKS REQUIRED
+
+Tutor initials:
+
+____________________________________________________________
+
+Date:
+
+____________________________________________________________
+
+============================================================
+11. ENGINEERING TOOLBOX – RECALL
+============================================================
+
+1. What should you check first before powering a circuit?
+
+____________________________________________________________
+
+2. Why is polarity important?
+
+____________________________________________________________
+
+3. What is the difference between measuring voltage and measuring
+   current?
+
+____________________________________________________________
+
+4. Why should the expected result be considered before taking a
+   measurement?
+
+____________________________________________________________
+
+5. What should you do if you are unsure whether the circuit is safe?
+
+____________________________________________________________
+
+============================================================
+12. REFLECTION
+============================================================
+
+Which pre-power check did you find most useful?
+
+____________________________________________________________
+
+Why?
+
+____________________________________________________________
+
+What check are you most likely to forget in future?
+
+____________________________________________________________
+
+What will you do to make sure you remember it?
+
+____________________________________________________________
+
+============================================================
+KEY ENGINEERING MESSAGE
+============================================================
+
+GOOD ENGINEERS DO NOT JUST KNOW HOW TO BUILD CIRCUITS.
+
+THEY KNOW WHEN IT IS SAFE TO POWER THEM.
+
+STOP → CHECK → PREDICT → VERIFY → POWER
+
+END OF W1-04

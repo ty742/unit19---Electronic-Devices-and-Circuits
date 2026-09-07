@@ -1,0 +1,400 @@
+UNIT 19 – ELECTRONIC DEVICES AND CIRCUITS
+LEARNING AIM A
+
+STUDENT RESOURCE
+
+Week: 1
+Resource: W1-02
+Title: Safety & Emergency Scenario – “Something Has Gone Wrong”
+
+============================================================
+YOUR ROLE
+============================================================
+
+You are working as a junior electronics technician in a prototype
+electronics laboratory.
+
+Your team is testing a new electronic circuit.
+
+You are responsible for following the laboratory safety procedures
+and responding appropriately if something goes wrong.
+
+============================================================
+SCENARIO 1 – SMOKE FROM THE CIRCUIT
+============================================================
+
+You are testing a prototype circuit.
+
+Suddenly, you notice a small amount of smoke coming from the
+breadboard.
+
+You are not sure what has caused it.
+
+What should you do?
+
+Below are possible actions.
+
+A. Continue measuring the circuit.
+
+B. Disconnect/isolate the electrical supply if it is safe and
+   you are authorised to do so.
+
+C. Touch the circuit to find out which component is hot.
+
+D. Inform the tutor/responsible person.
+
+E. Restart the circuit to see if the problem happens again.
+
+F. Follow the laboratory emergency procedure.
+
+G. Raise the alarm if required.
+
+H. Leave the area/evacuate if instructed.
+
+I. Carry on working because the smoke has stopped.
+
+J. Record/report the incident through the correct procedure.
+
+============================================================
+TASK 1 – PUT THE ACTIONS IN ORDER
+============================================================
+
+Working in your group, decide what should happen first, second,
+third and so on.
+
+FIRST:
+____________________________________________________________
+
+SECOND:
+____________________________________________________________
+
+THIRD:
+____________________________________________________________
+
+FOURTH:
+____________________________________________________________
+
+FIFTH:
+____________________________________________________________
+
+SIXTH:
+____________________________________________________________
+
+SEVENTH:
+____________________________________________________________
+
+Explain why you selected this order.
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+TASK 2 – WHAT SHOULD YOU NEVER DO?
+============================================================
+
+Select the actions that would be unsafe.
+
+[ ] Continue testing an unsafe circuit.
+
+[ ] Isolate the supply.
+
+[ ] Touch an overheating component.
+
+[ ] Inform the responsible person.
+
+[ ] Restart the circuit without finding the cause.
+
+[ ] Follow the emergency procedure.
+
+[ ] Ignore smoke if it stops.
+
+[ ] Report the incident.
+
+Explain one of your choices.
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SCENARIO 2 – INCORRECT POWER SUPPLY
+============================================================
+
+You are preparing to test a circuit designed for 5 V.
+
+The bench supply is currently set to 12 V.
+
+Your partner says:
+
+“It's only for a few seconds. It should be fine.”
+
+What should you do?
+
+____________________________________________________________
+
+____________________________________________________________
+
+Why?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SCENARIO 3 – DAMAGED EQUIPMENT
+============================================================
+
+You notice that the test lead insulation on a multimeter probe
+appears damaged.
+
+A student suggests:
+
+“It's only a small split. We can still use it.”
+
+What should you do?
+
+____________________________________________________________
+
+____________________________________________________________
+
+Who should you notify?
+
+____________________________________________________________
+
+============================================================
+SCENARIO 4 – EMERGENCY ISOLATION
+============================================================
+
+Your tutor asks you:
+
+“Where is the appropriate electrical isolation point for this
+laboratory?”
+
+Record the actual location after your tutor demonstrates it.
+
+Electrical isolation point:
+____________________________________________________________
+
+Emergency stop/isolation:
+____________________________________________________________
+
+Fire alarm:
+____________________________________________________________
+
+First-aid location:
+____________________________________________________________
+
+Emergency exit:
+____________________________________________________________
+
+Assembly point:
+____________________________________________________________
+
+Person responsible for reporting incidents:
+____________________________________________________________
+
+IMPORTANT:
+
+The information above must describe your actual college/laboratory
+arrangements.
+
+Do not guess.
+
+============================================================
+TASK 3 – HAZARD SPOTTING
+============================================================
+
+Identify at least five possible hazards in an electronics laboratory.
+
+1. _________________________________________________________
+
+2. _________________________________________________________
+
+3. _________________________________________________________
+
+4. _________________________________________________________
+
+5. _________________________________________________________
+
+For each hazard, identify one control measure.
+
+| Hazard | How could it cause harm? | Control measure |
+|--------|---------------------------|-----------------|
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+
+============================================================
+TASK 4 – PRE-POWER THINKING
+============================================================
+
+You are about to connect the power supply.
+
+Complete the following statements.
+
+I have checked the supply voltage:
+YES / NO
+
+I have checked polarity:
+YES / NO
+
+I have checked component orientation:
+YES / NO
+
+I have checked component values:
+YES / NO
+
+I have checked wiring:
+YES / NO
+
+I have checked for unintended shorts:
+YES / NO
+
+I understand what the circuit should do:
+YES / NO
+
+I know how to isolate the supply:
+YES / NO
+
+If any answer is NO:
+
+STOP.
+
+Do not power the circuit.
+
+Ask your tutor for assistance.
+
+============================================================
+THE ENGINEERING RULE
+============================================================
+
+Before applying power:
+
+STOP
+→ THINK
+→ CHECK
+→ VERIFY
+→ POWER
+
+Do not reverse this sequence.
+
+============================================================
+TEAM DISCUSSION
+============================================================
+
+Discuss:
+
+1. Why is following instructions important during an emergency?
+
+____________________________________________________________
+
+2. Why should you report a problem even if nobody appears to be
+   injured?
+
+____________________________________________________________
+
+3. Why is it important to know where isolation equipment is before
+   an emergency occurs?
+
+____________________________________________________________
+
+4. Why should engineers avoid taking unnecessary risks during
+   troubleshooting?
+
+____________________________________________________________
+
+============================================================
+ENGINEERING TOOLBOX – RECALL
+============================================================
+
+Complete before beginning the practical challenge.
+
+1. What should you do before powering a circuit?
+
+____________________________________________________________
+
+2. What does isolation mean?
+
+____________________________________________________________
+
+3. Why should an engineer never assume that damaged equipment
+   is safe to use?
+
+____________________________________________________________
+
+4. What is the difference between a hazard and a control measure?
+
+____________________________________________________________
+
+5. What would you do if you were unsure whether a situation was
+   safe?
+
+____________________________________________________________
+
+============================================================
+YOUR SAFETY COMMITMENT
+============================================================
+
+Complete this statement:
+
+“I will not power a circuit until I have…”
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+TUTOR VERIFICATION
+============================================================
+
+Tutor has demonstrated/confirmed the actual laboratory locations
+and procedures.
+
+Electrical isolation:
+CONFIRMED / NOT YET
+
+Emergency stop:
+CONFIRMED / NOT YET
+
+Fire alarm:
+CONFIRMED / NOT YET
+
+Evacuation route:
+CONFIRMED / NOT YET
+
+Assembly point:
+CONFIRMED / NOT YET
+
+First aid:
+CONFIRMED / NOT YET
+
+Reporting procedure:
+CONFIRMED / NOT YET
+
+Tutor initials:
+________________________
+
+Date:
+________________________
+
+============================================================
+KEY MESSAGE
+============================================================
+
+A good engineer does not wait for an emergency to discover what
+to do.
+
+Know the procedure.
+
+Know the isolation point.
+
+Know who to contact.
+
+Know when to stop.
+
+SAFETY FIRST.
+
+END OF W1-02

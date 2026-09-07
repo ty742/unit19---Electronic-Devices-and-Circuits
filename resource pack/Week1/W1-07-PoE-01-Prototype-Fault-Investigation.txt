@@ -1,0 +1,494 @@
+UNIT 19 – ELECTRONIC DEVICES AND CIRCUITS
+LEARNING AIM A
+
+STUDENT RESOURCE
+
+Week: 1
+Resource: W1-07
+Title: Portfolio of Evidence 01 – Prototype Fault Investigation
+
+============================================================
+PURPOSE OF THIS PORTFOLIO ENTRY
+============================================================
+
+This is the first entry in your:
+
+PORTFOLIO OF EVIDENCE
+
+Your Portfolio records your engineering journey throughout
+Learning Aim A.
+
+Today you have acted as a junior electronics technician.
+
+You have:
+
+- Worked safely.
+- Interpreted a circuit schematic.
+- Inspected a prototype.
+- Taken measurements.
+- Investigated a fault.
+- Repaired the circuit.
+- Verified the repair.
+
+This evidence will help demonstrate the practical skills you are
+developing throughout the unit.
+
+IMPORTANT:
+
+This portfolio entry is primarily formative learning evidence.
+
+It is NOT a second assignment.
+
+You will continue adding evidence to the Portfolio throughout
+Learning Aim A.
+
+============================================================
+ENGINEERING CHALLENGE
+============================================================
+
+Workplace scenario:
+
+"A prototype electronic circuit has failed its production test.
+
+Your supervisor has asked you to investigate the problem, identify
+the fault, repair the circuit and provide evidence that it works
+correctly."
+
+Engineering question:
+
+"Can you make it work?"
+
+============================================================
+SECTION 1 – ENGINEERING REQUIREMENT
+============================================================
+
+What was the circuit supposed to do?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What was the expected behaviour?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What was the observed problem?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 2 – SAFE WORKING
+============================================================
+
+Before working on the circuit, you completed a safety/pre-power
+inspection.
+
+Record three important checks you made.
+
+CHECK 1:
+
+____________________________________________________________
+
+CHECK 2:
+
+____________________________________________________________
+
+CHECK 3:
+
+____________________________________________________________
+
+Why was each check important?
+
+____________________________________________________________
+
+____________________________________________________________
+
+Were there any hazards that needed to be controlled?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 3 – CIRCUIT SCHEMATIC
+============================================================
+
+Insert or attach your circuit schematic.
+
+The schematic should clearly show:
+
+- Supply
+- 0 V/return
+- Component symbols
+- Component references
+- Relevant values
+- Connections
+
+Annotate the schematic to identify:
+
+- Current path
+- Important test points
+- Suspected fault location, if known
+
+SPACE FOR SCHEMATIC:
+
+[INSERT SCHEMATIC HERE]
+
+============================================================
+SECTION 4 – PHYSICAL CIRCUIT
+============================================================
+
+Insert a clear photograph of your prototype.
+
+The photograph should show enough of the circuit for another
+engineer to understand the physical construction.
+
+[INSERT CIRCUIT PHOTOGRAPH HERE]
+
+Circuit ID:
+
+____________________________________________________________
+
+Brief description of the physical construction:
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 5 – INITIAL OBSERVATION
+============================================================
+
+Before making changes, describe what happened when the circuit
+was tested.
+
+What should have happened?
+
+____________________________________________________________
+
+What actually happened?
+
+____________________________________________________________
+
+What was the main symptom?
+
+____________________________________________________________
+
+============================================================
+SECTION 6 – INITIAL PREDICTION
+============================================================
+
+What did you initially think might be causing the problem?
+
+____________________________________________________________
+
+Why did you think this?
+
+____________________________________________________________
+
+What evidence or observation influenced your prediction?
+
+____________________________________________________________
+
+============================================================
+SECTION 7 – TROUBLESHOOTING
+============================================================
+
+Use your measurement record and troubleshooting notes.
+
+| Test/check | Expected result | Actual result | What did it tell you? |
+|------------|-----------------|---------------|-----------------------|
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+
+============================================================
+SECTION 8 – FAULT DIAGNOSIS
+============================================================
+
+What was the actual fault?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What evidence proves that this was the fault?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What other possible causes did you rule out?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 9 – REPAIR
+============================================================
+
+What did you change?
+
+____________________________________________________________
+
+____________________________________________________________
+
+Why did you make this change?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What did you predict would happen after the repair?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 10 – VERIFICATION
+============================================================
+
+A repair is not complete until it has been verified.
+
+Describe the final test.
+
+____________________________________________________________
+
+____________________________________________________________
+
+Expected result:
+
+____________________________________________________________
+
+Actual result:
+
+____________________________________________________________
+
+Relevant measurement:
+
+____________________________________________________________
+
+Units:
+
+____________________________________________________________
+
+How does this prove that the repair was successful?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 11 – ENGINEERING EVIDENCE
+============================================================
+
+Select the strongest evidence from your investigation.
+
+[ ] Annotated schematic
+
+[ ] Physical circuit photograph
+
+[ ] Measurement results
+
+[ ] Fault diagnosis
+
+[ ] Repair record
+
+[ ] Verification test
+
+[ ] Other evidence:
+
+____________________________________________________________
+
+Why did you select these pieces of evidence?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 12 – ENGINEERING REFLECTION
+============================================================
+
+Complete the following.
+
+I originally thought:
+
+____________________________________________________________
+
+I tested:
+
+____________________________________________________________
+
+I discovered:
+
+____________________________________________________________
+
+The actual fault was:
+
+____________________________________________________________
+
+The repair was:
+
+____________________________________________________________
+
+I verified the repair by:
+
+____________________________________________________________
+
+============================================================
+SECTION 13 – WHAT WOULD YOU DO DIFFERENTLY?
+============================================================
+
+If you were given the same fault again, what would you do
+differently?
+
+____________________________________________________________
+
+____________________________________________________________
+
+What troubleshooting skill would you like to improve?
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+SECTION 14 – ENGINEER'S SIGN-OFF DECISION
+============================================================
+
+Imagine another technician is going to use this circuit tomorrow.
+
+Would you sign it off?
+
+[ ] YES
+
+[ ] YES, WITH CONDITIONS
+
+[ ] NO
+
+Explain your decision.
+
+____________________________________________________________
+
+____________________________________________________________
+
+============================================================
+ENGINEERING TOOLBOX – RECALL
+============================================================
+
+Answer without using your notes.
+
+1. What should you do before powering a circuit?
+
+____________________________________________________________
+
+2. What is the troubleshooting sequence?
+
+____________________________________________________________
+
+3. Why should an engineer predict before testing?
+
+____________________________________________________________
+
+4. What makes a measurement useful?
+
+____________________________________________________________
+
+5. What proves that a repair has been successful?
+
+____________________________________________________________
+
+============================================================
+PORTFOLIO QUALITY CHECK
+============================================================
+
+Before submitting this Portfolio entry, check:
+
+[ ] My name and date are included.
+
+[ ] My schematic is clear.
+
+[ ] My photograph clearly shows the circuit.
+
+[ ] My measurements include units.
+
+[ ] I recorded what I expected to happen.
+
+[ ] I recorded what actually happened.
+
+[ ] I explained how I located the fault.
+
+[ ] I explained what I changed.
+
+[ ] I provided evidence that the repair worked.
+
+[ ] My reflection explains what I learned.
+
+[ ] Another engineer could understand my investigation.
+
+============================================================
+TUTOR FEEDBACK
+============================================================
+
+What was done well:
+
+____________________________________________________________
+
+____________________________________________________________
+
+What should be improved:
+
+____________________________________________________________
+
+____________________________________________________________
+
+Target for next practical:
+
+____________________________________________________________
+
+____________________________________________________________
+
+Tutor:
+
+____________________________________________________________
+
+Date:
+
+____________________________________________________________
+
+============================================================
+POE STATUS
+============================================================
+
+[ ] COMPLETE
+
+[ ] COMPLETE – IMPROVEMENT REQUIRED
+
+[ ] INCOMPLETE – EVIDENCE MISSING
+
+Evidence to improve/add:
+
+____________________________________________________________
+
+============================================================
+KEY MESSAGE
+============================================================
+
+A good engineer does not just fix a problem.
+
+A good engineer can explain:
+
+WHAT happened,
+WHY it happened,
+HOW it was fixed,
+and HOW the repair was verified.
+
+END OF W1-07

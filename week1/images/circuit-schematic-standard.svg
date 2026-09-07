@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 330" width="100%" height="100%" style="background-color: #070c18; font-family: 'JetBrains Mono', Consolas, 'Segoe UI', sans-serif;">
+  <defs>
+    <!-- Subtle glow filters for engineering aesthetic -->
+    <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glow-red" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- TOP +5.00V DC POWER RAIL -->
+  <line x1="40" y1="36" x2="500" y2="36" stroke="#06b6d4" stroke-width="4" stroke-linecap="round" />
+  <circle cx="270" cy="36" r="7" fill="#06b6d4" filter="url(#glow-cyan)" />
+  <text x="270" y="20" fill="#06b6d4" font-size="13.5" font-weight="800" text-anchor="middle" letter-spacing="0.6">+5.00 V DC Power Rail (VCC)</text>
+
+  <!-- LEAD FROM RAIL TO LED ANODE -->
+  <line x1="270" y1="36" x2="270" y2="68" stroke="#ef4444" stroke-width="3" />
+  <text x="185" y="62" fill="#4ade80" font-size="12.5" font-weight="800" text-anchor="end">Anode (+) ➔</text>
+
+  <!-- LED1 COMPONENT (BS 3939 / IEC 60617 Standard Diode) -->
+  <!-- Diode Triangle (Solid facing down toward cathode) -->
+  <polygon points="244,68 296,68 270,104" fill="#ef4444" stroke="#ffffff" stroke-width="2.2" filter="url(#glow-red)" />
+  <!-- Diode Cathode Bar (BS 3939) -->
+  <line x1="240" y1="104" x2="300" y2="104" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" />
+
+  <!-- BS 3939 Two Outward Light Emission Arrows -->
+  <g stroke="#fbbf24" stroke-width="2.4" fill="#fbbf24" stroke-linecap="round">
+    <line x1="294" y1="76" x2="324" y2="56" />
+    <polygon points="324,56 313,58 318,66" />
+    <line x1="294" y1="94" x2="324" y2="74" />
+    <polygon points="324,74 313,76 318,84" />
+  </g>
+
+  <!-- LED Labels (Right Side) -->
+  <text x="345" y="82" fill="#f87171" font-size="14.5" font-weight="800">LED₁ (Red 5mm)</text>
+  <text x="345" y="102" fill="#94a3b8" font-size="12.5">V<tspan font-size="10" dy="3">F</tspan><tspan font-size="12.5" dy="-3"> ≈ 2.0 V Drop</tspan></text>
+
+  <!-- LEAD FROM LED CATHODE TO MID-NODE -->
+  <line x1="270" y1="104" x2="270" y2="160" stroke="#f8fafc" stroke-width="3" />
+  <text x="185" y="116" fill="#f87171" font-size="12.5" font-weight="800" text-anchor="end">Cathode (-) ➔</text>
+
+  <!-- SERIES MID-NODE (+3.00 V / 9.16 mA) -->
+  <circle cx="270" cy="134" r="5" fill="#38bdf8" />
+  <text x="185" y="139" fill="#38bdf8" font-size="13" font-weight="800" text-anchor="end">I = 9.16 mA ⬇</text>
+  <text x="345" y="139" fill="#cbd5e1" font-size="13" font-weight="700">Node: +3.00 V (Series Midpoint)</text>
+
+  <!-- BS 3939 / IEC 60617 STANDARD RESISTOR (Clean 3:1 Rectangular Symbol) -->
+  <!-- Top terminal lead -->
+  <line x1="270" y1="134" x2="270" y2="160" stroke="#38bdf8" stroke-width="3" />
+  <!-- BS 3939 Standard Resistor Box -->
+  <rect x="252" y="160" width="36" height="76" fill="#0c1527" stroke="#38bdf8" stroke-width="3" rx="1" />
+  <!-- Resistor Value Label inside / adjacent in BS style -->
+  <text x="270" y="203" fill="#38bdf8" font-size="13.5" font-weight="800" text-anchor="middle">330Ω</text>
+
+  <!-- Resistor Labels (Right Side) -->
+  <text x="345" y="190" fill="#ffffff" font-size="14.5" font-weight="800">R₁ = 330 Ω (BS 3939)</text>
+  <text x="345" y="210" fill="#94a3b8" font-size="12.5">V<tspan font-size="10" dy="3">R</tspan><tspan font-size="12.5" dy="-3"> ≈ 3.0 V Drop</tspan></text>
+
+  <!-- LEAD FROM RESISTOR TO 0V GROUND -->
+  <line x1="270" y1="236" x2="270" y2="275" stroke="#64748b" stroke-width="3" />
+
+  <!-- BOTTOM 0V GROUND RAIL & BS 3939 GROUND SYMBOL -->
+  <line x1="40" y1="275" x2="500" y2="275" stroke="#64748b" stroke-width="4" stroke-linecap="round" />
+  <!-- BS 3939 Earth Symbol: 3 parallel descending horizontal lines -->
+  <line x1="245" y1="275" x2="295" y2="275" stroke="#94a3b8" stroke-width="3.5" />
+  <line x1="255" y1="282" x2="285" y2="282" stroke="#94a3b8" stroke-width="2.5" />
+  <line x1="263" y1="289" x2="277" y2="289" stroke="#94a3b8" stroke-width="1.8" />
+  <text x="270" y="312" fill="#94a3b8" font-size="13" font-weight="800" text-anchor="middle">0 V Ground Rail (GND)</text>
+</svg>

@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices & Circuits — Week 1 Engineering Launch</title>
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+  <link rel="stylesheet" href="../shared/css/form-drawer.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* Week 1 Specific Component Styling */
+    .hero-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .ksb-card.k {
+      border-top: 5px solid var(--accent-cyan);
+    }
+
+    .ksb-card.s {
+      border-top: 5px solid var(--color-success);
+    }
+
+    .ksb-card.b {
+      border-top: 5px solid var(--color-warning);
+    }
+
+    .ksb-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    .ksb-card ul {
+      padding-left: 20px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .timeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.05rem;
+    }
+
+    .timeline-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--accent-cyan);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 1.08rem;
+    }
+
+    .timeline-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+
+    .timeline-table tr.break-row td {
+      background: rgba(245, 158, 11, 0.12);
+      font-weight: 700;
+      color: var(--color-warning);
+    }
+
+    .schematic-box {
+      background: #070c18;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 380px;
+      box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.6);
+    }
+
+    .schematic-caption {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-top: 14px;
+      text-align: center;
+      background: rgba(6, 182, 212, 0.12);
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      width: 100%;
+    }
+
+    .schematic-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .schematic-tab-btn {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .schematic-tab-btn:hover {
+      background: #2d3f59;
+      color: #ffffff;
+      border-color: var(--accent-cyan);
+    }
+
+    .schematic-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-arduino), #00797e);
+      color: #ffffff;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .checklist-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-surface-elevated);
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .checklist-item:hover {
+      border-color: var(--accent-cyan);
+      background: #182234;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    .checklist-item.checked {
+      border-color: var(--color-success);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .flowchart-step-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .flow-step-card {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px 10px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .flow-step-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .flow-step-num {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .flow-step-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .flow-step-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .interactive-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-top: 10px;
+    }
+
+    .interactive-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+    }
+
+    .live-data-table th {
+      background: #1e293b;
+      color: var(--accent-cyan);
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      text-align: left;
+      border: 1px solid #334155;
+    }
+
+    .live-data-table td {
+      padding: 8px 12px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #cbd5e1;
+    }
+
+    .table-input {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .table-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-copy-poe {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn-copy-poe:hover {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Header -->
+      <header class="deck-header">
+        <div class="header-top-row">
+          <a href="../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill">UNIT 19</span>
+            <span>Electronic Devices</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Week 1: Launch &amp;
+              Troubleshooting</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility & Neurodiversity (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+          <button class="btn btn-form-action open-forms-trigger" data-form-section="PoE 01 Form">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-right: 4px;">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            📝 Submit PoE 01
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- Slide 1: Welcome & Title -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: center; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill">Session: Week 1</span>
+              <span class="badge-pill">Duration: 3 Hours (160 Mins Active)</span>
+              <span class="badge-pill">Diagnostic Baseline</span>
+              <span class="badge-pill">PoE: A01</span>
+            </div>
+            <h1 class="hero-title">Unit 19 Launch: “Can You Make It Work?”</h1>
+            <h2 class="slide-subtitle" style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 24px;">
+              Safe Electronic Working Practices, Circuit Baseline, &amp; Prototype Troubleshooting
+            </h2>
+            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--text-secondary); max-width: 840px;">
+              Welcome to <strong>Unit 19: Electronic Devices and Circuits</strong>. Today, you step into the role of a
+              <strong>Junior Electronics Technician</strong>. You will construct a baseline LED indicator, verify safe
+              operation, and investigate a deliberately faulted prototype circuit using structured engineering diagnostics.
+            </p>
+            <div style="margin-top: 32px; display: flex; gap: 16px;">
+              <button class="btn btn-primary" onclick="window.PresentationEngine.nextSlide()">
+                Start Engineering Challenge →
+              </button>
+              <button class="btn btn-secondary open-forms-trigger" data-form-section="PoE 01 Form">
+                📝 Open PoE A01 Form
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2: Workplace Context -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <span class="slide-tag">Part 1 • Workplace Context</span>
+            <h2 class="slide-title">Workplace Engineering Scenario</h2>
+            <p class="slide-subtitle">Junior Electronics Technician at Prototype Development Lab</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">🏢 The Brief from Your Supervisor</div>
+                <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-secondary);">
+                  “A prototype indicator board has just failed bench testing. The customer needs verification today.
+                  Before we scrap the board or replace parts, I need your team to systematically isolate the problem.”
+                </p>
+                <div style="margin-top: 20px; background: rgba(0, 151, 157, 0.15); border: 1px solid var(--accent-arduino); border-radius: 8px; padding: 14px;">
+                  <strong style="color: var(--accent-cyan);">Your Core Mission:</strong>
+                  <div style="font-size: 1.4rem; font-weight: 800; color: #ffffff; margin-top: 4px;">“CAN YOU MAKE IT WORK?”</div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-title">⚠️ The Golden Engineering Rules</div>
+                <ul class="clean-list" style="font-size: 1.05rem; line-height: 1.7;">
+                  <li>❌ <strong>DO NOT GUESS:</strong> A technician never guesses or changes components randomly.</li>
+                  <li>❌ <strong>DO NOT POWER BLINDLY:</strong> Always complete a pre-power inspection first.</li>
+                  <li>✅ <strong>GATHER EVIDENCE:</strong> Every multimeter probe placement must answer a specific question.</li>
+                  <li>✅ <strong>PROVE THE FIX:</strong> Record before/after measurements to verify the repair.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3: KSBs & Learning Aims -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <span class="slide-tag">Professional Standards</span>
+            <h2 class="slide-title">Learning Objectives &amp; Engineering KSBs</h2>
+            <p class="slide-subtitle">Pearson BTEC Level 3 Unit 19 Specification Alignment</p>
+          </div>
+          <div class="slide-body">
+            <div class="ksb-grid">
+              <div class="ksb-card k">
+                <h4>🧠 Knowledge (K)</h4>
+                <ul>
+                  <li>Low-voltage electrical hazards &amp; risk isolation procedures (A1).</li>
+                  <li>Circuit schematic symbols: DC supply, resistors, LEDs, switches (A5).</li>
+                  <li>Purpose of current-limiting resistance in semiconductor circuits.</li>
+                </ul>
+              </div>
+              <div class="ksb-card s">
+                <h4>🛠️ Skills (S)</h4>
+                <ul>
+                  <li>Conduct rigorous pre-power breadboard checks.</li>
+                  <li>Measure DC voltage (V) and current (mA) safely with a DMM (A6).</li>
+                  <li>Execute 6-stage systematic fault finding (Observe → Verify).</li>
+                </ul>
+              </div>
+              <div class="ksb-card b">
+                <h4>🤝 Behaviours (B)</h4>
+                <ul>
+                  <li>Build → Test → Break → Fix → Repeat mindset.</li>
+                  <li>Pair collaboration: Builder &amp; Tester roles.</li>
+                  <li>Authentic evidence logging without guesswork.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4: 160-Minute Session Timeline -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <span class="slide-tag">Roadmap • 3 Hours</span>
+            <h2 class="slide-title">Today's Session Sequence</h2>
+            <p class="slide-subtitle">160 Active Minutes of Guided Practical Engineering</p>
+          </div>
+          <div class="slide-body">
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>Phase</th>
+                  <th>Duration</th>
+                  <th>Activity &amp; Milestone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Phase 1</strong></td>
+                  <td>0 – 15m</td>
+                  <td>Engineering Toolbox Baseline: Diagnostic retrieval &amp; electrical quantities.</td>
+                </tr>
+                <tr>
+                  <td><strong>Phase 2</strong></td>
+                  <td>15 – 35m</td>
+                  <td>Safety &amp; Emergency Scenario: Smoke on bench, isolation protocols &amp; SOPs.</td>
+                </tr>
+                <tr>
+                  <td><strong>Phase 3</strong></td>
+                  <td>35 – 55m</td>
+                  <td>Schematic to Physical: Breadboard layout, resistor values, LED polarity.</td>
+                </tr>
+                <tr>
+                  <td><strong>Phase 4</strong></td>
+                  <td>55 – 75m</td>
+                  <td>Pre-Power Inspection: Complete safety checks prior to energisation.</td>
+                </tr>
+                <tr class="break-row">
+                  <td><strong>Break</strong></td>
+                  <td>75 – 95m</td>
+                  <td>20-Minute Refreshment Break</td>
+                </tr>
+                <tr>
+                  <td><strong>Phase 5</strong></td>
+                  <td>95 – 130m</td>
+                  <td>Troubleshooting Challenge: Power up, measure, locate fault, repair &amp; verify.</td>
+                </tr>
+                <tr>
+                  <td><strong>Phase 6</strong></td>
+                  <td>130 – 145m</td>
+                  <td>Stretch Challenge: Second fault diagnosis or procedure authoring.</td>
+                </tr>
+                <tr>
+                  <td><strong>Phase 7 &amp; 8</strong></td>
+                  <td>145 – 160m</td>
+                  <td>PoE 01 Documentation &amp; Engineer Exit Ticket.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Slide 5: Safe Electronic Working Practices (A1) -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <span class="slide-tag">Pearson Unit 19 • Content A1</span>
+            <h2 class="slide-title">Safe Electronic Working Practices</h2>
+            <p class="slide-subtitle">Hazard Identification, Risk Mitigation, &amp; Laboratory Standard Operating Procedures (SOPs)</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">⚡ Circuit Construction &amp; Testing Hazards</div>
+                <ul class="clean-list" style="font-size: 1.02rem; line-height: 1.7;">
+                  <li>⚠️ <strong>Electrical Hazards:</strong> Short circuits, incorrect power supply voltage, inverted polarity, and reverse-biased semiconductors.</li>
+                  <li>⚠️ <strong>Thermal &amp; Component Hazards:</strong> Over-current through low-value resistors leading to rapid overheating, smoking, or component rupturing.</li>
+                  <li>⚠️ <strong>ESD &amp; Mechanical Hazards:</strong> Static discharge damaging sensitive devices; sharp wire clippings causing injury or shorting breadboard rails.</li>
+                  <li>⚠️ <strong>Equipment Misconnection:</strong> Connecting a low-impedance current meter directly across power rails causing blown fuses.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🛡️ Standard Operating Procedures (SOPs)</div>
+                <ul class="clean-list" style="font-size: 1.02rem; line-height: 1.7;">
+                  <li>✅ <strong>Personal Protective Equipment (PPE):</strong> Wear approved safety eye protection against flying component debris/wire snipping, ESD grounding wrist straps for sensitive semiconductors, and keep long hair/loose clothing secured.</li>
+                  <li>✅ <strong>Pre-Power Verification:</strong> Always inspect wiring, resistor values, and polarity BEFORE turning on the DC supply.</li>
+                  <li>✅ <strong>Current Limiting:</strong> Always set bench power supply current limits (e.g., &le; 100 mA for prototype logic) to protect devices.</li>
+                  <li>✅ <strong>Power Isolation:</strong> Always switch off power before inserting, removing, or relocating components on the breadboard.</li>
+                  <li>✅ <strong>Clean Workspace:</strong> Maintain a clean, dry bench and immediately discard trimmed component leads into designated scrap containers.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 6: Emergency Protocols & Laboratory Scenarios -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <span class="slide-tag">H&amp;S Emergency Protocols</span>
+            <h2 class="slide-title">Safety Scenarios: “Something Has Gone Wrong”</h2>
+            <p class="slide-subtitle">Standard Operating Procedures for Laboratory Overheating, Voltage Errors &amp; Isolation</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">🚨 Scenario 1: Smoke from the Circuit</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  Mandatory 5-stage response when smoke or overheating is detected:
+                </p>
+                <ol class="clean-list" style="font-size: 0.94rem; line-height: 1.6;">
+                  <li><strong>1. ISOLATE IMMEDIATELY:</strong> Turn off DC bench supply or press Emergency Stop.</li>
+                  <li><strong>2. DO NOT TOUCH:</strong> Overheated components cause burns; leave circuit on bench.</li>
+                  <li><strong>3. ALERT TUTOR:</strong> Notify responsible laboratory technician / tutor.</li>
+                  <li><strong>4. FOLLOW INSTRUCTIONS:</strong> Evacuate or clear area if smoke persists.</li>
+                  <li><strong>5. REPORT &amp; LOG:</strong> Record incident cause in laboratory safety log.</li>
+                </ol>
+              </div>
+
+              <div class="card">
+                <div class="card-title">⚠️ Additional Lab Scenarios</div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">
+                  <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid var(--color-danger); padding: 8px 12px; border-radius: 4px;">
+                    <strong style="color: #ffffff;">Scenario 2: Incorrect Voltage Setting:</strong><br>
+                    PSU set to 12 V for a 5 V circuit. <em>Action:</em> Do NOT energise. Isolate and reset to 5.0 V before connecting. Overvoltage ruptures LEDs and burns resistors instantly.
+                  </div>
+                  <div style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--color-warning); padding: 8px 12px; border-radius: 4px;">
+                    <strong style="color: #ffffff;">Scenario 3: Damaged Test Leads:</strong><br>
+                    Split probe insulation exposed. <em>Action:</em> Remove from service, tag as faulty, and report to technician immediately.
+                  </div>
+                  <div style="background: rgba(6, 182, 212, 0.1); border-left: 3px solid var(--accent-cyan); padding: 8px 12px; border-radius: 4px;">
+                    <strong style="color: #ffffff;">Scenario 4: Emergency Isolation:</strong><br>
+                    Identify your laboratory main wall-mounted Emergency Stop button and know the evacuation route.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 7: Circuit Schematic -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <span class="slide-tag">Circuit Fundamentals</span>
+            <h2 class="slide-title">The Baseline Indicator Circuit</h2>
+            <p class="slide-subtitle">Schematic Representation vs Physical Breadboard Layout</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <div class="schematic-tabs">
+                  <button class="schematic-tab-btn active" onclick="switchSchematic('schematic')">Schematic (BS 3939)</button>
+                  <button class="schematic-tab-btn" onclick="switchSchematic('breadboard')">Breadboard View</button>
+                </div>
+                <div id="schematic-display" style="width: 100%; display: flex; justify-content: center; align-items: center; min-height: 240px;">
+                  <img src="images/circuit-schematic-standard.svg" alt="Circuit Schematic Diagram" style="max-width: 85%; max-height: 220px; filter: drop-shadow(0 0 10px rgba(6,182,212,0.3));" id="schematic-img">
+                </div>
+                <div class="schematic-caption" id="schematic-cap">
+                  Series Circuit: +5V Supply → S1 (Switch) → R1 (220Ω Resistor) → D1 (LED) → 0V Ground
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📋 Component Functions &amp; Current Path</div>
+                <ul class="clean-list" style="font-size: 0.95rem; line-height: 1.6;">
+                  <li><strong>1. +5.0 V DC Supply:</strong> Provides electrical potential energy.</li>
+                  <li><strong>2. S1 (Switch):</strong> Opens or closes the conducting circuit loop.</li>
+                  <li><strong>3. R1 (Current Limiter, 330Ω/220Ω):</strong> Restricts loop current to protect diode from thermal destruction.</li>
+                  <li><strong>4. D1 (Red LED):</strong> Emits light when forward-biased (Anode to +5V, Cathode to 0V).</li>
+                  <li><strong>5. 0 V Ground Return:</strong> Closes the return path to the power source.</li>
+                </ul>
+                <div class="interactive-card" style="margin-top: 10px;">
+                  <div class="interactive-title">💡 Form Section 3 (Q8–Q10) Alignment</div>
+                  <div style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                    • <strong>Current Path Order:</strong> <span style="font-family: var(--font-mono); color: var(--accent-cyan);">+5V → S1 → R1 → D1 → 0V</span><br>
+                    • <strong>What if R1 = 0 Ω (Short Circuit)?</strong> Current increases drastically beyond max rating (If &gt; 100mA), burning the PN junction and destroying the LED.
+                  </div>
+                </div>
+                <button class="btn btn-primary open-forms-trigger" data-form-section="Section 3" style="align-self: flex-start; padding: 6px 14px; font-size: 0.86rem; margin-top: 10px;">
+                  📝 Complete Section 3 in Form Drawer →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 8: Baseline Circuit Simulation & Analysis (Pearson A5) -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <span class="slide-tag">Activity 1A • Circuit Simulation (A5)</span>
+            <h2 class="slide-title">Simulate the Baseline Indicator Circuit</h2>
+            <p class="slide-subtitle">Multisim / Tinkercad Virtual Modeling &amp; Theoretical Current Analysis</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">💻 Independent Simulation Task</div>
+                <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px;">
+                  Before building physical hardware, build and simulate the circuit in <strong>Multisim / Tinkercad</strong>:
+                </p>
+                <ol class="clean-list" style="font-size: 0.93rem; line-height: 1.6;">
+                  <li>Place a <strong>+5.0 V DC Voltage Source</strong> and <strong>0 V Ground reference</strong>.</li>
+                  <li>Add an <strong>SPST Switch (S1)</strong> and a <strong>220 Ω / 330 Ω Resistor (R1)</strong>.</li>
+                  <li>Connect a <strong>Red LED (D1)</strong> in forward-bias (Anode to R1, Cathode to Ground).</li>
+                  <li>Insert a <strong>Virtual Multimeter / Probe</strong> to measure loop current (mA) and LED forward drop (V).</li>
+                </ol>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📋 Simulation Output &amp; Form Deliverables</div>
+                <div class="interactive-card" style="margin-bottom: 12px;">
+                  <div class="interactive-title">📝 Form Section 3 Deliverables</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                    • <strong>Q11 (Values):</strong> Record simulated I_total (~13.6 mA) and V_LED (~1.9 V).<br>
+                    • <strong>Q12 (Image Upload):</strong> Capture and upload a clear screenshot of your working simulation schematic showing active probe readings.
+                  </p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <span style="font-size: 0.86rem; color: var(--accent-cyan); font-weight: 700;">
+                    👉 <em>Link to Form:</em> Complete Questions 11 &amp; 12 in <strong>Section 3</strong> before assembling physical hardware.
+                  </span>
+                  <button class="btn btn-primary open-forms-trigger" data-form-section="Section 3" style="align-self: flex-start; padding: 6px 14px; font-size: 0.88rem; margin-top: 4px;">
+                    📝 Open Section 3 in Form Drawer →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 9: Physical Breadboard Build & Baseline Verification (Pearson A6) -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <span class="slide-tag">Activity 1B • Physical Prototyping (A6)</span>
+            <h2 class="slide-title">Build &amp; Test the Baseline Circuit</h2>
+            <p class="slide-subtitle">Construct and verify normal healthy operation on breadboard before fault injection</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">🛠️ Physical Breadboard Assembly</div>
+                <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px;">
+                  Construct the healthy circuit powered directly from the bench DC supply (<strong>NOT connected to Arduino</strong>):
+                </p>
+                <ol class="clean-list" style="font-size: 0.94rem; line-height: 1.6;">
+                  <li>Place S1 push button across the breadboard centre divider.</li>
+                  <li>Connect R1 (220 Ω / 330 Ω) from S1 output to LED Anode row.</li>
+                  <li>Connect LED Cathode (flat side/short leg) to the 0 V return rail.</li>
+                  <li>Connect +5 V and 0 V bench PSU leads (PSU switched OFF).</li>
+                </ol>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📊 Baseline Electrical Verification</div>
+                <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.5;">
+                  Complete your Pre-Power checks (Slide 10), energise, and record healthy baseline readings:
+                </p>
+                <div class="interactive-card" style="margin-top: 8px;">
+                  <ul class="clean-list" style="font-size: 0.9rem; line-height: 1.6; font-family: var(--font-mono);">
+                    <li>• <strong>Supply Voltage (Vs):</strong> 5.00 V ± 0.05 V</li>
+                    <li>• <strong>Resistor Voltage (VR1):</strong> ~3.00 V to 3.20 V</li>
+                    <li>• <strong>LED Forward Voltage (Vf):</strong> 1.80 V to 2.05 V</li>
+                    <li>• <strong>Circuit Current (I_total):</strong> 13.0 mA to 15.0 mA</li>
+                  </ul>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--color-success); font-weight: 700; margin-top: 10px;">
+                  ✅ Once verified, your tutor will introduce a deliberate fault into your built circuit for you to troubleshoot and fix.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 10: Interactive Pre-Power Safety Checklist -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <span class="slide-tag">Practical Inspection</span>
+            <h2 class="slide-title">Pre-Power Safety Checklist</h2>
+            <p class="slide-subtitle">Mandatory Quality Gate Before Connecting DC Power (Form Section 2, Q4)</p>
+          </div>
+          <div class="slide-body">
+            <ul class="checklist-list" id="pre-power-checklist">
+              <li class="checklist-item" onclick="toggleCheck(this, 'ppc1')">
+                <input type="checkbox" id="ppc1">
+                <label for="ppc1">1. Work bench is clear of stray metal wire clippings, liquids, and uninsulated tools.</label>
+              </li>
+              <li class="checklist-item" onclick="toggleCheck(this, 'ppc2')">
+                <input type="checkbox" id="ppc2">
+                <label for="ppc2">2. DC Bench Supply is switched OFF and dial set to +5.0 V with current limit &le; 100 mA.</label>
+              </li>
+              <li class="checklist-item" onclick="toggleCheck(this, 'ppc3')">
+                <input type="checkbox" id="ppc3">
+                <label for="ppc3">3. LED Polarity checked: Anode (longer leg) towards +5V, Cathode (flat edge) towards 0V.</label>
+              </li>
+              <li class="checklist-item" onclick="toggleCheck(this, 'ppc4')">
+                <input type="checkbox" id="ppc4">
+                <label for="ppc4">4. Resistor value verified (220Ω / 330Ω) - NOT a 0Ω wire or incorrect low value.</label>
+              </li>
+              <li class="checklist-item" onclick="toggleCheck(this, 'ppc5')">
+                <input type="checkbox" id="ppc5">
+                <label for="ppc5">5. Breadboard terminal rows inspected: components share correct columns without bridging.</label>
+              </li>
+            </ul>
+            <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center;">
+              <span id="checklist-status" style="font-size: 0.95rem; font-weight: 700; color: var(--color-warning);">
+                ⚠️ Complete all 5 checks before requesting tutor inspection.
+              </span>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary" onclick="resetChecklist()" style="padding: 6px 14px;">Reset Checks</button>
+                <button class="btn btn-primary open-forms-trigger" data-form-section="Section 2" style="padding: 6px 14px; font-size: 0.88rem;">
+                  📝 Check off in Form (Q4) →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 11: The 6-Stage Troubleshooting Process -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <span class="slide-tag">Engineering Methodology</span>
+            <h2 class="slide-title">Systematic Fault-Finding Flowchart</h2>
+            <p class="slide-subtitle">The 6-Stage Diagnostic Reasoning Cycle (Form Section 4)</p>
+          </div>
+          <div class="slide-body">
+            <div style="background: rgba(0, 151, 157, 0.15); border: 1px solid var(--accent-arduino); border-radius: 8px; padding: 10px 16px; margin-bottom: 14px;">
+              <strong style="color: var(--accent-cyan);">🔬 Fault Injection &amp; Diagnosis Challenge:</strong>
+              <span style="font-size: 0.94rem; color: #ffffff; margin-left: 6px;">
+                Your tutor has now introduced a deliberate fault into your built prototype circuit. Use the 6-stage process below to locate, repair, and verify it without guessing!
+              </span>
+            </div>
+
+            <div class="flowchart-step-grid">
+              <div class="flow-step-card">
+                <div class="flow-step-num">Step 1</div>
+                <div class="flow-step-title">OBSERVE</div>
+                <div class="flow-step-desc">Record exact symptom. What is expected vs what happens?</div>
+              </div>
+              <div class="flow-step-card">
+                <div class="flow-step-num">Step 2</div>
+                <div class="flow-step-title">PREDICT</div>
+                <div class="flow-step-desc">Formulate 2+ hypotheses based on circuit theory.</div>
+              </div>
+              <div class="flow-step-card">
+                <div class="flow-step-num">Step 3</div>
+                <div class="flow-step-title">TEST</div>
+                <div class="flow-step-desc">Measure voltage &amp; continuity with multimeter.</div>
+              </div>
+              <div class="flow-step-card">
+                <div class="flow-step-num">Step 4</div>
+                <div class="flow-step-title">LOCATE</div>
+                <div class="flow-step-desc">Isolate the root cause component or connection.</div>
+              </div>
+              <div class="flow-step-card">
+                <div class="flow-step-num">Step 5</div>
+                <div class="flow-step-title">FIX</div>
+                <div class="flow-step-desc">Power OFF, make the specific correction.</div>
+              </div>
+              <div class="flow-step-card">
+                <div class="flow-step-num">Step 6</div>
+                <div class="flow-step-title">VERIFY</div>
+                <div class="flow-step-desc">Power ON, re-test and prove normal operation.</div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-size: 0.92rem; color: var(--text-secondary);">
+                • <strong>Reversed LED:</strong> Reverse open circuit.<br>
+                • <strong>Open Circuit:</strong> Jumper in wrong row.
+              </div>
+              <div style="font-size: 0.92rem; color: var(--text-secondary);">
+                • <strong>Missing Ground:</strong> Return rail disconnected.<br>
+                • <strong>Wrong Value:</strong> 220 kΩ installed instead of 220 Ω.
+              </div>
+              <button class="btn btn-primary open-forms-trigger" data-form-section="Section 4" style="padding: 8px 16px; font-size: 0.88rem;">
+                📝 Open Section 4 in Form Drawer →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 12: Interactive Measurement Logger -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <span class="slide-tag">Data Collection</span>
+            <h2 class="slide-title">Interactive Measurement Record</h2>
+            <p class="slide-subtitle">Log your test results locally (No PII stored on website)</p>
+          </div>
+          <div class="slide-body">
+            <table class="live-data-table">
+              <thead>
+                <tr>
+                  <th>Test Point / Quantity</th>
+                  <th>Expected (Theory)</th>
+                  <th>Faulty Circuit (Measured)</th>
+                  <th>Repaired Circuit (Measured)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Supply Voltage (Vs)</strong></td>
+                  <td>5.00 V DC</td>
+                  <td><input type="text" class="table-input" id="m_vs_fault" placeholder="e.g. 5.02 V" oninput="saveTableData()"></td>
+                  <td><input type="text" class="table-input" id="m_vs_repaired" placeholder="e.g. 5.00 V" oninput="saveTableData()"></td>
+                </tr>
+                <tr>
+                  <td><strong>Resistor Voltage (VR1)</strong></td>
+                  <td>~3.00 V DC</td>
+                  <td><input type="text" class="table-input" id="m_vr_fault" placeholder="e.g. 0.00 V" oninput="saveTableData()"></td>
+                  <td><input type="text" class="table-input" id="m_vr_repaired" placeholder="e.g. 3.12 V" oninput="saveTableData()"></td>
+                </tr>
+                <tr>
+                  <td><strong>LED Voltage (V_LED)</strong></td>
+                  <td>1.80 – 2.10 V</td>
+                  <td><input type="text" class="table-input" id="m_vled_fault" placeholder="e.g. 5.02 V" oninput="saveTableData()"></td>
+                  <td><input type="text" class="table-input" id="m_vled_repaired" placeholder="e.g. 1.88 V" oninput="saveTableData()"></td>
+                </tr>
+                <tr>
+                  <td><strong>Circuit Current (I_total)</strong></td>
+                  <td>12 – 15 mA</td>
+                  <td><input type="text" class="table-input" id="m_i_fault" placeholder="e.g. 0.0 mA" oninput="saveTableData()"></td>
+                  <td><input type="text" class="table-input" id="m_i_repaired" placeholder="e.g. 14.1 mA" oninput="saveTableData()"></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+              <button class="btn-copy-poe" onclick="copyPoESummary()">
+                📋 Copy Summary for Microsoft Form (Section 4, Q15)
+              </button>
+              <span id="copy-status" style="font-size: 0.88rem; color: var(--accent-cyan); font-weight: 600;"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 13: Portfolio of Evidence A01 Submission Guide -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <span class="slide-tag">Evidence &amp; Assessment</span>
+            <h2 class="slide-title">Portfolio of Evidence 01 (PoE A01)</h2>
+            <p class="slide-subtitle">Formative Engineering Portfolio Submission Guide</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📁 Required Evidence Artifacts</div>
+                <ul class="clean-list" style="font-size: 1.02rem; line-height: 1.7;">
+                  <li>✅ <strong>Pre-Power Checklist:</strong> Verified safety protocol (Form Section 2, Q4).</li>
+                  <li>✅ <strong>Simulation Screenshot &amp; Values:</strong> Multisim / Tinkercad model (Form Section 3, Q11 &amp; Q12).</li>
+                  <li>✅ <strong>Physical Breadboard Photo:</strong> Clear photo of your working breadboard (Form Section 5, Q19).</li>
+                  <li>✅ <strong>Diagnostic Measurements:</strong> Fault vs Repaired readings &amp; fix verification (Form Section 4, Q13–Q18).</li>
+                </ul>
+              </div>
+              <div class="card">
+                <div class="card-title">📝 Microsoft Forms Submission</div>
+                <p style="font-size: 0.98rem; color: var(--text-secondary); line-height: 1.6;">
+                  Open the built-in Microsoft Forms drawer or pop out into a new tab to submit your PoE A01 write-up
+                  and photos directly.
+                </p>
+                <div style="margin-top: 20px;">
+                  <button class="btn btn-primary open-forms-trigger" data-form-section="PoE A01">
+                    🚀 Open Microsoft Form Drawer →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 14: Engineer Exit Ticket -->
+        <section class="slide" id="slide-14">
+          <div class="slide-header">
+            <span class="slide-tag">Session Wrap-Up</span>
+            <h2 class="slide-title">Engineer Exit Ticket — Week 1</h2>
+            <p class="slide-subtitle">Formative Check &amp; Professional Sign-Off (Directly Aligned with Form Section 6, Q20–Q23)</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">❓ Form Q20: Evidence vs Guessing</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  Why is the statement <em>“I think the resistor is faulty”</em> NOT enough to justify replacing it?
+                </p>
+                <div class="interactive-card">
+                  <div class="interactive-title">💡 Model Engineering Standard</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                    Engineers do not guess. You must obtain voltage/resistance test data confirming open-circuit or out-of-spec resistance before replacing hardware.
+                  </p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-title">❓ Form Q21: Diagnostic Analysis</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  If supply is 5.0 V but you measure 0.0 V across the resistor, give TWO possible root causes:
+                </p>
+                <div class="interactive-card">
+                  <div class="interactive-title">💡 Model Engineering Causes</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                    1. <strong>Open Circuit:</strong> S1 is open or a series jumper wire is unseated (0 current flows).<br>
+                    2. <strong>Reverse Biased:</strong> LED is inserted backwards, blocking current flow.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 15: Next Week Preview -->
+        <section class="slide" id="slide-15">
+          <div class="slide-body" style="justify-content: center; align-items: center; text-align: center;">
+            <div class="badge-bar" style="justify-content: center;">
+              <span class="badge-pill">Week 1 Complete</span>
+              <span class="badge-pill">Up Next: Week 2</span>
+            </div>
+            <h1 style="font-size: 2.8rem; font-weight: 800; color: #ffffff; margin-bottom: 16px;">
+              Diode Engineering Investigation
+            </h1>
+            <p style="font-size: 1.2rem; max-width: 760px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 32px;">
+              “Protect and Control the Power” — Next week we explore semiconductor physics, PN-junction IV curves,
+              half/full-wave rectification, and Zener voltage regulation under load.
+            </p>
+            <div style="display: flex; gap: 16px;">
+              <a href="../index.html" class="btn btn-secondary">🏠 Return to Course Hub</a>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 15</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn btn-secondary open-forms-trigger" data-form-section="PoE 01 Form"
+            style="padding: 6px 12px; font-size: 0.8rem;">
+            📝 Submit PoE A01
+          </button>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Backdrop for Drawer -->
+    <div id="drawer-backdrop"></div>
+
+    <!-- Microsoft Forms Side-Drawer -->
+    <aside id="forms-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>📝</span>
+          <span>Week 1 Deliverables Form (PoE A01)</span>
+        </div>
+        <div class="drawer-actions">
+          <button class="drawer-popout-btn" id="drawer-popout-btn" title="Open in new tab">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            Pop out
+          </button>
+          <button class="drawer-close-btn" id="drawer-close-btn" title="Close drawer">✕</button>
+        </div>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Lazy-loaded Microsoft Forms Embed Iframe -->
+        <iframe id="forms-iframe" class="drawer-iframe" src="about:blank"
+          data-src="[INSERT COLLEGE MICROSOFT FORMS LINK]" allowfullscreen webkitallowfullscreen mozallowfullscreen
+          msallowfullscreen>
+        </iframe>
+      </div>
+    </aside>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid">
+          <!-- Populated dynamically by PresentationEngine -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility & Neurodiversity Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Accessibility & Neurodiversity Side-Drawer -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary"
+          style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/self-check.js"></script>
+  <script src="../shared/js/timer.js"></script>
+  <script src="../shared/js/form-drawer.js"></script>
+  <script>
+    // Week 1 Specific Interactive Utilities
+    function switchSchematic(type) {
+      const img = document.getElementById('schematic-img');
+      const cap = document.getElementById('schematic-cap');
+      const btns = document.querySelectorAll('.schematic-tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+
+      if (type === 'schematic') {
+        img.src = 'images/circuit-schematic-standard.svg';
+        cap.textContent = 'Series Circuit: +5V Supply → S1 (Switch) → R1 (220Ω Resistor) → D1 (LED) → 0V Ground';
+        btns[0].classList.add('active');
+      } else {
+        img.src = 'images/breadboard-led-on.png';
+        cap.textContent = 'Physical Prototyping: Breadboard wiring showing LED anode to pin row & cathode return to ground rail';
+        btns[1].classList.add('active');
+      }
+    }
+
+    function toggleCheck(el, id) {
+      const checkbox = document.getElementById(id);
+      if (event.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+      }
+      if (checkbox.checked) {
+        el.classList.add('checked');
+      } else {
+        el.classList.remove('checked');
+      }
+      saveChecklistState();
+    }
+
+    function saveChecklistState() {
+      const checks = ['ppc1', 'ppc2', 'ppc3', 'ppc4', 'ppc5'];
+      const states = checks.map(id => document.getElementById(id).checked);
+      localStorage.setItem('u19_w1_ppc', JSON.stringify(states));
+      
+      const allDone = states.every(s => s === true);
+      const statusEl = document.getElementById('checklist-status');
+      if (allDone) {
+        statusEl.innerHTML = '✅ All pre-power checks verified! Safe to request tutor inspection & power on.';
+        statusEl.style.color = 'var(--color-success)';
+      } else {
+        statusEl.innerHTML = '⚠️ Complete all 5 checks before requesting tutor inspection.';
+        statusEl.style.color = 'var(--color-warning)';
+      }
+    }
+
+    function resetChecklist() {
+      ['ppc1', 'ppc2', 'ppc3', 'ppc4', 'ppc5'].forEach(id => {
+        const el = document.getElementById(id);
+        el.checked = false;
+        el.closest('.checklist-item').classList.remove('checked');
+      });
+      saveChecklistState();
+    }
+
+    function loadChecklistState() {
+      const saved = localStorage.getItem('u19_w1_ppc');
+      if (saved) {
+        try {
+          const states = JSON.parse(saved);
+          states.forEach((state, i) => {
+            const id = 'ppc' + (i + 1);
+            const cb = document.getElementById(id);
+            if (cb) {
+              cb.checked = state;
+              if (state) cb.closest('.checklist-item').classList.add('checked');
+            }
+          });
+          const allDone = states.every(s => s === true);
+          const statusEl = document.getElementById('checklist-status');
+          if (allDone && statusEl) {
+            statusEl.innerHTML = '✅ All pre-power checks verified! Safe to request tutor inspection & power on.';
+            statusEl.style.color = 'var(--color-success)';
+          }
+        } catch(e) {}
+      }
+    }
+
+    function saveTableData() {
+      const fields = ['m_vs_fault', 'm_vs_repaired', 'm_vr_fault', 'm_vr_repaired', 'm_vled_fault', 'm_vled_repaired', 'm_i_fault', 'm_i_repaired'];
+      const data = {};
+      fields.forEach(f => {
+        const el = document.getElementById(f);
+        if (el) data[f] = el.value;
+      });
+      localStorage.setItem('u19_w1_measurements', JSON.stringify(data));
+    }
+
+    function loadTableData() {
+      const saved = localStorage.getItem('u19_w1_measurements');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          Object.keys(data).forEach(k => {
+            const el = document.getElementById(k);
+            if (el) el.value = data[k];
+          });
+        } catch(e) {}
+      }
+    }
+
+    function copyPoESummary() {
+      const vsF = document.getElementById('m_vs_fault')?.value || 'N/A';
+      const vsR = document.getElementById('m_vs_repaired')?.value || 'N/A';
+      const vrF = document.getElementById('m_vr_fault')?.value || 'N/A';
+      const vrR = document.getElementById('m_vr_repaired')?.value || 'N/A';
+      const vledF = document.getElementById('m_vled_fault')?.value || 'N/A';
+      const vledR = document.getElementById('m_vled_repaired')?.value || 'N/A';
+      const iF = document.getElementById('m_i_fault')?.value || 'N/A';
+      const iR = document.getElementById('m_i_repaired')?.value || 'N/A';
+
+      const summary = `--- UNIT 19 WEEK 1 PoE A01 MEASUREMENT SUMMARY ---
+[Pre-Power Safety Verification: Completed]
+• Supply Voltage: Faulty=${vsF} | Repaired=${vsR} (Expected: 5.00 V)
+• Resistor Voltage (VR1): Faulty=${vrF} | Repaired=${vrR} (Expected: ~3.00 V)
+• LED Voltage (V_LED): Faulty=${vledF} | Repaired=${vledR} (Expected: 1.80-2.10 V)
+• Circuit Current (I_total): Faulty=${iF} | Repaired=${iR} (Expected: ~13.6 mA)
+-------------------------------------------------`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        const statusEl = document.getElementById('copy-status');
+        if (statusEl) {
+          statusEl.textContent = '✅ Copied to clipboard! Ready to paste into Microsoft Form.';
+          setTimeout(() => { statusEl.textContent = ''; }, 4000);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadChecklistState();
+      loadTableData();
+    });
+  </script>
+</body>
+
+</html>
