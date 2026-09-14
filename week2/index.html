@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices & Circuits — Week 2 Diode Investigation</title>
+  <meta name="description"
+    content="Unit 19 Learning Aim A Week 2: Diode Devices, Rectification, Capacitor Smoothing, and Zener Voltage Regulation.">
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+  <link rel="stylesheet" href="../shared/css/form-drawer.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <!-- KaTeX for crisp, accessible LaTeX mathematical typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <style>
+    /* Week 2 Specific Component Styling */
+    .hero-title {
+      font-size: 3.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pill.demo {
+      background: rgba(6, 182, 212, 0.25);
+      border-color: #06b6d4;
+      color: #22d3ee;
+    }
+
+    .badge-pill.group-a {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    .badge-pill.group-b {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    .badge-pill.group-c {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .ksb-card.k {
+      border-top: 5px solid var(--accent-cyan);
+    }
+
+    .ksb-card.s {
+      border-top: 5px solid var(--color-success);
+    }
+
+    .ksb-card.b {
+      border-top: 5px solid var(--color-warning);
+    }
+
+    .ksb-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    .ksb-card ul {
+      padding-left: 20px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .timeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.02rem;
+    }
+
+    .timeline-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--accent-cyan);
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 1.05rem;
+    }
+
+    .timeline-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+
+    .timeline-table tr.break-row td {
+      background: rgba(245, 158, 11, 0.12);
+      font-weight: 700;
+      color: var(--color-warning);
+    }
+
+    .schematic-box {
+      background: #070c18;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 380px;
+      box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.6);
+    }
+
+    .schematic-caption {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-top: 12px;
+      text-align: center;
+      background: rgba(6, 182, 212, 0.12);
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      width: 100%;
+    }
+
+    .schematic-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .schematic-tab-btn {
+      flex: 1;
+      padding: 8px 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .schematic-tab-btn:hover {
+      background: #2d3f59;
+      color: #ffffff;
+      border-color: var(--accent-cyan);
+    }
+
+    .schematic-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-arduino), #00797e);
+      color: #ffffff;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .checklist-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-surface-elevated);
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      font-size: 1rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .checklist-item:hover {
+      border-color: var(--accent-cyan);
+      background: #182234;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    .checklist-item.checked {
+      border-color: var(--color-success);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .diode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .diode-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .diode-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 151, 157, 0.2);
+    }
+
+    .diode-type-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .diode-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(6, 182, 212, 0.2);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+
+    .stage-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .stage-card {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .stage-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .stage-num {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .stage-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .stage-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .calc-box {
+      background: #0b1329;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.7;
+    }
+
+    .calc-formula {
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .table-input {
+      width: 100%;
+      background: #0b1120;
+      border: 1px solid #334155;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .table-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-copy-poe {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn-copy-poe:hover {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .dual-image-frame {
+      background: #070c18;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .dual-image-frame img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      filter: drop-shadow(0 4px 12px rgba(0, 151, 157, 0.25));
+    }
+
+    .group-spec-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .group-spec-card {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 12px;
+      border-top: 4px solid var(--accent-cyan);
+    }
+
+    .group-spec-card.demo {
+      border-top-color: #06b6d4;
+      background: rgba(6, 182, 212, 0.08);
+    }
+
+    .group-spec-card.ga {
+      border-top-color: #38bdf8;
+    }
+
+    .group-spec-card.gb {
+      border-top-color: #10b981;
+    }
+
+    .group-spec-card.gc {
+      border-top-color: #f59e0b;
+    }
+
+    .datasheet-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .datasheet-btn:hover {
+      background: #38bdf8;
+      color: #0b1120;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+    }
+
+    .formula-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .formula-card {
+      background: #0b1329;
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .formula-card h4 {
+      color: var(--accent-cyan);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .glossary-card {
+      background: #0b1329;
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .glossary-term {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .glossary-unit {
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      background: rgba(6, 182, 212, 0.15);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .glossary-def {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Header -->
+      <header class="deck-header">
+        <div class="header-top-row">
+          <a href="../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill">UNIT 19</span>
+            <span>Electronic Devices</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Week 2: Diode
+              Investigation</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="https://datasheet.octopart.com/1N4733A-T-Diodes-Inc.-datasheet-8188104.pdf" target="_blank"
+            rel="noopener noreferrer" class="datasheet-btn" title="Open 1N4728A-1N4764A Zener Datasheet PDF">
+            📄 1N47xx Datasheet
+          </a>
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility & Neurodiversity (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+          <button class="btn btn-form-action open-forms-trigger" data-form-section="PoE 02 Form">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-right: 4px;">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            📝 Submit PoE 02
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- Slide 1: Welcome & Title -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: center; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill">Session: Week 2</span>
+              <span class="badge-pill">Date: 14 September 2026</span>
+              <span class="badge-pill">Duration: 3 Hours (160 Mins Active)</span>
+              <span class="badge-pill">Role: Junior Power Electronics Engineer</span>
+              <span class="badge-pill">PoE: A02</span>
+            </div>
+            <h1 class="hero-title">Week 2: “Protect and Control the Power”</h1>
+            <h2 class="slide-subtitle" style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 24px;">
+              Diode Devices, Rectification, Capacitor Smoothing, &amp; Zener Voltage Regulation
+            </h2>
+            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--text-secondary); max-width: 860px;">
+              Welcome back to <strong>Unit 19: Electronic Devices and Circuits</strong>. Today, you step into the role
+              of a <strong>Junior Power Electronics Engineer</strong>. You will explore PN junction semiconductors,
+              predict
+              and simulate waveforms, construct physical rectification circuits on breadboard, extract parameters from
+              real
+              datasheets, and engineer a regulated DC power supply meeting an allocated voltage and ripple
+              specification.
+            </p>
+            <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="window.PresentationEngine.nextSlide()">
+                Start Engineering Challenge →
+              </button>
+              <button class="btn btn-secondary open-forms-trigger" data-form-section="Section 1">
+                📝 Open PoE A02 Form
+              </button>
+              <a href="https://datasheet.octopart.com/1N4733A-T-Diodes-Inc.-datasheet-8188104.pdf" target="_blank"
+                rel="noopener noreferrer" class="datasheet-btn" style="padding: 10px 18px; font-size: 0.95rem;">
+                📄 Open Official Zener Datasheet PDF
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2: Lesson Aim & Session Outcomes (Dedicated Page) -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <span class="slide-tag">Curriculum Alignment • Scheme of Learning</span>
+            <h2 class="slide-title">Lesson Aim &amp; Session Outcomes</h2>
+            <p class="slide-subtitle">Pearson BTEC Level 3 Engineering — Unit 19 Learning Aim A (Week 2)</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card" style="border-left: 5px solid var(--accent-cyan);">
+                <div class="card-title">🎯 Lesson Aim</div>
+                <p style="font-size: 1.15rem; line-height: 1.8; color: #ffffff; font-weight: 500;">
+                  Investigate diode devices and develop, simulate, build and test a regulated full-wave rectifier
+                  meeting an allocated output specification.
+                </p>
+                <div
+                  style="margin-top: 20px; background: rgba(0, 151, 157, 0.12); border: 1px solid var(--accent-arduino); border-radius: 8px; padding: 14px;">
+                  <strong style="color: var(--accent-cyan);">Teaching Approach:</strong>
+                  <div style="font-family: var(--font-mono); font-size: 0.95rem; color: #ffffff; margin-top: 6px;">
+                    PREDICT → SIMULATE → BUILD → TEST → COMPARE → EXPLAIN → DOCUMENT
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="border-left: 5px solid var(--color-success);">
+                <div class="card-title">📋 Session Outcomes (Learners will:)</div>
+                <ul class="clean-list" style="font-size: 1.02rem; line-height: 1.7;">
+                  <li>Identify different diode types and uses;</li>
+                  <li>Construct and simulate a half-wave rectifier;</li>
+                  <li>Follow the class demonstration: <strong>5.1 V</strong> Zener with $\le 1.7\text{ V}$ ripple;</li>
+                  <li>Develop your own group specification after the break (<strong>3.6 V</strong>, <strong>4.7
+                      V</strong>, or <strong>6.8 V</strong>);</li>
+                  <li>Build the final prototype;</li>
+                  <li>Record output voltage and estimate ripple for different loads;</li>
+                  <li>Compare theory, simulation and measurement.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3: Engineering KSBs (Dedicated Page) -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <span class="slide-tag">Professional Standards</span>
+            <h2 class="slide-title">Engineering Knowledge, Skills &amp; Behaviours (KSBs)</h2>
+            <p class="slide-subtitle">Developing Practical Competence as a Junior Power Electronics Engineer</p>
+          </div>
+          <div class="slide-body">
+            <div class="ksb-grid">
+              <div class="ksb-card k">
+                <h4>🧠 Knowledge (K)</h4>
+                <ul>
+                  <li>PN junction physics: forward bias ($V_f \approx 0.70\text{ V}$ Si, $0.30\text{ V}$ Schottky) &amp;
+                    reverse breakdown.</li>
+                  <li>Rectification topologies: half-wave ($f_r = f_{in}$) vs full-wave bridge ($f_r = 2 f_{in}$).</li>
+                  <li>Smoothing capacitor filtering dynamics &amp; input ripple: $V_{r(in), p-p} \approx \frac{I_{in}}{2
+                    f C}$.</li>
+                  <li>Zener attenuation: $V_{r(out), p-p} \approx V_{r(in), p-p} \cdot \left( \frac{r_z}{R_S + r_z}
+                    \right)$.</li>
+                </ul>
+              </div>
+              <div class="ksb-card s">
+                <h4>🛠️ Skills (S)</h4>
+                <ul>
+                  <li>Simulate diode circuits virtually in Multisim / Tinkercad before physical breadboarding.</li>
+                  <li>Construct robust bridge rectifiers and verify polarity orientation on breadboard.</li>
+                  <li>Measure DC output voltage and oscilloscope/DMM ripple under variable resistive loads.</li>
+                  <li>Extract datasheet parameters ($V_Z, I_{ZT}, Z_{ZT}, I_{ZK}$) to compute maximum regulator ripple.
+                  </li>
+                </ul>
+              </div>
+              <div class="ksb-card b">
+                <h4>🤝 Behaviours (B)</h4>
+                <ul>
+                  <li>Predict before powering: never power up without a calculated expectation.</li>
+                  <li>Safety vigilance: verify capacitor discharge and electrolytic polarities.</li>
+                  <li>Evidence-based engineering: explain root causes of discrepancies rather than guessing.</li>
+                  <li>Team collaboration and accurate data logging.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4: Mathematical Engineering Toolbox — Master Formulas (Dedicated Page) -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <span class="slide-tag">Formula Sheet • Reference Card</span>
+            <h2 class="slide-title">Master Formula Sheet: Power Supply &amp; Regulator Calculations</h2>
+            <p class="slide-subtitle">Structured Mathematical Equations for AC Rectification, Smoothing &amp; Zener
+              Attenuation</p>
+          </div>
+          <div class="slide-body">
+            <div class="formula-card-grid">
+              <div class="formula-card">
+                <h4>⚡ 1. Peak &amp; DC Voltages</h4>
+                <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+                  • AC Input Peak: $$V_{s(peak)} = \sqrt{2} \cdot V_{rms}$$
+                  • Bridge Peak Output: $$V_m = V_{s(peak)} - 2V_D = \sqrt{2}V_{rms} - 1.4\text{ V}$$
+                  • Average Input DC: $$V_{dc(in)} = V_m - \frac{V_{r(in), p-p}}{2}$$
+                  • Ripple Minimum Trough: $$V_{in(min)} = V_m - V_{r(in), p-p}$$
+                </div>
+              </div>
+
+              <div class="formula-card">
+                <h4>🧮 2. Resistor &amp; Capacitor Sizing</h4>
+                <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+                  • Load Current: $$I_L = \frac{V_Z}{R_L}$$
+                  • Max Series Resistor: $$R_{S(max)} = \frac{V_{in(min)} - V_Z}{I_{L(max)} + I_{Z(min)}}$$
+                  • Filter Capacitor: $$C \ge \frac{I_{in}}{2 f \cdot V_{r(in), p-p}} \quad \left(I_{in} =
+                  \frac{V_{dc(in)} - V_Z}{R_S}\right)$$
+                </div>
+              </div>
+
+              <div class="formula-card">
+                <h4>📉 3. Output Ripple Attenuation</h4>
+                <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+                  • Output Ripple: $$V_{r(out), p-p} \approx V_{r(in), p-p} \cdot \left( \frac{r_z}{R_S + r_z} \right)$$
+                  • Regulation Boundary Check: $$V_{in(min)} > V_Z + I_{in(min)} R_S$$
+                  • Ensure $I_Z \ge I_{ZK}$ ($1\text{ mA}$) at the lowest trough.
+                </div>
+              </div>
+
+              <div class="formula-card">
+                <h4>🔥 4. Power Dissipation Checks</h4>
+                <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+                  • Resistor Power: $$P_{RS} = \frac{(V_m - V_Z)^2}{R_S} \quad (\text{Select } 0.25\text{W or }
+                  0.5\text{W})$$
+                  • Max Zener Power (at $I_{L(min)}$): $$P_Z = V_Z \cdot (I_{in} - I_{L(min)}) \quad (\le 1.0\text{ W
+                  for 1N47xx})$$
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5: Engineering Glossary — Formula & Variable Definitions (Dedicated Page) -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <span class="slide-tag">Engineering Glossary • Definitions of Terms</span>
+            <h2 class="slide-title">Glossary of Mathematical Terms &amp; Circuit Variables</h2>
+            <p class="slide-subtitle">Clear Step-by-Step Definitions of Quantities and Symbols Used in Power
+              Calculations</p>
+          </div>
+          <div class="slide-body">
+            <div class="glossary-grid">
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$V_{rms}$ (RMS Voltage)</span>
+                  <span class="glossary-unit">Volts [V]</span>
+                </div>
+                <div class="glossary-def">Root-Mean-Square value of alternating voltage. The equivalent DC voltage
+                  producing identical resistive heating ($9.0\text{ V RMS}$).</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$V_{s(peak)}$ / $V_m$ (Peak Voltage)</span>
+                  <span class="glossary-unit">Volts [V]</span>
+                </div>
+                <div class="glossary-def">Maximum instantaneous crest voltage. $V_{s(peak)} = \sqrt{2} \cdot V_{rms}
+                  \approx 12.73\text{ V}$. Bridge peak $V_m = V_{s(peak)} - 2V_D \approx 11.33\text{ V}$.</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$V_{r(in), p-p}$ (Input Filter Ripple)</span>
+                  <span class="glossary-unit">Volts peak-to-peak [$V_{pp}$]</span>
+                </div>
+                <div class="glossary-def">The peak-to-peak ripple across filter capacitor $C$ before the series resistor
+                  ($V_{r(in), p-p} \le 1.7\text{ V}$).</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$V_{dc(in)}$ &amp; $V_{in(min)}$</span>
+                  <span class="glossary-unit">Volts [V]</span>
+                </div>
+                <div class="glossary-def"><strong>$V_{dc(in)}$:</strong> Average DC voltage on capacitor ($V_m -
+                  \frac{V_r}{2} = 10.48\text{ V}$).<br><strong>$V_{in(min)}$:</strong> Lowest ripple trough voltage
+                  ($V_m - V_r = 9.63\text{ V}$).</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$V_Z$ &amp; $I_{ZK}$ (Zener Voltage &amp; Knee Current)</span>
+                  <span class="glossary-unit">V &amp; mA</span>
+                </div>
+                <div class="glossary-def"><strong>$V_Z$:</strong> Regulated breakdown voltage ($5.1\text{ V}$
+                  1N4733A).<br><strong>$I_{ZK}$:</strong> Minimum knee current required to sustain breakdown ($1.0\text{
+                  mA}$).</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$r_z$ / $Z_{ZT}$ (Dynamic Zener Impedance)</span>
+                  <span class="glossary-unit">Ohms [Ω]</span>
+                </div>
+                <div class="glossary-def">Internal AC slope resistance of the Zener in breakdown ($r_z \approx 7\
+                  \Omega$). Forms the AC divider attenuating output ripple.</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$R_S$ &amp; $I_{in}$ (Series Resistor &amp; Current)</span>
+                  <span class="glossary-unit">kΩ &amp; mA</span>
+                </div>
+                <div class="glossary-def"><strong>$R_S$:</strong> Series current-limiting resistor ($1.5\text{
+                  k}\Omega$).<br><strong>$I_{in}$ ($I_S$):</strong> Total current supplied by filter capacitor ($I_S =
+                  I_Z + I_L \approx 3.82\text{ mA}$).</div>
+              </div>
+
+              <div class="glossary-card">
+                <div class="glossary-term">
+                  <span>$V_{r(out), p-p}$ (Regulated Output Ripple)</span>
+                  <span class="glossary-unit">Millivolts [$mV_{pp}$]</span>
+                </div>
+                <div class="glossary-def">Attenuated AC ripple remaining on the regulated DC output across the load
+                  ($V_{r(out), p-p} \approx 4.64\text{ mV}_{p-p}$).</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 6: Activity 0 — Engineering Toolbox (0–10 mins) -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <span class="slide-tag">0–10 mins • Activity 0</span>
+            <h2 class="slide-title">Engineering Toolbox: Cumulative Baseline Retrieval</h2>
+            <p class="slide-subtitle">Retrieving Week 1 Safety, Polarity, Schematic Symbols, &amp; Multimeter
+              Configuration</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">⚡ Back to the Bench (Week 1 Retrieval)</div>
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.98rem; line-height: 1.6;">
+                  <div>
+                    <strong style="color: var(--accent-cyan);">1. Pre-Power Safety Check:</strong><br>
+                    <span style="color: var(--text-secondary);">State one mandatory check before switching on a DC bench
+                      supply.</span>
+                  </div>
+                  <div>
+                    <strong style="color: var(--accent-cyan);">2. Component Guesswork:</strong><br>
+                    <span style="color: var(--text-secondary);">What should you do before randomly pulling and changing
+                      components?</span>
+                  </div>
+                  <div>
+                    <strong style="color: var(--accent-cyan);">3. Multimeter Connection for Voltage:</strong><br>
+                    <span style="color: var(--text-secondary);">How must multimeter test leads be connected to measure
+                      voltage across a component (Series or Parallel)?</span>
+                  </div>
+                  <div>
+                    <strong style="color: var(--accent-cyan);">4. Emergency First Action:</strong><br>
+                    <span style="color: var(--text-secondary);">If a breadboard circuit begins to smoke, what is your
+                      immediate FIRST step?</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">💡 Rapid Retrieval Checkpoint</div>
+                <div class="interactive-card">
+                  <div class="interactive-title">Maths &amp; Electrical Quantity Warmup</div>
+                  <div style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;">
+                    If a DC supply provides $V_s = 6.00\text{ V}$ across a series combination of a resistor $R = 330\
+                    \Omega$ and a forward-biased silicon diode ($V_f = 0.70\text{ V}$):<br>
+                    • <strong>Resistor Voltage:</strong> $$V_R = V_s - V_f = 6.00\text{ V} - 0.70\text{ V} = 5.30\text{
+                    V}$$
+                    • <strong>Circuit Current:</strong> $$I = \frac{V_R}{R} = \frac{5.30\text{ V}}{330\ \Omega} \approx
+                    16.06\text{ mA}$$
+                  </div>
+                </div>
+                <div
+                  style="margin-top: 14px; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--color-success); padding: 12px; border-radius: 8px; font-size: 0.9rem; color: var(--text-primary);">
+                  ✅ <strong>Key takeaway:</strong> A silicon diode does not act like a linear resistor; it introduces a
+                  near-constant forward voltage drop ($V_f \approx 0.70\text{ V}$) once conduction threshold is reached.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 7: Activity 1 — Workplace Engineering Challenge (10–20 mins) -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <span class="slide-tag">10–20 mins • Activity 1</span>
+            <h2 class="slide-title">WEEK 2 – WORKPLACE ENGINEERING CHALLENGE</h2>
+            <p class="slide-subtitle">Role: Junior Power Electronics Engineer — Regulated Power Conversion</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card" style="border-left: 5px solid var(--accent-cyan);">
+                <div class="card-title">🏢 Workplace Engineering Scenario</div>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: #ffffff; margin-bottom: 12px;">
+                  A prototype subsystem requires a <strong>controlled low-voltage DC supply</strong>, but the available
+                  source is <strong>AC</strong>.
+                </p>
+                <div
+                  style="background: rgba(6, 182, 212, 0.12); border: 1px solid var(--accent-arduino); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                  <strong style="color: var(--accent-cyan); font-size: 1.02rem;">Your Allocated Output
+                    Specification:</strong>
+                  <div style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin-top: 4px;">
+                    5.1 V Class Demonstration
+                  </div>
+                  <div style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 2px;">
+                    (Possible production specifications include 5.1 V or 8.2 V)
+                  </div>
+                </div>
+                <div
+                  style="background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+                  <strong style="color: #38bdf8; font-size: 0.95rem;">Group Differentiated Specifications (Check
+                    Teams):</strong>
+                  <div style="font-size: 0.92rem; color: #cbd5e1; margin-top: 6px; line-height: 1.6;">
+                    • <strong>Group A:</strong> 3.6 V (1N4729A, Ripple $\le 2.0\text{ V}_{pp}$)<br>
+                    • <strong>Group B:</strong> 4.7 V (1N4732A, Ripple $\le 1.5\text{ V}_{pp}$)<br>
+                    • <strong>Group C:</strong> 6.8 V (1N4736A, Ripple $\le 0.5\text{ V}_{pp}$)
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="border-left: 5px solid var(--color-success);">
+                <div class="card-title">🛠️ Engineering Circuit Progression &amp; Your Job</div>
+                <div
+                  style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--accent-cyan); background: #070c18; padding: 8px 12px; border-radius: 6px; border: 1px solid #334155; margin-bottom: 10px;">
+                  AC → Half-Wave → Full-Wave Bridge → Capacitor Smoothing → Zener Regulation
+                </div>
+                <strong style="color: #ffffff; font-size: 0.95rem;">Your Job as a Junior Power Engineer:</strong>
+                <ol class="clean-list" style="font-size: 0.88rem; line-height: 1.55; margin-top: 6px;">
+                  <li>Identify diode types and uses.</li>
+                  <li>Simulate a half-wave rectifier.</li>
+                  <li>Develop a full-wave rectifier with smoothing and regulation.</li>
+                  <li>Build and test the prototype.</li>
+                  <li>Record output voltage and ripple for different loads.</li>
+                  <li>Compare theory, simulation and physical measurement.</li>
+                  <li>Submit your evidence through the Week 2 Microsoft Forms PoE route.</li>
+                </ol>
+                <div
+                  style="margin-top: 10px; background: rgba(16, 185, 129, 0.12); border: 1px solid var(--color-success); border-radius: 6px; padding: 10px; font-size: 0.88rem; color: #ffffff; font-weight: 600;">
+                  🎯 <strong>Success Criteria:</strong> You can explain <u>WHY</u> the circuit behaves as it does, not
+                  just show that it works.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 8: Activity 2 — Diode Types & Applications (20–35 mins) -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <span class="slide-tag">20–35 mins • Activity 2</span>
+            <h2 class="slide-title">Diode Discovery: Device Types &amp; Engineering Applications</h2>
+            <p class="slide-subtitle">Comparing Semiconductor Diode Characteristics, Ratings &amp; Datasheet Selection
+            </p>
+          </div>
+          <div class="slide-body">
+            <div class="diode-grid">
+              <div class="diode-card">
+                <div class="diode-type-title">
+                  <span>Rectifier Diode</span>
+                  <span class="diode-tag">1N4001</span>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Engineering Use:</strong> AC to DC power conversion, polarity protection.<br>
+                  <strong>Key Specs:</strong> $V_{f} \approx 0.70\text{ V} - 1.10\text{ V}$, $I_F = 1.0\text{ A}$,
+                  $V_{RRM} = 50\text{ V}$.
+                </p>
+              </div>
+
+              <div class="diode-card">
+                <div class="diode-type-title">
+                  <span>Small-Signal Diode</span>
+                  <span class="diode-tag">1N4148</span>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Engineering Use:</strong> High-speed signal clipping, digital logic clamping.<br>
+                  <strong>Key Specs:</strong> Ultrafast switching ($t_{rr} \le 4\text{ ns}$), $I_F = 200\text{ mA}$.
+                </p>
+              </div>
+
+              <div class="diode-card">
+                <div class="diode-type-title">
+                  <span>Zener Diode</span>
+                  <span class="diode-tag">1N4728A–1N4764A</span>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Engineering Use:</strong> Stable DC voltage regulation &amp; reference sources.<br>
+                  <strong>Key Specs:</strong> Sharp reverse breakdown ($V_Z = 3.6\text{V}, 4.7\text{V}, 5.1\text{V},
+                  6.8\text{V}$), $P_D = 1.0\text{ W}$.
+                </p>
+              </div>
+
+              <div class="diode-card">
+                <div class="diode-type-title">
+                  <span>Light Emitting Diode</span>
+                  <span class="diode-tag">LED</span>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Engineering Use:</strong> Visual status indicators, displays, optocouplers.<br>
+                  <strong>Key Specs:</strong> $V_f \approx 1.80\text{ V} - 3.20\text{ V}$, $I_F = 10 - 20\text{ mA}$.
+                </p>
+              </div>
+
+              <div class="diode-card">
+                <div class="diode-type-title">
+                  <span>Photodiode</span>
+                  <span class="diode-tag">Sensor</span>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Engineering Use:</strong> Light detection, optical communication, tachometers.<br>
+                  <strong>Key Specs:</strong> Operated in reverse bias; dark current vs photocurrent.
+                </p>
+              </div>
+
+              <div class="diode-card">
+                <div class="diode-type-title">
+                  <span>Schottky Diode</span>
+                  <span class="diode-tag">1N5819</span>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Engineering Use:</strong> High-efficiency switch-mode power supplies (SMPS).<br>
+                  <strong>Key Specs:</strong> Metal-semiconductor junction, low $V_f \approx 0.30\text{ V}$, fast
+                  recovery.
+                </p>
+              </div>
+            </div>
+
+            <div
+              style="margin-top: 14px; background: rgba(0, 151, 157, 0.1); border: 1px solid var(--accent-arduino); border-radius: 8px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.95rem; color: var(--text-primary);">
+                💡 <strong>Engineering Question:</strong> Why is a standard rectifier diode NOT suitable for voltage
+                regulation?
+              </span>
+              <button class="btn btn-primary open-forms-trigger" data-form-section="Section 1"
+                style="padding: 6px 14px; font-size: 0.85rem;">
+                Answer in PoE Form →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 9: Technical Theory — Waveform Parameters -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <span class="slide-tag">AC Fundamentals • Measurement Science</span>
+            <h2 class="slide-title">AC Waveform Parameters: Amplitude, Peak, Peak-to-Peak &amp; RMS</h2>
+            <p class="slide-subtitle">Understanding Essential Voltage Definitions on the Oscilloscope and DMM</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="dual-image-frame">
+                <img src="images/ac-waveform-parameters.jpg"
+                  alt="AC Waveform Parameters Diagram showing Peak, Peak-Peak, and RMS">
+                <div class="schematic-caption" style="margin-top: 8px;">
+                  Sine Wave Parameters: $V_{pk}$ (Peak), $V_{pp}$ (Peak-to-Peak), and $V_{rms}$ (Root-Mean-Square).
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📐 Key Waveform Mathematical Definitions</div>
+                <div class="calc-box" style="font-size: 0.88rem;">
+                  <div class="calc-formula">1. Peak Voltage ($V_{pk}$ or $V_{max}$):</div>
+                  Maximum potential measured from the zero-volt baseline to the crest:
+                  $$V_{pk} = V_{rms} \times \sqrt{2} \approx 1.414 \times V_{rms}$$
+
+                  <div class="calc-formula" style="margin-top: 8px;">2. Peak-to-Peak Voltage ($V_{pk-pk}$ or $V_{pp}$):
+                  </div>
+                  Total vertical excursion from negative trough to positive crest:
+                  $$V_{pp} = 2 \times V_{pk}$$
+
+                  <div class="calc-formula" style="margin-top: 8px;">3. RMS Voltage ($V_{rms}$ — Root Mean Square):
+                  </div>
+                  The equivalent DC voltage that produces identical heating power in a resistive load:
+                  $$V_{rms} = \frac{V_{pk}}{\sqrt{2}} \approx 0.707 \times V_{pk}$$
+
+                  <div class="calc-formula" style="margin-top: 8px;">4. Amplitude:</div>
+                  The magnitude of change from the center equilibrium baseline to peak ($= V_{pk}$ for un-offset AC).
+                </div>
+                <div style="margin-top: 10px; font-size: 0.86rem; color: var(--accent-cyan);">
+                  ⚡ <strong>Lab Tip:</strong> Multimeters on AC range measure <strong>RMS</strong> ($9.00\text{ V
+                  RMS}$),
+                  while Oscilloscopes display <strong>Peak-to-Peak</strong> ($25.4\text{ V}_{pp}$).
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 10: Systems Architecture — Regulated DC Power Supply Block Diagram -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <span class="slide-tag">System Architecture • Power Electronics</span>
+            <h2 class="slide-title">System Block Diagram: Regulated DC Power Supply</h2>
+            <p class="slide-subtitle">Stage-by-Stage Energy Transformation from High-Voltage AC to Clamped DC</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col" style="align-items: center;">
+              <!-- Left Column: Image Frame -->
+              <div class="dual-image-frame" style="height: 100%; min-height: 380px; justify-content: center;">
+                <img src="images/power-supply-block-diagram.jpg" alt="Regulated DC Power Supply Block Diagram"
+                  style="max-height: 340px; width: auto; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption" style="margin-top: 10px;">
+                  Complete 5-Stage Power Conversion Chain
+                </div>
+              </div>
+
+              <!-- Right Column: Explanatory Blocks -->
+              <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
+                <div class="stage-card" style="text-align: left; padding: 10px 14px;">
+                  <div class="stage-num" style="font-size: 0.85rem; margin-bottom: 2px;">1. Step-Down Transformer</div>
+                  <div class="stage-desc" style="font-size: 0.86rem; color: #cbd5e1; margin-top: 2px;">
+                    Steps lethal mains ($230\text{ V RMS}$) down to safe low-voltage AC ($9.0\text{ V RMS}, 50\text{
+                    Hz}$) and provides galvanic isolation.
+                  </div>
+                </div>
+
+                <div class="stage-card" style="text-align: left; padding: 10px 14px;">
+                  <div class="stage-num" style="font-size: 0.85rem; margin-bottom: 2px;">2. Full-Wave Bridge Rectifier
+                  </div>
+                  <div class="stage-desc" style="font-size: 0.86rem; color: #cbd5e1; margin-top: 2px;">
+                    4 diodes ($D_1\text{--}D_4$) invert negative AC half-cycles into unidirectional pulsating DC ($f_r =
+                    100\text{ Hz}, V_m \approx 11.33\text{ V}$).
+                  </div>
+                </div>
+
+                <div class="stage-card" style="text-align: left; padding: 10px 14px;">
+                  <div class="stage-num" style="font-size: 0.85rem; margin-bottom: 2px;">3. Reservoir Smoothing Filter
+                  </div>
+                  <div class="stage-desc" style="font-size: 0.86rem; color: #cbd5e1; margin-top: 2px;">
+                    Electrolytic capacitor ($C_1 = 47\ \mu\text{F} / 100\ \mu\text{F}$) charges on peaks and discharges
+                    into the load, reducing ripple ($V_{r(in)} \le 1.7\text{ V}$).
+                  </div>
+                </div>
+
+                <div class="stage-card"
+                  style="text-align: left; padding: 10px 14px; border-left: 3px solid var(--accent-cyan);">
+                  <div class="stage-num" style="font-size: 0.85rem; margin-bottom: 2px; color: var(--accent-cyan);">4.
+                    Zener Voltage Regulator ($R_S + ZD_1$)</div>
+                  <div class="stage-desc" style="font-size: 0.86rem; color: #ffffff; margin-top: 2px;">
+                    Series resistor $R_S$ ($1.5\text{ k}\Omega$) absorbs excess DC, while Zener diode clamps output to
+                    stable $5.1\text{ V}$ DC ($V_{r(out)} \approx 4.6\text{ mV}$).
+                  </div>
+                </div>
+
+                <div class="stage-card" style="text-align: left; padding: 10px 14px;">
+                  <div class="stage-num" style="font-size: 0.85rem; margin-bottom: 2px;">5. Output Load ($R_L$)</div>
+                  <div class="stage-desc" style="font-size: 0.86rem; color: #cbd5e1; margin-top: 2px;">
+                    Subsystem draws clean, constant DC current ($I_L = 0.23\text{ mA to } 1.09\text{ mA}$) without
+                    ripple degradation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 11: Activity 3 — Stage 1: Half-Wave Rectifier Simulation (45–65 mins) -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <span class="slide-tag">45–65 mins • Activity 3</span>
+            <h2 class="slide-title">Stage 1: Half-Wave Rectifier — Predict &amp; Simulate</h2>
+            <p class="slide-subtitle">Multisim / Tinkercad Virtual Simulation &amp; Peak Output Waveform Analysis</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <div class="schematic-tabs">
+                  <button class="schematic-tab-btn active" onclick="switchWeek2HWSchematic('unsmoothed')">Half-Wave
+                    (D1)</button>
+                  <button class="schematic-tab-btn" onclick="switchWeek2HWSchematic('smoothed')">+ Capacitor
+                    (C1)</button>
+                </div>
+                <div
+                  style="width: 100%; display: flex; justify-content: center; align-items: center; min-height: 220px; background: #070c18; border-radius: 8px; padding: 10px;">
+                  <img src="images/circuit-half-wave.png" alt="Half-Wave Rectifier Circuit"
+                    style="max-width: 95%; max-height: 220px; border-radius: 6px;" id="hw-img">
+                </div>
+                <div class="schematic-caption" id="hw-caption">
+                  Half-Wave: AC Source ($12.6\text{V}_{pk}, 50\text{Hz}$) → D1 (1N4001G) → $R_L$ ($10\text{ k}\Omega$) →
+                  Ground
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📐 Prediction &amp; Calculation Guide</div>
+                <div class="calc-box">
+                  <div class="calc-formula">AC Peak Voltage Formula:</div>
+                  $$V_{s(peak)} = V_{rms} \times \sqrt{2} = 9.00\text{ V} \times 1.414 \approx 12.73\text{ V}$$
+                  <div class="calc-formula" style="margin-top: 10px;">Peak Rectified Output:</div>
+                  $$V_{pk(out)} = V_{s(peak)} - V_D = 12.73\text{ V} - 0.70\text{ V} \approx 12.03\text{ V}$$
+                  <div style="color: var(--text-muted); font-size: 0.82rem; margin-top: 6px;">
+                    • Output contains pulsating DC only during positive half-cycle.<br>
+                    • Diode blocks negative half-cycle ($V_{out} = 0\text{ V}$, diode reverse-biased).<br>
+                    • Ripple frequency: $f_r = 50\text{ Hz}$ (equal to source frequency).
+                  </div>
+                </div>
+
+                <div style="margin-top: 12px; display: flex; gap: 10px;">
+                  <button class="btn btn-secondary open-forms-trigger" data-form-section="Section 2"
+                    style="flex: 1; padding: 8px 12px; font-size: 0.88rem;">
+                    📝 Log Simulated $V_{pk}$ in Form
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 12: Activity 4 — Stages 2 & 3: Full-Wave Bridge & Smoothing (65–75 mins) -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <span class="slide-tag">65–75 mins • Activity 4</span>
+            <h2 class="slide-title">Stage 2 &amp; 3: Full-Wave Bridge Rectifier &amp; Smoothing</h2>
+            <p class="slide-subtitle">Four-Diode Conduction Loop, Full-Wave Inversion &amp; Capacitor Ripple Reduction
+            </p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <div class="schematic-tabs">
+                  <button class="schematic-tab-btn active" onclick="switchWeek2Schematic('bridge')">Full-Wave
+                    Bridge</button>
+                  <button class="schematic-tab-btn" onclick="switchWeek2Schematic('smoothed')">Smoothed (+C1)</button>
+                  <button class="schematic-tab-btn" onclick="switchWeek2Schematic('regulated')">Regulated
+                    (+Zener)</button>
+                </div>
+                <div id="w2-schematic-display"
+                  style="width: 100%; display: flex; justify-content: center; align-items: center; min-height: 220px; background: #070c18; border-radius: 8px; padding: 10px;">
+                  <img src="images/circuit-bridge.png" alt="Bridge Rectifier Circuit"
+                    style="max-width: 95%; max-height: 220px; border-radius: 6px;" id="w2-schematic-img">
+                </div>
+                <div class="schematic-caption" id="w2-schematic-cap">
+                  Bridge Rectifier: 4 Diodes ($D_1\text{--}D_4$, 1N4001G) with $R_1 = 10\text{ k}\Omega$. $V_m =
+                  V_{s(peak)} - 2(V_D) \approx 12.6\text{ V} - 1.4\text{ V} = 11.2\text{ V}$.
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🔍 Engineering Comparison: Half vs Full-Wave</div>
+                <ul class="clean-list" style="font-size: 0.94rem; line-height: 1.6;">
+                  <li>✅ <strong>Efficiency:</strong> Both positive and negative half-cycles supply current to load.</li>
+                  <li>✅ <strong>Ripple Frequency:</strong> Doubles to $f_r = 2 \times f_{in} = 100\text{ Hz}$, making
+                    filtering much easier!</li>
+                  <li>⚠️ <strong>Diode Drop Loss:</strong> Two series diodes conduct simultaneously:
+                    $$V_m = \sqrt{2}V_{rms} - 2V_D = 12.73\text{ V} - 1.40\text{ V} \approx 11.33\text{ V}$$
+                  </li>
+                  <li>⚡ <strong>Capacitor Discharge Equation:</strong>
+                    $$V_{r(in), p-p} \approx \frac{I_{in}}{2 f C}$$
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 13: Activity 5 — Stage 4: Zener Voltage Regulation Physics (95–115 mins) -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <span class="slide-tag">95–115 mins • Activity 5</span>
+            <h2 class="slide-title">Stage 4: What is Zener Voltage Regulation? — Physics &amp; Mechanics</h2>
+            <p class="slide-subtitle">Operating in Reverse Breakdown, Constant Potential Clamping &amp; Resistor $R_s$
+              Sizing</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="dual-image-frame" style="max-height: 380px;">
+                <img src="images/zener-regulation-mechanism.jpg"
+                  alt="Zener Diode Voltage Regulation Principles and Pressure Relief Analogy"
+                  style="max-height: 250px; object-fit: contain;">
+                <div class="schematic-caption" style="margin-top: 6px; font-size: 0.85rem;">
+                  Dual-Coding Analogy: Zener Diode operates like a hydraulic pressure relief valve clamping output
+                  potential.
+                </div>
+              </div>
+
+              <div class="card" style="padding: 16px;">
+                <div class="card-title">⚡ How Zener Regulation Works</div>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                  Unlike standard diodes which block reverse current until destructive breakdown, a <strong>Zener
+                    Diode</strong>
+                  is heavily doped to exploit controlled <em>Avalanche / Zener Breakdown</em>.
+                </p>
+                <div class="calc-box" style="font-size: 0.86rem; padding: 10px;">
+                  <div class="calc-formula" style="font-size: 0.95rem;">Key Regulation Mechanics:</div>
+                  • Connected in <strong>REVERSE BIAS</strong> (Cathode to positive rail).<br>
+                  • When $V_{in} > V_Z$, current enters the sharp breakdown knee.<br>
+                  • Across wide current shifts, voltage remains clamped at nominal $V_Z$.<br>
+                  • <strong>Series Resistor ($R_s$):</strong> Absorbs excess voltage ($V_{Rs} = V_{dc(in)} - V_Z$) and
+                  limits current:
+                  $$I_{in} = I_S = \frac{V_{dc(in)} - V_Z}{R_S} = I_Z + I_L$$
+                </div>
+                <div style="margin-top: 8px; font-size: 0.82rem; color: var(--color-warning);">
+                  ⚠️ <strong>Dropout Condition:</strong> If load current $I_L \ge I_S$, then $I_Z \to 0$, causing the
+                  Zener to exit breakdown and drop out of regulation!
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 14: Step-by-Step Design Procedure: 5.1V Class Demonstration -->
+        <section class="slide" id="slide-14">
+          <div class="slide-header">
+            <span class="slide-tag">Class Demonstration • 5.1V Prototype</span>
+            <h2 class="slide-title">Step-by-Step Design Procedure: 5.1 V Regulated Supply</h2>
+            <p class="slide-subtitle">Structured Component Calculation: $V_{rms} = 9\text{V}$, $V_Z = 5.1\text{V}$
+              (1N4733A), Max Ripple $\le 1.7\text{V}$</p>
+          </div>
+          <div class="slide-body">
+            <div class="formula-card-grid">
+              <div class="formula-card">
+                <h4>1️⃣ Load Currents ($I_L$)</h4>
+                <div style="font-size: 0.86rem; line-height: 1.6; color: var(--text-secondary);">
+                  • For $R_{L1} = 4.7\text{ k}\Omega$: $$I_{L1} = \frac{5.1\text{ V}}{4700\ \Omega} \approx 1.085\text{
+                  mA} \quad (I_{L(max)})$$
+                  • For $R_{L2} = 10\text{ k}\Omega$: $$I_{L2} = \frac{5.1\text{ V}}{10000\ \Omega} = 0.510\text{ mA}$$
+                  • For $R_{L3} = 22\text{ k}\Omega$: $$I_{L3} = \frac{5.1\text{ V}}{22000\ \Omega} \approx 0.232\text{
+                  mA} \quad (I_{L(min)})$$
+                </div>
+              </div>
+
+              <div class="formula-card">
+                <h4>2️⃣ Peak &amp; Minimum DC Input</h4>
+                <div style="font-size: 0.86rem; line-height: 1.6; color: var(--text-secondary);">
+                  • Peak: $$V_m = \sqrt{2}(9\text{V}) - 1.4\text{V} \approx 12.73\text{V} - 1.4\text{V} = 11.33\text{
+                  V}$$
+                  • Average Input: $$V_{dc(in)} = V_m - \frac{V_{r(in), p-p}}{2} = 11.33\text{V} - 0.85\text{V} =
+                  10.48\text{ V}$$
+                  • Minimum Trough: $$V_{in(min)} = V_m - V_{r(in), p-p} = 11.33\text{V} - 1.7\text{V} = 9.63\text{
+                  V}$$
+                </div>
+              </div>
+
+              <div class="formula-card">
+                <h4>3️⃣ Sizing Series Resistor ($R_S$)</h4>
+                <div style="font-size: 0.86rem; line-height: 1.6; color: var(--text-secondary);">
+                  • Choose safety margin: $I_{Z(min)} \ge 2 \cdot I_{ZK} \approx 2.0\text{ mA}$<br>
+                  • Max Resistance: $$R_{S(max)} = \frac{9.63\text{V} - 5.1\text{V}}{1.085\text{mA} + 2.0\text{mA}} =
+                  \frac{4.53\text{V}}{3.085\text{mA}} \approx 1468\ \Omega$$
+                  • <strong>Standard Selection:</strong> $$\mathbf{R_S = 1.2\text{ k}\Omega \text{ or } 1.5\text{
+                  k}\Omega \quad (1200\ \Omega \text{ optimal})}$$
+                </div>
+              </div>
+
+              <div class="formula-card">
+                <h4>4️⃣ Sizing Filter Capacitor ($C$)</h4>
+                <div style="font-size: 0.86rem; line-height: 1.6; color: var(--text-secondary);">
+                  • Total Current (with $R_S = 1.2\text{ k}\Omega$): $$I_{in} = \frac{10.48\text{V} - 5.1\text{V}}{1200\
+                  \Omega} =
+                  \frac{5.38\text{V}}{1200\ \Omega} \approx 4.48\text{ mA}$$
+                  • Minimum Capacitance: $$C \ge \frac{4.48 \times 10^{-3}\text{A}}{2 \cdot (50\text{Hz}) \cdot
+                  (1.7\text{V})} = \frac{4.48\text{ mA}}{170} \approx 26.4\ \mu\text{F}$$
+                  • <strong>Standard Selection:</strong> $$\mathbf{C = 47\ \mu\text{F} \text{ or } 100\ \mu\text{F}
+                  \quad (\ge 25\text{V})}$$
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 15: Ripple Calculation & Datasheet Extraction -->
+        <section class="slide" id="slide-15">
+          <div class="slide-header">
+            <span class="slide-tag">Datasheet Analysis • Attenuation Steps</span>
+            <h2 class="slide-title">Datasheet Parameter Extraction &amp; Output Ripple Attenuation</h2>
+            <p class="slide-subtitle">Official 1N47xx Electrical Specifications &amp; Step-by-Step Output Ripple
+              Calculation</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="dual-image-frame" style="max-height: 380px;">
+                <img src="images/zener-datasheet-table.jpg" alt="Zener Diode Clean Datasheet Parameter Table">
+                <div class="schematic-caption" style="margin-top: 6px; font-size: 0.85rem;">
+                  Official Specifications: 1N4733A (5.1V Demo, $r_z = 7\Omega$), 1N4729A ($10\Omega$), 1N4732A
+                  ($8\Omega$), 1N4736A ($3.5\Omega$).
+                </div>
+              </div>
+
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">📋 Output Ripple Attenuation ($V_{r(out), p-p}$)</div>
+                <div class="calc-box" style="font-size: 0.85rem; padding: 10px; line-height: 1.6;">
+                  <strong style="color: var(--accent-cyan);">AC Voltage Divider Principle:</strong>
+                  $$V_{r(out), p-p} \approx V_{r(in), p-p} \cdot \left( \frac{r_z}{R_S + r_z} \right)$$
+
+                  <strong style="color: var(--accent-cyan); display: inline-block; margin-top: 6px;">For the 5.1 V Class
+                    Demonstration:</strong><br>
+                  Using $V_{r(in), p-p} = 1.7\text{ V}$, $R_S = 1200\ \Omega$, and $r_z \approx 7\ \Omega$:
+                  $$V_{r(out), p-p} \approx 1.7\text{ V} \cdot \left( \frac{7\ \Omega}{1200\ \Omega + 7\ \Omega} \right)
+                  \approx 9.86\text{ mV}_{p-p} \quad (\ll 100\text{ mV})$$
+
+                  <strong style="color: var(--accent-cyan); display: inline-block; margin-top: 6px;">Power Ratings
+                    Verification:</strong><br>
+                  • Resistor Power: $$P_{RS} = \frac{(11.33\text{V} - 5.1\text{V})^2}{1200\ \Omega} \approx 0.032\text{
+                  W} \quad (\text{Safe for } 0.25\text{W})$$
+                  • Zener Dissipation: $$P_Z = 5.1\text{V} \cdot (4.48\text{mA} - 0.23\text{mA}) \approx 21.7\text{ mW}
+                  \quad (\ll 1.0\text{ W})$$
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 16: Independent Study & Group Engineering Challenge -->
+        <section class="slide" id="slide-16">
+          <div class="slide-header">
+            <span class="slide-tag">Independent Study Time • Differentiated Engineering Challenge</span>
+            <h2 class="slide-title">Independent Lesson Time: Your Group Engineering Challenge</h2>
+            <p class="slide-subtitle">Retrieve Your Group Allocation in Teams, Calculate Parameters &amp; Complete
+              Prototype Design</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card" style="border-left: 4px solid var(--accent-cyan);">
+                <div class="card-title">📁 Group Allocation &amp; Specification</div>
+                <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">
+                  Please check the <strong>Microsoft Teams class folder</strong> for your individual group allocation.
+                  Use this dedicated independent lesson time to design, calculate, and document your assigned power
+                  supply stage:
+                </p>
+
+                <div class="group-spec-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 10px;">
+                  <div class="group-spec-card ga" style="padding: 10px;">
+                    <div style="font-weight: 700; color: #38bdf8; font-size: 0.9rem;">Group A</div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #ffffff; margin: 4px 0;">3.6 V</div>
+                    <div style="font-size: 0.8rem; color: #cbd5e1;">Max Ripple: $\le 2.0\text{V}_{p-p}$</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Zener: 1N4729A
+                      ($r_z=10\Omega$)</div>
+                  </div>
+
+                  <div class="group-spec-card gb" style="padding: 10px;">
+                    <div style="font-weight: 700; color: #10b981; font-size: 0.9rem;">Group B</div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #ffffff; margin: 4px 0;">4.7 V</div>
+                    <div style="font-size: 0.8rem; color: #cbd5e1;">Max Ripple: $\le 1.5\text{V}_{p-p}$</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Zener: 1N4732A
+                      ($r_z=8\Omega$)</div>
+                  </div>
+
+                  <div class="group-spec-card gc" style="padding: 10px;">
+                    <div style="font-weight: 700; color: #f59e0b; font-size: 0.9rem;">Group C</div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #ffffff; margin: 4px 0;">6.8 V</div>
+                    <div style="font-size: 0.8rem; color: #cbd5e1;">Max Ripple: $\le 0.5\text{V}_{p-p}$</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Zener: 1N4736A
+                      ($r_z=3.5\Omega$)</div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+                  <a href="https://datasheet.octopart.com/1N4733A-T-Diodes-Inc.-datasheet-8188104.pdf" target="_blank"
+                    class="datasheet-btn">
+                    📄 Open 1N47xx Octopart Datasheet PDF ↗
+                  </a>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🎯 Independent Engineering Tasks</div>
+                <ol class="clean-list" style="font-size: 0.92rem; line-height: 1.6; counter-reset: item;">
+                  <li><strong>Calculate Load Currents:</strong> Compute $I_L = \frac{V_Z}{R_L}$ for $R_L = 4.7\text{
+                    k}\Omega, 10\text{ k}\Omega, 22\text{ k}\Omega$.</li>
+                  <li><strong>Sizing $R_S$:</strong> Determine maximum series resistance $R_{S(max)} =
+                    \frac{V_{in(min)} - V_Z}{I_{L(max)} + I_{Z(min)}}$.</li>
+                  <li><strong>Sizing Smoothing Capacitor:</strong> Determine $C \ge \frac{I_{in}}{2 f V_{r(in)}}$ to
+                    meet your ripple specification.</li>
+                  <li><strong>Calculate Output Ripple Attenuation:</strong> Calculate $V_{r(out), p-p} \approx
+                    V_{r(in), p-p} \cdot \left(\frac{r_z}{R_S + r_z}\right)$ using extracted datasheet $r_z$.</li>
+                  <li><strong>Multisim Verification:</strong> Build your group circuit in simulation, verify voltages
+                    at TP1/TP2, and take clean screenshots.</li>
+                </ol>
+
+                <div
+                  style="margin-top: 12px; background: rgba(56, 189, 248, 0.1); border-left: 3px solid #38bdf8; padding: 10px; border-radius: 6px; font-size: 0.86rem; color: #ffffff;">
+                  💡 <strong>Engineering Note:</strong> Keep your group calculation records ready in your engineering
+                  notebook to build or simulate alongside the class 5.1 V demonstration evidence.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 17: Activity 6 — Build, Pre-Power Check & Test Prototype (115–140 mins) -->
+        <section class="slide" id="slide-17">
+          <div class="slide-header">
+            <span class="slide-tag">115–140 mins • Activity 6</span>
+            <h2 class="slide-title">Hardware Prototype Build &amp; Pre-Power Verification</h2>
+            <p class="slide-subtitle">Breadboard Assembly, Polarity Checkpoint, and Safe Energisation Protocols</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">🛡️ Mandatory Pre-Power Safety Checklist</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 12px;">
+                  Perform these checks before connecting the AC bench source:
+                </p>
+                <ul class="checklist-list">
+                  <li class="checklist-item" onclick="toggleWeek2Check(this, 'w2ppc1')">
+                    <input type="checkbox" id="w2ppc1" onchange="saveWeek2ChecklistState()">
+                    <span>1. Component values verified ($R_s = 1.5\text{ k}\Omega$, $R_L = 4.7\text{ k}\Omega, 10\text{
+                      k}\Omega, 22\text{ k}\Omega$, $C_1 = 47\ \mu\text{F} / 100\ \mu\text{F}$).</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek2Check(this, 'w2ppc2')">
+                    <input type="checkbox" id="w2ppc2" onchange="saveWeek2ChecklistState()">
+                    <span>2. Diode polarities verified in bridge (silver band = cathode).</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek2Check(this, 'w2ppc3')">
+                    <input type="checkbox" id="w2ppc3" onchange="saveWeek2ChecklistState()">
+                    <span>3. Zener orientation checked (Cathode to positive rail for reverse bias).</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek2Check(this, 'w2ppc4')">
+                    <input type="checkbox" id="w2ppc4" onchange="saveWeek2ChecklistState()">
+                    <span>4. Electrolytic capacitor polarity verified (Negative stripe to 0V ground).</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek2Check(this, 'w2ppc5')">
+                    <input type="checkbox" id="w2ppc5" onchange="saveWeek2ChecklistState()">
+                    <span>5. No visible short circuits across output rails; current limit set on bench supply.</span>
+                  </li>
+                </ul>
+
+                <div id="w2-checklist-status"
+                  style="margin-top: 14px; font-weight: 700; font-size: 0.92rem; color: var(--color-warning);">
+                  ⚠️ Complete all 5 checks before requesting tutor inspection.
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🛠️ Build &amp; Test Routine</div>
+                <div
+                  style="background: #0f172a; border-left: 4px solid var(--accent-cyan); padding: 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.9rem; color: #ffffff; margin-bottom: 12px;">
+                  READ → IDENTIFY → PREDICT → CONNECT → CHECK → POWER → MEASURE → RECORD
+                </div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;">
+
+                  Place bridge diodes, smoothing capacitor, series resistor $R_S$, and
+                  Zener regulator on breadboard. Verify schematic connections against layout, hooks up
+                  multimeter/oscilloscope probes at TP1 and TP2, and logs live readings.
+                </p>
+                <div
+                  style="margin-top: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--color-danger); border-radius: 8px; padding: 10px; font-size: 0.88rem; color: #ffffff;">
+                  ⚡ <strong>Capacitor Safety Warning:</strong> Always discharge the smoothing capacitor with a $1\text{
+                  k}\Omega$ bleeder resistor before handling or modifying wiring!
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 18: Activity 7 — Load Current & Ripple Investigation (140–152 mins) -->
+        <section class="slide" id="slide-18">
+          <div class="slide-header">
+            <span class="slide-tag">140–152 mins • Activity 7</span>
+            <h2 class="slide-title">Load Current &amp; Ripple Voltage Investigation</h2>
+            <p class="slide-subtitle">Interactive Measurement Logging Across Development Stages and Variable Loads</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card" style="padding: 14px;">
+                <div class="card-title" style="margin-bottom: 10px;">📊 Circuit Stage Measurements</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                  <thead>
+                    <tr style="background: #1e293b; color: var(--accent-cyan);">
+                      <th style="padding: 6px 8px; text-align: left;">Stage</th>
+                      <th style="padding: 6px 8px;">Theory (V)</th>
+                      <th style="padding: 6px 8px;">Sim (V)</th>
+                      <th style="padding: 6px 8px;">Measured (V)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Half-Wave Peak</td>
+                      <td><input type="text" id="m_hw_th" class="table-input" value="12.03 V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_hw_sim" class="table-input" placeholder="e.g. 11.95V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_hw_meas" class="table-input" placeholder="e.g. 11.88V"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Bridge Peak</td>
+                      <td><input type="text" id="m_fw_th" class="table-input" value="11.33 V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_fw_sim" class="table-input" placeholder="e.g. 11.25V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_fw_meas" class="table-input" placeholder="e.g. 11.18V"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Smoothed DC (C1)</td>
+                      <td><input type="text" id="m_sm_th" class="table-input" value="10.83 V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_sm_sim" class="table-input" placeholder="e.g. 10.75V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_sm_meas" class="table-input" placeholder="e.g. 10.70V"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Regulated (Demo / Group)</td>
+                      <td><input type="text" id="m_reg_th" class="table-input" placeholder="5.1V / 3.6V / 4.7V / 6.8V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_reg_sim" class="table-input" placeholder="e.g. 5.12V"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="m_reg_meas" class="table-input" placeholder="e.g. 5.08V"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card" style="padding: 14px;">
+                <div class="card-title" style="margin-bottom: 10px;">📈 Ripple vs Load Resistance ($V_{r(pp)}$)</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                  <thead>
+                    <tr style="background: #1e293b; color: var(--color-warning);">
+                      <th style="padding: 6px 8px; text-align: left;">Load Resistor ($R_L$)</th>
+                      <th style="padding: 6px 8px;">Est. Vpp</th>
+                      <th style="padding: 6px 8px;">Sim Vpp</th>
+                      <th style="padding: 6px 8px;">Measured Vpp</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Load 1: $4.7\text{ k}\Omega$</td>
+                      <td><input type="text" id="r_l1_est" class="table-input" placeholder="~4.6 mV"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="r_l1_sim" class="table-input" placeholder="e.g. 4.8 mV"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="r_l1_meas" class="table-input" placeholder="e.g. 5.2 mV"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Load 2: $10\text{ k}\Omega$</td>
+                      <td><input type="text" id="r_l2_est" class="table-input" placeholder="~4.6 mV"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="r_l2_sim" class="table-input" placeholder="e.g. 4.7 mV"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="r_l2_meas" class="table-input" placeholder="e.g. 5.0 mV"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 8px; color: #ffffff;">Load 3: $22\text{ k}\Omega$</td>
+                      <td><input type="text" id="r_l3_est" class="table-input" placeholder="~4.6 mV"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="r_l3_sim" class="table-input" placeholder="e.g. 4.6 mV"
+                          oninput="saveWeek2TableData()"></td>
+                      <td><input type="text" id="r_l3_meas" class="table-input" placeholder="e.g. 4.9 mV"
+                          oninput="saveWeek2TableData()"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+                  <button class="btn-copy-poe" onclick="copyWeek2PoESummary()">
+                    📋 Copy Summary for Microsoft Form
+                  </button>
+                  <span id="w2-copy-status"
+                    style="font-size: 0.85rem; color: var(--color-success); font-weight: 600;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 19: Activity 8 — Compare Theory, Simulation & Reality (152–157 mins) -->
+        <section class="slide" id="slide-19">
+          <div class="slide-header">
+            <span class="slide-tag">152–157 mins • Activity 8</span>
+            <h2 class="slide-title">Theory, Simulation &amp; Reality: Engineering Discrepancy Analysis</h2>
+            <p class="slide-subtitle">Quantifying Percentage Difference and Root-Cause Engineering Explanations</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📉 Why Doesn't Reality Match Calculation?</div>
+                <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">
+                  Real components exhibit physical tolerances and non-ideal characteristics:
+                </p>
+                <ul class="clean-list" style="font-size: 0.92rem; line-height: 1.6;">
+                  <li>🔹 <strong>Diode Forward Drop Variation:</strong> Silicon diodes vary between $0.62\text{ V}$ and
+                    $0.85\text{ V}$ depending on instantaneous junction temperature and current density.</li>
+                  <li>🔹 <strong>Electrolytic Capacitor Tolerances:</strong> Standard capacitors have wide manufacturing
+                    tolerances (typically $\pm 20\%$), shifting measured filter ripple.</li>
+                  <li>🔹 <strong>Source Internal Resistance:</strong> Transformer and bench signal generators have
+                    non-zero source impedance ($R_{int}$), causing input voltage sag under load.</li>
+                  <li>🔹 <strong>Zener Dynamic Impedance ($r_z$):</strong> Zener breakdown curves have finite slope ($7\
+                    \Omega$), so $V_Z$ varies slightly with current.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🧮 Percentage Difference Formula</div>
+                <div class="calc-box">
+                  <div class="calc-formula">Percentage Difference:</div>
+                  $$\%\text{ Difference} = \frac{|\text{Measured} - \text{Theoretical}|}{\text{Theoretical}} \times
+                  100\%$$
+                  <div style="font-size: 0.85rem; color: var(--accent-cyan); margin-top: 8px;">
+                    Example: Theory = $5.10\text{ V}$, Measured = $5.04\text{ V}$:<br>
+                    $$\%\text{ Diff} = \frac{|5.04 - 5.10|}{5.10} \times 100\% = 1.18\% \quad (\text{Well within } 5\%
+                    \text{ tolerance})$$
+                  </div>
+                </div>
+
+                <div
+                  style="margin-top: 14px; background: rgba(0, 151, 157, 0.12); border: 1px solid var(--accent-arduino); border-radius: 8px; padding: 12px;">
+                  <strong style="color: #ffffff;">Engineering Reflection Prompt:</strong>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                    Did your circuit maintain regulation across all 3 load resistances? What improvement (e.g. larger
+                    capacitance, active transistor pass regulator) would you investigate next?
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 20: Portfolio of Evidence (PoE A02) Submission Route -->
+        <section class="slide" id="slide-20">
+          <div class="slide-header">
+            <span class="slide-tag">Assessment Progression • Portfolio of Evidence</span>
+            <h2 class="slide-title">PoE A02: Diode Engineering Investigation Submission</h2>
+            <p class="slide-subtitle">Capturing Authentic Practical Evidence to Power Assessment A Progress</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card" style="border-left: 5px solid var(--accent-cyan);">
+                <div class="card-title">📋 Required Deliverables Checklist</div>
+                <ul class="clean-list" style="font-size: 0.94rem; line-height: 1.6;">
+                  <li>✅ <strong>1. Diode Applications:</strong> Summary of 6 diode types and realistic engineering uses.
+                  </li>
+                  <li>✅ <strong>2. Half-Wave &amp; Bridge Schematics:</strong> Multisim simulation screenshots with
+                    marked peak voltages.</li>
+                  <li>✅ <strong>3. Developed Prototype:</strong> Capacitor smoothing and Zener regulation component
+                    reasoning.</li>
+                  <li>✅ <strong>4. Datasheet Extraction:</strong> Recorded $V_Z, I_{ZT}, Z_{ZT}$ and calculated maximum
+                    ripple step.</li>
+                  <li>✅ <strong>5. Breadboard Photograph:</strong> High-resolution image of your working prototype
+                    circuit.</li>
+                  <li>✅ <strong>6. Measurement Table:</strong> Theory vs Simulation vs Measured voltages and ripple for
+                    3 loads.</li>
+                  <li>✅ <strong>7. Technical Justification:</strong> Discrepancy analysis explaining differences between
+                    theory and reality.</li>
+                </ul>
+              </div>
+
+              <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div class="card-title">📤 Microsoft Forms Submission Route</div>
+                  <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                    Submit your PoE evidence via the <strong>Microsoft 365 environment</strong>.
+                  </p>
+                  <div
+                    style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--color-success); border-radius: 8px; padding: 14px; font-size: 0.92rem; color: #ffffff;">
+                    <strong>Self-Check Prior to Submission:</strong><br>
+                    • Evidence is my own authentic work.<br>
+                    • All measured values include units ($\text{V, mA, mV, }\mu\text{F}$).<br>
+                    • Allocated Demo / Group A/B/C output specification is recorded.<br>
+                    • Differences are explained using engineering reasoning.
+                  </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                  <button class="btn btn-primary open-forms-trigger" data-form-section="PoE 02 Form"
+                    style="width: 100%; padding: 12px; font-size: 1rem;">
+                    🚀 Open &amp; Submit Week 2 PoE Microsoft Form →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 21: Activity 9 — Engineer Exit Ticket (157–160 mins) -->
+        <section class="slide" id="slide-21">
+          <div class="slide-header">
+            <span class="slide-tag">157–160 mins • Activity 9</span>
+            <h2 class="slide-title">Engineer Exit Ticket: Cumulative Retrieval</h2>
+            <p class="slide-subtitle">Consolidating Today's Diode Concepts, Week 1 Safety, &amp; Engineering
+              Troubleshooting Reasoning</p>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📝 3-Question Cumulative Exit Ticket</div>
+                <div style="display: flex; flex-direction: column; gap: 14px; font-size: 0.95rem; line-height: 1.6;">
+                  <div
+                    style="background: rgba(6, 182, 212, 0.1); border-left: 3px solid var(--accent-cyan); padding: 10px 14px; border-radius: 6px;">
+                    <strong style="color: #ffffff;">1. TODAY'S LEARNING (Diodes &amp; Rectification):</strong><br>
+                    <span style="color: var(--text-secondary);">Explain one fundamental difference between half-wave and
+                      full-wave rectification in terms of ripple frequency and conduction cycles.</span>
+                  </div>
+
+                  <div
+                    style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--color-warning); padding: 10px 14px; border-radius: 6px;">
+                    <strong style="color: #ffffff;">2. RECENT LEARNING (Week 1 Safety):</strong><br>
+                    <span style="color: var(--text-secondary);">State one safe troubleshooting principle from Week 1
+                      before replacing components.</span>
+                  </div>
+
+                  <div
+                    style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--color-success); padding: 10px 14px; border-radius: 6px;">
+                    <strong style="color: #ffffff;">3. CUMULATIVE REASONING (Engineering Diagnostics):</strong><br>
+                    <span style="color: var(--text-secondary);">A measured output voltage differs from your prediction.
+                      State TWO engineering diagnostic steps to perform before concluding a component is faulty.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div class="card-title">🏁 Session Wrap-Up &amp; Lookahead</div>
+                  <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+                    Excellent engineering investigation today! You have successfully taken alternating voltage,
+                    rectified it through bridge diodes, filtered ripple with capacitors, extracted datasheet parameters,
+                    and clamped it to stable DC with a Zener regulator.
+                  </p>
+                  <div
+                    style="margin-top: 14px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+                    <strong style="color: var(--accent-cyan);">Next Week (Week 3):</strong>
+                    <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 4px;">
+                      <strong>Transistor Investigation — “Control a Real Load”</strong><br>
+                      Bipolar Junction Transistors (BJTs), switching modes (Cutoff vs Saturation), and small-signal
+                      amplification.
+                    </p>
+                  </div>
+                </div>
+
+                <div style="margin-top: 16px;">
+                  <button class="btn btn-primary open-forms-trigger" data-form-section="Section 6"
+                    style="width: 100%; padding: 10px; font-size: 0.95rem;">
+                    Submit Exit Ticket in Form Drawer →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 21</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn btn-secondary open-forms-trigger" data-form-section="PoE 02 Form"
+            style="padding: 6px 12px; font-size: 0.8rem;">
+            📝 Submit PoE A02
+          </button>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Backdrop for Drawer -->
+    <div id="drawer-backdrop"></div>
+
+    <!-- Microsoft Forms Side-Drawer -->
+    <aside id="forms-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>📝</span>
+          <span>Week 2 Group Challenge Form (PoE A02)</span>
+        </div>
+        <div class="drawer-actions">
+          <button class="drawer-popout-btn" id="drawer-popout-btn" title="Open in new tab">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            Pop out
+          </button>
+          <button class="drawer-close-btn" id="drawer-close-btn" title="Close drawer">✕</button>
+        </div>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Lazy-loaded Microsoft Forms Embed Iframe -->
+        <iframe id="forms-iframe" class="drawer-iframe" src="about:blank"
+          data-src="[INSERT COLLEGE MICROSOFT FORMS LINK]" allowfullscreen webkitallowfullscreen mozallowfullscreen
+          msallowfullscreen>
+        </iframe>
+      </div>
+    </aside>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly
+                (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid">
+          <!-- Populated dynamically by PresentationEngine -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility & Neurodiversity Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Accessibility & Neurodiversity Side-Drawer -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary"
+          style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/self-check.js"></script>
+  <script src="../shared/js/timer.js"></script>
+  <script src="../shared/js/form-drawer.js"></script>
+  <script>
+    // Week 2 Specific Interactive Utilities
+    function switchWeek2HWSchematic(type) {
+      const img = document.getElementById('hw-img');
+      const cap = document.getElementById('hw-caption');
+      const btns = document.querySelectorAll('#slide-11 .schematic-tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+
+      if (type === 'unsmoothed') {
+        img.src = 'images/circuit-half-wave.png';
+        cap.textContent = 'Half-Wave: AC Source (12.6V_pk, 50Hz) → D1 (1N4001G) → R1 (10 kΩ) → Ground. Single-diode positive half-cycle conduction.';
+        if (btns[0]) btns[0].classList.add('active');
+      } else {
+        img.src = 'images/circuit-half-wave-smoothed.png';
+        cap.textContent = 'Smoothed Half-Wave: Filter capacitor C1 (20 µF) connected in parallel with load R1 (10 kΩ) to reduce output ripple.';
+        if (btns[1]) btns[1].classList.add('active');
+      }
+    }
+
+    function switchWeek2Schematic(type) {
+      const img = document.getElementById('w2-schematic-img');
+      const cap = document.getElementById('w2-schematic-cap');
+      const btns = document.querySelectorAll('#slide-12 .schematic-tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+
+      if (type === 'bridge') {
+        img.src = 'images/circuit-bridge.png';
+        cap.textContent = 'Bridge Rectifier: 4 Diodes (D1–D4, 1N4001G) with R1 = 10 kΩ. V_m = V_s(peak) - 2(V_D) ≈ 12.6 V - 1.4 V = 11.2 V.';
+        if (btns[0]) btns[0].classList.add('active');
+      } else if (type === 'smoothed') {
+        img.src = 'images/circuit-bridge-smoothed.png';
+        cap.textContent = 'Smoothed Bridge Rectifier: Reservoir capacitor C1 (10 µF) in parallel with R1 (10 kΩ) filtering 100 Hz full-wave ripple.';
+        if (btns[1]) btns[1].classList.add('active');
+      } else if (type === 'regulated') {
+        img.src = 'images/circuit-regulated.png';
+        cap.textContent = 'Complete DC Supply: Full-wave bridge + C1 (22 µF) + Series Resistor R2 (1.5 kΩ) + 5.1V Zener (D5, 1N4733A) + Load R1 (4.7 kΩ).';
+        if (btns[2]) btns[2].classList.add('active');
+      }
+    }
+
+    function toggleWeek2Check(el, id) {
+      const checkbox = document.getElementById(id);
+      if (event.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+      }
+      if (checkbox.checked) {
+        el.classList.add('checked');
+      } else {
+        el.classList.remove('checked');
+      }
+      saveWeek2ChecklistState();
+    }
+
+    function saveWeek2ChecklistState() {
+      const checks = ['w2ppc1', 'w2ppc2', 'w2ppc3', 'w2ppc4', 'w2ppc5'];
+      const states = checks.map(id => document.getElementById(id).checked);
+      localStorage.setItem('u19_w2_ppc', JSON.stringify(states));
+
+      const allDone = states.every(s => s === true);
+      const statusEl = document.getElementById('w2-checklist-status');
+      if (allDone) {
+        statusEl.innerHTML = '✅ All pre-power checks verified! Safe to request tutor inspection & energise AC source.';
+        statusEl.style.color = 'var(--color-success)';
+      } else {
+        statusEl.innerHTML = '⚠️ Complete all 5 checks before requesting tutor inspection.';
+        statusEl.style.color = 'var(--color-warning)';
+      }
+    }
+
+    function loadWeek2ChecklistState() {
+      const saved = localStorage.getItem('u19_w2_ppc');
+      if (saved) {
+        try {
+          const states = JSON.parse(saved);
+          states.forEach((state, i) => {
+            const id = 'w2ppc' + (i + 1);
+            const cb = document.getElementById(id);
+            if (cb) {
+              cb.checked = state;
+              if (state) cb.closest('.checklist-item').classList.add('checked');
+            }
+          });
+          const allDone = states.every(s => s === true);
+          const statusEl = document.getElementById('w2-checklist-status');
+          if (allDone && statusEl) {
+            statusEl.innerHTML = '✅ All pre-power checks verified! Safe to request tutor inspection & energise AC source.';
+            statusEl.style.color = 'var(--color-success)';
+          }
+        } catch (e) { }
+      }
+    }
+
+    function saveWeek2TableData() {
+      const fields = [
+        'm_hw_th', 'm_hw_sim', 'm_hw_meas',
+        'm_fw_th', 'm_fw_sim', 'm_fw_meas',
+        'm_sm_th', 'm_sm_sim', 'm_sm_meas',
+        'm_reg_th', 'm_reg_sim', 'm_reg_meas',
+        'r_l1_est', 'r_l1_sim', 'r_l1_meas',
+        'r_l2_est', 'r_l2_sim', 'r_l2_meas',
+        'r_l3_est', 'r_l3_sim', 'r_l3_meas'
+      ];
+      const data = {};
+      fields.forEach(f => {
+        const el = document.getElementById(f);
+        if (el) data[f] = el.value;
+      });
+      localStorage.setItem('u19_w2_measurements', JSON.stringify(data));
+    }
+
+    function loadWeek2TableData() {
+      const saved = localStorage.getItem('u19_w2_measurements');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          Object.keys(data).forEach(k => {
+            const el = document.getElementById(k);
+            if (el) el.value = data[k];
+          });
+        } catch (e) { }
+      }
+    }
+
+    function copyWeek2PoESummary() {
+      const hwM = document.getElementById('m_hw_meas')?.value || 'N/A';
+      const fwM = document.getElementById('m_fw_meas')?.value || 'N/A';
+      const smM = document.getElementById('m_sm_meas')?.value || 'N/A';
+      const regM = document.getElementById('m_reg_meas')?.value || 'N/A';
+
+      const r1M = document.getElementById('r_l1_meas')?.value || 'N/A';
+      const r2M = document.getElementById('r_l2_meas')?.value || 'N/A';
+      const r3M = document.getElementById('r_l3_meas')?.value || 'N/A';
+
+      const summary = `--- UNIT 19 WEEK 2 PoE A02 MEASUREMENT SUMMARY ---
+[Pre-Power Safety Verification: Completed]
+• Half-Wave Peak V_out: ${hwM} (Theory: ~12.03 V)
+• Full-Wave Bridge Peak V_out: ${fwM} (Theory: ~11.33 V)
+• Smoothed Output (C1): ${smM} (Theory: ~10.83 V)
+• Regulated Output (Allocated Group Zener): ${regM} (Spec: Group A 3.6V / Group B 4.7V / Group C 6.8V)
+-------------------------------------------------
+[Ripple Voltage vs Load Resistance]
+• Load 1 (4.7 kΩ): V_r(pp) = ${r1M}
+• Load 2 (10 kΩ):  V_r(pp) = ${r2M}
+• Load 3 (22 kΩ):  V_r(pp) = ${r3M}
+-------------------------------------------------`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        const statusEl = document.getElementById('w2-copy-status');
+        if (statusEl) {
+          statusEl.textContent = '✅ Copied to clipboard! Ready to paste into Microsoft Form.';
+          setTimeout(() => { statusEl.textContent = ''; }, 4000);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadWeek2ChecklistState();
+      loadWeek2TableData();
+    });
+  </script>
+</body>
+
+</html>

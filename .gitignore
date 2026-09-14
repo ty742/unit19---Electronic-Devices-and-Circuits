@@ -1,0 +1,32 @@
+# Resource Packs and Tutor/Source Materials
+/resource pack/
+/unit 19.pdf
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+
+# Operating System & IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary / Scratch & Logs
+*.log
+scratch/
+tmp/
+
+/resource pack/
+*.py
+*forms-guide.md
+*.pdf
+*.docx

@@ -800,7 +800,7 @@ Consider component choice, energy use, repairability, waste and responsible use 
 
 # 22. FILE STRUCTURE
 
-Use the agreed naming convention.
+Use the naming convention.
 
 ## Week 1
 
