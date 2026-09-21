@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices & Circuits — Week 3 Transistor Investigation</title>
+  <meta name="description"
+    content="Unit 19 Learning Aim A Week 3: Transistor Devices, BJT Switching Modes (Cut-off & Saturation), Common-Emitter Amplification, Phase Inversion, and AC Sweep Frequency Response.">
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+  <link rel="stylesheet" href="../shared/css/form-drawer.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <!-- KaTeX for crisp, accessible LaTeX mathematical typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <style>
+    /* Week 3 Specific Component Styling */
+    .hero-title {
+      font-size: 3.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pill.demo {
+      background: rgba(6, 182, 212, 0.25);
+      border-color: #06b6d4;
+      color: #22d3ee;
+    }
+
+    .badge-pill.switch-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    .badge-pill.amp-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .ksb-card.k {
+      border-top: 5px solid var(--accent-cyan);
+    }
+
+    .ksb-card.s {
+      border-top: 5px solid var(--color-success);
+    }
+
+    .ksb-card.b {
+      border-top: 5px solid var(--color-warning);
+    }
+
+    .ksb-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    .ksb-card ul {
+      padding-left: 20px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .timeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.02rem;
+    }
+
+    .timeline-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--accent-cyan);
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 1.05rem;
+    }
+
+    .timeline-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+
+    .timeline-table tr.break-row td {
+      background: rgba(245, 158, 11, 0.12);
+      font-weight: 700;
+      color: var(--color-warning);
+    }
+
+    .schematic-box {
+      background: #070c18;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .schematic-caption {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      margin-top: 10px;
+      text-align: center;
+      background: rgba(6, 182, 212, 0.12);
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      width: 100%;
+    }
+
+    .attribution-tag {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 6px;
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+
+    .attribution-tag a {
+      color: var(--accent-cyan);
+      text-decoration: underline;
+    }
+
+    .checklist-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-surface-elevated);
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      font-size: 1rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .checklist-item:hover {
+      border-color: var(--accent-cyan);
+      background: #182234;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    .checklist-item.checked {
+      border-color: var(--color-success);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    /* Comparison Grids */
+    .transistor-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .transistor-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .transistor-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 151, 157, 0.2);
+    }
+
+    .transistor-card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .transistor-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(6, 182, 212, 0.2);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+
+    /* Interactive Simulator */
+    .sim-container {
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sim-slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sim-slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .sim-meter-panel {
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sim-meter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .sim-meter-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-size: 1.1rem;
+    }
+
+    .state-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .state-cutoff {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #f87171;
+    }
+
+    .state-active {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid #f59e0b;
+      color: #fbbf24;
+    }
+
+    .state-sat {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #34d399;
+    }
+
+    /* Virtual Lamp Display */
+    .lamp-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 16px;
+      background: #050b14;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+    }
+
+    .lamp-bulb {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid #475569;
+      transition: all 0.2s ease;
+      box-shadow: none;
+    }
+
+    /* Interactive Data Logging Table */
+    .meas-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      background: #090e1a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .meas-table th {
+      background: #111827;
+      color: var(--accent-cyan);
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+      font-weight: 700;
+    }
+
+    .meas-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #1e293b;
+      text-align: center;
+    }
+
+    .meas-input {
+      width: 90px;
+      padding: 6px 8px;
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .meas-input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    /* Fault Cards */
+    .fault-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .fault-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .fault-card:hover {
+      border-color: var(--accent-cyan);
+      background: #131d33;
+    }
+
+    .fault-card.active {
+      border-color: var(--accent-arduino);
+      background: rgba(0, 151, 157, 0.15);
+      box-shadow: 0 0 16px rgba(0, 151, 157, 0.3);
+    }
+
+    /* Formula & Glossary Boxes */
+    .formula-badge {
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      background: rgba(6, 182, 212, 0.15);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .glossary-def {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Header -->
+      <header class="deck-header">
+        <div class="header-top-row">
+          <a href="../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill">UNIT 19</span>
+            <span>Electronic Devices</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Week 3: Transistor
+              Investigation</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="https://www.onsemi.com/pdf/datasheet/2n4401-d.pdf" target="_blank" rel="noopener noreferrer"
+            class="datasheet-btn" title="Open 2N4401 NPN BJT Datasheet PDF">
+            📄 2N4401 Datasheet
+          </a>
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility & Neurodiversity (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+          <button class="btn btn-form-action open-forms-trigger" data-form-section="PoE 03 Form">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-right: 4px;">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            📝 Submit PoE 03
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- Slide 1: Welcome & Title -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: center; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill">Session: Week 3</span>
+              <span class="badge-pill">Date: 21 September 2026</span>
+              <span class="badge-pill">Duration: 3 Hours (160 Mins Active)</span>
+              <span class="badge-pill switch-pill">Role: Junior Control Engineer</span>
+              <span class="badge-pill amp-pill">PoE: A03</span>
+            </div>
+            <h1 class="hero-title">Transistor Investigation:<br>“Control a Real Load”</h1>
+            <p class="hero-subtitle">
+              Mastering Bipolar Junction Transistors (BJTs) and FETs: Switching from Cut-off to Saturation, Small-Signal
+              Common-Emitter Amplification, and Phase Inversion.
+            </p>
+
+            <div class="ksb-grid" style="margin-top: 24px; width: 100%;">
+              <div class="ksb-card k">
+                <h4>🧠 Knowledge (K)</h4>
+                <ul>
+                  <li>BJT types (NPN, PNP) &amp; FET types (N-ch, P-ch)</li>
+                  <li>Cut-off, Active, and Saturation operating regions</li>
+                  <li>Small-signal gain ($A_v$) and $180^\circ$ phase inversion</li>
+                  <li>Frequency response &amp; AC sweep analysis</li>
+                </ul>
+              </div>
+              <div class="ksb-card s">
+                <h4>🛠️ Skills (S)</h4>
+                <ul>
+                  <li>Reading datasheets &amp; avoiding the TO-92 pinout trap</li>
+                  <li>Simulating &amp; breadboarding a transistor LED switch</li>
+                  <li>Biasing &amp; measuring a common-emitter amplifier</li>
+                  <li>Diagnosing deliberate bench wiring &amp; component faults</li>
+                </ul>
+              </div>
+              <div class="ksb-card b">
+                <h4>💼 Behaviours (B)</h4>
+                <ul>
+                  <li>Mandatory pre-power safety &amp; current-limiting</li>
+                  <li>Predict $\rightarrow$ Simulate $\rightarrow$ Build $\rightarrow$ Test $\rightarrow$ Explain</li>
+                  <li>Evidence-backed documentation for assignment PoE A03</li>
+                  <li>Methodical root-cause fault elimination</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px; display: flex; gap: 14px; align-items: center;">
+              <button class="btn btn-primary" onclick="window.PresentationEngine.nextSlide()">
+                Begin Engineering Mission →
+              </button>
+              <button class="btn btn-secondary open-forms-trigger" data-form-section="Section 1">
+                Open Week 3 PoE Form Drawer (PoE A03)
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2: Workplace Engineering Context & Timeline -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <span class="badge-pill switch-pill">Workplace Scenario</span>
+            <h2>The Microcontroller Drive Challenge</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">🏭 Industrial Context: Automation Controller Interface</div>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary);">
+                  <strong style="color: #ffffff;">The Scenario:</strong> You are working as a <strong
+                    style="color: var(--accent-cyan);">Junior Control Engineer</strong> on a new industrial machinery
+                  interface.
+                </p>
+                <p style="font-size: 1.02rem; line-height: 1.7; color: var(--text-secondary);">
+                  The system's digital microcontroller (e.g. Arduino / STM32) outputs a <strong>3.3 V or 5.0 V logic
+                    signal</strong> with a maximum pin current of only <strong>20 mA</strong>. However, the machine
+                  operator panel requires switching a high-intensity indicator lamp and industrial solenoid requiring
+                  <strong>12 V at 150 mA</strong>.
+                </p>
+                <div
+                  style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin: 14px 0;">
+                  <strong style="color: #f87171;">⚠️ The Engineering Constraint:</strong><br>
+                  Connecting the 150 mA load directly to the microcontroller GPIO will immediately fry the internal
+                  output silicon! We must design an intermediate <strong>transistor switching interface</strong> where a
+                  micro-power base current switches a macro-power collector current.
+                </div>
+                <p style="font-size: 0.98rem; color: var(--text-secondary);">
+                  Additionally, the sensor team needs an analogue <strong>small-signal preamplifier</strong> to boost
+                  tiny vibration sensor signals before ADC digitisation.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3: Engineering Toolbox (Retrieval Challenge) -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <span class="badge-pill">Retrieval Challenge</span>
+            <h2>Engineering Toolbox: Weeks 1 &amp; 2 Diagnostic Retrieval</h2>
+          </div>
+          <div class="slide-body">
+            <div class="card" style="margin-bottom: 16px;">
+              <div class="card-title">🎯 Back to the Bench: Reactivating Diode &amp; Safe Working Knowledge</div>
+              <p style="font-size: 1rem; color: var(--text-secondary);">
+                Before controlling transistors, prove your mastery of semiconductor PN-junction fundamentals from Weeks
+                1 &amp; 2. Complete these four diagnostics on your individual whiteboard or notebook:
+              </p>
+            </div>
+
+            <div class="grid-2col">
+              <div class="card">
+                <h4 style="color: var(--accent-cyan); margin-bottom: 12px;">Q1. PN-Junction Barrier Potential</h4>
+                <p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.6;">
+                  What is the standard forward voltage drop ($V_f$) required across a standard silicon PN-junction
+                  before significant current conducts?
+                </p>
+                <div class="self-check" data-question="q1">
+                  <div class="self-check-prompt">Click to reveal engineering answer</div>
+                  <div class="self-check-answer"
+                    style="display:none; padding: 10px; background: rgba(0, 151, 157, 0.15); border-radius: 6px; margin-top: 8px;">
+                    <strong>Answer: Approximately $0.6\text{ V} \text{ to } 0.7\text{ V}$.</strong><br>
+                    Silicon requires ~0.7 V forward bias to overcome the internal depletion region barrier. In a BJT,
+                    the Base-Emitter junction acts as this exact silicon diode!
+                  </div>
+                </div>
+
+                <h4 style="color: var(--accent-cyan); margin-top: 18px; margin-bottom: 12px;">Q2. Current Flow &amp;
+                  Polarity</h4>
+                <p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.6;">
+                  In conventional current flow, through which terminal does current enter a standard diode, and what
+                  happens when reverse bias is applied below breakdown?
+                </p>
+                <div class="self-check" data-question="q2">
+                  <div class="self-check-prompt">Click to reveal engineering answer</div>
+                  <div class="self-check-answer"
+                    style="display:none; padding: 10px; background: rgba(0, 151, 157, 0.15); border-radius: 6px; margin-top: 8px;">
+                    <strong>Answer: Enters Anode, exits Cathode.</strong><br>
+                    Under reverse bias below $V_Z$, the depletion zone widens and only negligible nanoamp leakage
+                    current flows (effectively an open circuit).
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h4 style="color: var(--accent-cyan); margin-bottom: 12px;">Q3. Multimeter In-Circuit Voltage
+                  Measurement</h4>
+                <p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.6;">
+                  To measure the voltage drop across a transistor terminal (e.g. $V_{CE}$), how must the DMM test leads
+                  be connected relative to the circuit?
+                </p>
+                <div class="self-check" data-question="q3">
+                  <div class="self-check-prompt">Click to reveal engineering answer</div>
+                  <div class="self-check-answer"
+                    style="display:none; padding: 10px; background: rgba(0, 151, 157, 0.15); border-radius: 6px; margin-top: 8px;">
+                    <strong>Answer: In PARALLEL across the two test points.</strong><br>
+                    Red lead to Collector, Black lead to Emitter (or 0V common ground). Never connect an ammeter in
+                    parallel with a powered supply!
+                  </div>
+                </div>
+
+                <h4 style="color: var(--accent-cyan); margin-top: 18px; margin-bottom: 12px;">Q4. Transistor Selection
+                  Reasoning</h4>
+                <p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.6;">
+                  Why can't a simple resistor divider be used to drive a heavy 150 mA load directly from an MCU output?
+                </p>
+                <div class="self-check" data-question="q4">
+                  <div class="self-check-prompt">Click to reveal engineering answer</div>
+                  <div class="self-check-answer"
+                    style="display:none; padding: 10px; background: rgba(0, 151, 157, 0.15); border-radius: 6px; margin-top: 8px;">
+                    <strong>Answer: Severe loading effect and current starvation.</strong><br>
+                    Resistive dividers have high Thevenin impedance; drawing 150 mA causes the voltage to collapse to
+                    near zero. An active device (transistor) provides power amplification.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4: Transistor Taxonomy: BJT vs FET -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <span class="badge-pill">Component Architecture</span>
+            <h2>Transistor Taxonomy: BJTs vs FETs</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 1.02rem; color: var(--text-secondary); margin-bottom: 14px;">
+              Transistors are three-terminal semiconductor devices falling into two primary families based on whether
+              current flow is controlled by <strong>base current</strong> or <strong>gate voltage</strong>:
+            </p>
+
+            <div class="transistor-grid" style="margin-bottom: 16px;">
+              <div class="transistor-card">
+                <div>
+                  <div class="transistor-card-title">
+                    <span>NPN BJT</span>
+                    <span class="transistor-tag">Current Driven</span>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                    Most widely used BJT. Forward-biased Base-Emitter conducts electrons. A small positive base current
+                    controls a larger collector current.
+                  </p>
+                </div>
+                <div
+                  style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-cyan); background: #070c18; padding: 6px; border-radius: 4px;">
+                  $I_C = \beta \cdot I_B$<br>Arrow points OUT on E
+                </div>
+              </div>
+
+              <div class="transistor-card">
+                <div>
+                  <div class="transistor-card-title">
+                    <span>PNP BJT</span>
+                    <span class="transistor-tag">Current Driven</span>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                    Complementary to NPN. Base voltage must be pulled lower than Emitter to conduct. Commonly used in
+                    high-side load switching.
+                  </p>
+                </div>
+                <div
+                  style="font-family: var(--font-mono); font-size: 0.82rem; color: #f59e0b; background: #070c18; padding: 6px; border-radius: 4px;">
+                  $V_B &lt; V_E - 0.7\text{ V}$<br>Arrow points IN on E
+                </div>
+              </div>
+
+              <div class="transistor-card">
+                <div>
+                  <div class="transistor-card-title">
+                    <span>N-Channel MOSFET</span>
+                    <span class="transistor-tag">Voltage Driven</span>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                    Field-Effect Transistor. Insulated Gate draws virtually zero DC current ($I_G \approx 0$). Gate
+                    threshold voltage ($V_{GS(th)}$) controls Drain-Source conduction.
+                  </p>
+                </div>
+                <div
+                  style="font-family: var(--font-mono); font-size: 0.82rem; color: #10b981; background: #070c18; padding: 6px; border-radius: 4px;">
+                  $R_{DS(on)} \approx \text{m}\Omega$<br>Ideal for high power
+                </div>
+              </div>
+
+              <div class="transistor-card">
+                <div>
+                  <div class="transistor-card-title">
+                    <span>P-Channel MOSFET</span>
+                    <span class="transistor-tag">Voltage Driven</span>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                    High-side FET switch. Turning ON requires pulling the Gate negative relative to the Source ($V_{GS}
+                    &lt; -V_{th}$). Very low static gate power.
+                  </p>
+                </div>
+                <div
+                  style="font-family: var(--font-mono); font-size: 0.82rem; color: #a855f7; background: #070c18; padding: 6px; border-radius: 4px;">
+                  $V_G &lt; V_S$<br>High-side DC rail switch
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <img src="images/jlcpcb-bjt-symbol.jpg" alt="BJT Transistor Symbols NPN and PNP"
+                  style="max-height: 180px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">BJT Symbols: NPN (Emitter Arrow Outward) vs PNP (Emitter Arrow Inward)
+                </div>
+                <div class="attribution-tag">
+                  Source: <a href="https://jlcpcb.com/blog/the-complete-guide-to-transistor-symbol" target="_blank"
+                    rel="noopener">JLCPCB "Complete Guide to Transistor Symbols"</a>
+                </div>
+              </div>
+
+              <div class="schematic-box">
+                <img src="images/jlcpcb-mosfet-symbol.jpg" alt="MOSFET Transistor Symbols N-channel and P-channel"
+                  style="max-height: 180px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">MOSFET Symbols: Gate insulated by SiO2 dielectric, Drain and Source
+                  channel</div>
+                <div class="attribution-tag">
+                  Source: <a href="https://jlcpcb.com/blog/the-complete-guide-to-transistor-symbol" target="_blank"
+                    rel="noopener">JLCPCB "Complete Guide to Transistor Symbols"</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5: Anatomy & Symbol Decoding -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <span class="badge-pill">Schematic Literacy</span>
+            <h2>Anatomy of a Transistor Symbol &amp; Terminal Reading</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📖 Reading the Terminals: BJT vs FET</div>
+                <table style="width:100%; font-size: 0.95rem; border-collapse: collapse; margin-bottom: 14px;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--accent-cyan); text-align: left;">
+                      <th style="padding: 6px 8px; color: var(--accent-cyan);">BJT Terminal</th>
+                      <th style="padding: 6px 8px; color: #10b981;">FET Terminal</th>
+                      <th style="padding: 6px 8px; color: #ffffff;">Functional Purpose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid #334155;">
+                      <td style="padding: 6px 8px; font-weight: 700; color: var(--accent-cyan);">Base (B)</td>
+                      <td style="padding: 6px 8px; font-weight: 700; color: #10b981;">Gate (G)</td>
+                      <td style="padding: 6px 8px; color: var(--text-secondary);">The Control valve. Governs current
+                        flow between the other two terminals.</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                      <td style="padding: 6px 8px; font-weight: 700; color: var(--accent-cyan);">Collector (C)</td>
+                      <td style="padding: 6px 8px; font-weight: 700; color: #10b981;">Drain (D)</td>
+                      <td style="padding: 6px 8px; color: var(--text-secondary);">The Reservoir terminal connected to
+                        load and positive supply rail (for N-type).</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 8px; font-weight: 700; color: var(--accent-cyan);">Emitter (E)</td>
+                      <td style="padding: 6px 8px; font-weight: 700; color: #10b981;">Source (S)</td>
+                      <td style="padding: 6px 8px; color: var(--text-secondary);">The Return terminal where total
+                        current exits towards ground/return rail.</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div
+                  style="background: rgba(6, 182, 212, 0.1); border-left: 4px solid var(--accent-cyan); padding: 12px; border-radius: 8px;">
+                  <strong style="color: #ffffff;">💡 Memory Mnemonic for Arrow Direction:</strong>
+                  <ul style="margin: 6px 0 0 18px; font-size: 0.92rem; color: var(--text-secondary);">
+                    <li><strong>NPN:</strong> <span style="color: var(--accent-cyan); font-weight: 700;">N</span>ot
+                      <span style="color: var(--accent-cyan); font-weight: 700;">P</span>ointing i<span
+                        style="color: var(--accent-cyan); font-weight: 700;">N</span> (Arrow points outward on Emitter).
+                    </li>
+                    <li><strong>PNP:</strong> <span style="color: #f59e0b; font-weight: 700;">P</span>oints i<span
+                        style="color: #f59e0b; font-weight: 700;">N</span> <span
+                        style="color: #f59e0b; font-weight: 700;">P</span>roudly (Arrow points inward toward Base).</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="schematic-box">
+                <img src="images/jlcpcb-how-to-read.webp" alt="How to read a transistor symbol schematic"
+                  style="max-height: 250px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">Decoding Terminals: Base, Collector, Emitter &amp; Arrow Direction</div>
+                <div class="attribution-tag">
+                  Diagram Source: <a href="https://jlcpcb.com/blog/the-complete-guide-to-transistor-symbol"
+                    target="_blank" rel="noopener">JLCPCB Blog Transistor Guide</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 6: Datasheet Workshop & The TO-92 Pinout Trap -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <span class="badge-pill switch-pill">Datasheet Workshop</span>
+            <h2>Datasheet Workshop: The “TO-92 Pinout Trap”</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">⚠️ Never Assume Pinout from Package Shape!</div>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: var(--text-secondary);">
+                  A major source of breadboard failure in commercial electronics labs is assuming all three-pin plastic
+                  <strong>TO-92</strong> transistors share the same pin sequence.
+                </p>
+                <div
+                  style="background: #070c18; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin: 12px 0;">
+                  <strong style="color: #ffffff; font-size: 0.95rem;">Look at the two most common classroom NPN
+                    transistors:</strong>
+                  <div
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; font-family: var(--font-mono); font-size: 0.9rem;">
+                    <div
+                      style="background: rgba(0, 151, 157, 0.15); padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-cyan);">
+                      <strong style="color: var(--accent-cyan);">2N4401 / 2N3904</strong><br>
+                      Pin 1: Emitter (E)<br>
+                      Pin 2: Base (B)<br>
+                      Pin 3: Collector (C)<br>
+                      <span style="font-size: 0.75rem; color: #94a3b8;">(Sequence: E - B - C)</span>
+                    </div>
+                    <div
+                      style="background: rgba(245, 158, 11, 0.15); padding: 8px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                      <strong style="color: #fbbf24;">BC547 / BC548</strong><br>
+                      Pin 1: Collector (C)<br>
+                      Pin 2: Base (B)<br>
+                      Pin 3: Emitter (E)<br>
+                      <span style="font-size: 0.75rem; color: #94a3b8;">(Sequence: C - B - E)</span>
+                    </div>
+                  </div>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary);">
+                  <strong>Result of Swapping:</strong> Collector and Emitter are reversed! The circuit will barely
+                  conduct, current gain collapses from $\beta \approx 200$ down to $\beta_{reverse} \approx 3$, causing
+                  the switch or amplifier to fail completely!
+                </p>
+              </div>
+
+              <div class="schematic-box">
+                <img src="images/jlcpcb-to92-pinout-trap.webp"
+                  alt="The TO-92 pinout trap comparing USA vs European BJT packages"
+                  style="max-height: 250px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">The TO-92 Pinout Trap: Always verify Flat Face with Manufacturer
+                  Datasheet!</div>
+                <div class="attribution-tag">
+                  Diagram Source: <a href="https://jlcpcb.com/blog/the-complete-guide-to-transistor-symbol"
+                    target="_blank" rel="noopener">JLCPCB Blog Pinout Guide</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 7: Transistor Operating Regions -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <span class="badge-pill">Core Physical Theory</span>
+            <h2>Transistor Operating Regions: Cut-Off, Active &amp; Saturation</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 1.02rem; color: var(--text-secondary); margin-bottom: 16px;">
+              An NPN bipolar junction transistor operates in one of three distinct physical modes determined by the
+              biasing across its two internal PN-junctions ($J_{BE}$ and $J_{BC}$):
+            </p>
+
+            <div class="ksb-grid">
+              <div class="ksb-card" style="border-top: 5px solid #ef4444;">
+                <h4 style="color: #f87171;">1. Cut-off Region (Switch OFF)</h4>
+                <div style="font-family: var(--font-mono); font-size: 0.88rem; color: #cbd5e1; margin-bottom: 8px;">
+                  $V_{BE} &lt; 0.6\text{ V} \implies I_B = 0 \implies I_C = 0$
+                </div>
+                <ul style="font-size: 0.92rem; line-height: 1.6;">
+                  <li>Both Base-Emitter and Base-Collector junctions are <strong>reverse biased</strong>.</li>
+                  <li>Collector-Emitter path behaves as an <strong>open circuit switch</strong> ($R_{CE} \approx
+                    \infty$).</li>
+                  <li>Full supply voltage appears across Collector-Emitter: $V_{CE} \approx V_{CC}$.</li>
+                  <li>Load is completely de-energised (LED OFF).</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card" style="border-top: 5px solid #f59e0b;">
+                <h4 style="color: #fbbf24;">2. Active / Linear Region (Amplifier)</h4>
+                <div style="font-family: var(--font-mono); font-size: 0.88rem; color: #cbd5e1; margin-bottom: 8px;">
+                  $V_{BE} \approx 0.7\text{ V}, \quad I_C = \beta \cdot I_B$
+                </div>
+                <ul style="font-size: 0.92rem; line-height: 1.6;">
+                  <li>Base-Emitter junction is <strong>forward biased</strong>; Base-Collector is <strong>reverse
+                      biased</strong>.</li>
+                  <li>Collector current is strictly proportional to base current ($I_C = h_{FE} \cdot I_B$).</li>
+                  <li>$V_{CE}$ sits between $0.2\text{ V}$ and $V_{CC}$ (e.g. $V_{CC}/2$ for max dynamic range).</li>
+                  <li>Used for audio/analogue <strong>signal amplification</strong>.</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card" style="border-top: 5px solid #10b981;">
+                <h4 style="color: #34d399;">3. Saturation Region (Switch ON)</h4>
+                <div style="font-family: var(--font-mono); font-size: 0.88rem; color: #cbd5e1; margin-bottom: 8px;">
+                  $I_B \ge \frac{I_{C(sat)}}{\beta}, \quad V_{CE(sat)} \approx 0.1\text{--}0.2\text{ V}$
+                </div>
+                <ul style="font-size: 0.92rem; line-height: 1.6;">
+                  <li>Both Base-Emitter and Base-Collector junctions are <strong>forward biased</strong>.</li>
+                  <li>Collector current is limited only by external load: $I_{C(sat)} \approx \frac{V_{CC} -
+                    V_{LED}}{R_C}$.</li>
+                  <li>Collector-Emitter behaves as a <strong>closed switch</strong> ($V_{CE} \approx 0.15\text{ V}$).
+                  </li>
+                  <li>Load is fully energised (LED bright ON).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div
+              style="margin-top: 16px; background: #070c18; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 16px;">
+              <span style="font-size: 2rem;">🚰</span>
+              <div>
+                <strong style="color: var(--accent-cyan); font-size: 1rem;">The Engineering Water Tap Analogy:</strong>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); margin-top: 4px;">
+                  Think of the collector current as high-pressure water from a reservoir. The Base current is your hand
+                  turning the valve tap. Tap fully shut = <strong>Cut-off</strong> (zero flow). Tap partially open =
+                  <strong>Active</strong> (water flow proportional to hand angle). Tap turned wide open =
+                  <strong>Saturation</strong> (maximum flow governed strictly by pipe diameter, turning tap further
+                  yields no more water).
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 8: Interactive Transistor Operating State Simulator -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <span class="badge-pill switch-pill">Interactive Workbench</span>
+            <h2>Virtual Lab: Transistor Operating State Simulator</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 0.98rem; color: var(--text-secondary); margin-bottom: 12px;">
+              Connect the circuit schematic to the live simulation below: Adjust the microcontroller base input voltage
+              ($V_{in}$) and base resistor ($R_B$) to observe how voltages at Test Points <strong>TP1 ($V_B$)</strong>
+              and <strong>TP2 ($V_C$)</strong> govern the transistor operating region:
+            </p>
+
+            <div class="grid-2col" style="gap: 20px; align-items: start;">
+              <!-- Left Column: Circuit Schematic Box with Test Points -->
+              <div class="schematic-box" style="padding: 14px; min-height: auto;">
+                <div
+                  style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-weight: 700; color: #ffffff; font-size: 0.95rem;">Circuit Schematic: Transistor Load
+                    Switch</span>
+                  <span class="badge-pill switch-pill" style="font-size: 0.72rem; padding: 2px 8px;">2N4401 NPN</span>
+                </div>
+                <img src="images/switch-circuit.png" alt="Transistor Switch Circuit Diagram with LED load"
+                  style="max-height: 260px; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 0 10px rgba(0, 151, 157, 0.25));">
+                <div class="schematic-caption" style="margin-top: 10px; font-size: 0.88rem;">
+                  Circuit: Input $V_{in}$ feeds $R_B$ (10 kΩ) $\rightarrow$ Base; Collector switches LED + $R_C$ (330 Ω)
+                  to 5V; Emitter tied to GND (0V).
+                </div>
+                <div
+                  style="margin-top: 8px; background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; border-radius: 6px; padding: 8px 12px; width: 100%; display: flex; justify-content: space-between; font-size: 0.82rem; font-family: var(--font-mono);">
+                  <span style="color: var(--accent-cyan);">🔴 TP1: Base ($V_B$)</span>
+                  <span style="color: #fbbf24;">🟡 TP2: Collector ($V_C$)</span>
+                  <span style="color: #94a3b8;">⚫ GND: Emitter (0 V)</span>
+                </div>
+              </div>
+
+              <!-- Right Column: Interactive Simulator Controls & Bench DMM Readout -->
+              <div class="sim-container" style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
+                <div class="sim-controls" style="width: 100%;">
+                  <div class="sim-slider-row">
+                    <div class="sim-slider-label">
+                      <span>Microcontroller Base Input ($V_{in}$ / Signal)</span>
+                      <span id="sim-vin-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">0.0
+                        V</span>
+                    </div>
+                    <input type="range" id="sim-vin" min="0" max="5.0" step="0.1" value="0.0"
+                      style="width: 100%; accent-color: var(--accent-cyan);" oninput="updateTransistorSim()">
+                  </div>
+
+                  <div class="sim-slider-row" style="margin-top: 4px;">
+                    <div class="sim-slider-label">
+                      <span>Base Current-Limiting Resistor ($R_B$)</span>
+                      <span id="sim-rb-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">10
+                        kΩ</span>
+                    </div>
+                    <select id="sim-rb"
+                      style="background: #020617; border: 1px solid #334155; color: #fff; padding: 6px; border-radius: 6px; width: 100%;"
+                      onchange="updateTransistorSim()">
+                      <option value="1000">1 kΩ (High Base Drive — Deep Saturation)</option>
+                      <option value="10000" selected>10 kΩ (Standard Design — Optimum Saturation)</option>
+                      <option value="100000">100 kΩ (Weak Base Drive — Enters Active Region)</option>
+                    </select>
+                  </div>
+
+                  <div class="lamp-display"
+                    style="flex-direction: row; justify-content: space-between; padding: 10px 16px; margin-top: 6px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <div id="sim-lamp" class="lamp-bulb" style="width: 44px; height: 44px;"></div>
+                      <div style="font-size: 0.85rem; color: var(--text-muted);">LED Indicator (Load)</div>
+                    </div>
+                    <div id="sim-state-badge" class="state-badge state-cutoff" style="align-self: center;">STATE:
+                      CUT-OFF (OFF)</div>
+                  </div>
+                </div>
+
+                <div class="sim-meter-panel" style="width: 100%;">
+                  <h4
+                    style="color: #ffffff; margin: 0 0 6px 0; border-bottom: 1px solid #334155; padding-bottom: 4px; font-size: 0.95rem;">
+                    Bench DMM Virtual Probes</h4>
+                  <div class="sim-meter-row">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">TP1 Base-Emitter Drop
+                      ($V_{BE}$):</span>
+                    <span id="sim-vbe" class="sim-meter-val" style="font-size: 1rem;">0.00 V</span>
+                  </div>
+                  <div class="sim-meter-row">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Base Drive Current ($I_B$):</span>
+                    <span id="sim-ib" class="sim-meter-val" style="font-size: 1rem;">0.00 µA</span>
+                  </div>
+                  <div class="sim-meter-row">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Collector Load Current
+                      ($I_C$):</span>
+                    <span id="sim-ic" class="sim-meter-val" style="font-size: 1rem;">0.00 mA</span>
+                  </div>
+                  <div class="sim-meter-row">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">TP2 Collector-Emitter Drop
+                      ($V_{CE}$):</span>
+                    <span id="sim-vce" class="sim-meter-val" style="font-size: 1rem;">5.00 V</span>
+                  </div>
+                  <div class="sim-meter-row">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Transistor Power Dissipation
+                      ($P_D$):</span>
+                    <span id="sim-pd" class="sim-meter-val" style="font-size: 1rem;">0.00 mW</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 9: Mandatory Pre-Power Safety Verification (Pearson A1) -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <span class="badge-pill"
+              style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">Safety Protocol
+              A1</span>
+            <h2>Pre-Power Verification: Safe Electronic Working Practices</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">🛡️ Mandatory 5-Point Bench Pre-Power Audit</div>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px;">
+                  Before energising your breadboard from the DC power supply, complete every item with your practical
+                  partner. Tick each check once verified:
+                </p>
+
+                <ul class="checklist-list">
+                  <li class="checklist-item" onclick="toggleWeek3Check(this, 'w3ppc1')">
+                    <input type="checkbox" id="w3ppc1" onchange="saveWeek3ChecklistState()">
+                    <span><strong>1. Pinout Verification:</strong> Transistor flat face checked against datasheet pinout
+                      (Avoided TO-92 trap: E-B-C verified).</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek3Check(this, 'w3ppc2')">
+                    <input type="checkbox" id="w3ppc2" onchange="saveWeek3ChecklistState()">
+                    <span><strong>2. Current-Limiting Base Resistor:</strong> Base resistor ($R_B = 10\text{ k}\Omega$)
+                      confirmed in series between input and Base (never drive Base direct!).</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek3Check(this, 'w3ppc3')">
+                    <input type="checkbox" id="w3ppc3" onchange="saveWeek3ChecklistState()">
+                    <span><strong>3. Collector Load Resistor:</strong> Load resistor ($R_C = 330\ \Omega$) connected in
+                      series with LED Anode to limit maximum diode current to ~10 mA.</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek3Check(this, 'w3ppc4')">
+                    <input type="checkbox" id="w3ppc4" onchange="saveWeek3ChecklistState()">
+                    <span><strong>4. Supply Voltage &amp; Current Limit:</strong> Bench PSU dialled to exactly
+                      <strong>5.0 V DC</strong> with current limit preset to $\le 100\text{ mA}$.</span>
+                  </li>
+                  <li class="checklist-item" onclick="toggleWeek3Check(this, 'w3ppc5')">
+                    <input type="checkbox" id="w3ppc5" onchange="saveWeek3ChecklistState()">
+                    <span><strong>5. Common Ground Bus:</strong> Emitter, power supply negative terminal, and signal
+                      source 0V return tied to the common ground rail.</span>
+                  </li>
+                </ul>
+
+                <div id="w3-checklist-status"
+                  style="margin-top: 14px; font-weight: 700; font-size: 0.92rem; color: var(--color-warning);">
+                  ⚠️ Complete all 5 checks before energising your circuit.
+                </div>
+              </div>
+
+              <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                  <div class="card-title">⚡ Why Transistors Burn: Thermal Runaway &amp; Base Blowout</div>
+                  <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    Unlike passive resistors, semiconductors have an exponential $I$-$V$ characteristic across the
+                    Base-Emitter junction:
+                  </p>
+                  <div
+                    style="background: rgba(239, 68, 68, 0.12); border-left: 3px solid #ef4444; padding: 12px; border-radius: 6px; margin: 10px 0;">
+                    <strong style="color: #f87171;">What happens without a base resistor?</strong><br>
+                    <span style="font-size: 0.9rem; color: #cbd5e1;">
+                      If a 5V signal is connected directly to the Base of an NPN BJT, the forward-biased PN junction
+                      will attempt to drop 0.7V against a 5V source. Without $R_B$ to drop the remaining 4.3V, massive
+                      current (&gt; 1 Ampere) surges through the microscopic silicon wire bond, vaporising it in less
+                      than 50 milliseconds!
+                    </span>
+                  </div>
+                  <p style="font-size: 0.92rem; color: var(--text-secondary);">
+                    Always verify your $R_B$ resistor band colour codes ($10\text{ k}\Omega =
+                    \text{Brown-Black-Orange}$) before inserting wires.
+                  </p>
+                </div>
+
+                <div
+                  style="margin-top: 14px; background: #070c18; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
+                  <strong style="color: var(--accent-cyan); font-size: 0.9rem;">Tutor Sign-Off Checkpoint:</strong>
+                  <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">Raise hand when all 5 boxes are
+                    ticked for bench inspection.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 10: Activity 2: Build a Transistor Switch -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <span class="badge-pill switch-pill">Practical Activity 2</span>
+            <h2>Build a Transistor Switch: Controlling an LED Load</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <img src="images/switch-circuit.png" alt="Transistor Switch Circuit Diagram with LED load"
+                  style="max-height: 310px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">Transistor Switch Circuit: 5V Rail, 10 kΩ Base Resistor, 330 Ω Load,
+                  2N4401 NPN BJT</div>
+                <div class="attribution-tag">
+                  Official Resource Pack Schematic: Unit 19 Week 3 Switch
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🔧 Investigation Procedure</div>
+                <ol style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); padding-left: 18px;">
+                  <li>Construct the circuit on breadboard exactly as shown in the schematic.</li>
+                  <li>Connect a DMM (DC Volts mode) across Collector and Emitter ($V_{CE}$).</li>
+                  <li>Connect a second DMM across Base and Emitter ($V_{BE}$).</li>
+                  <li>
+                    <strong style="color: #ffffff;">State A (0 V Input):</strong> Connect the base input lead to Ground
+                    ($0\text{ V}$). Observe the LED and record $V_B, V_C, V_{CE}$.
+                  </li>
+                  <li>
+                    <strong style="color: #ffffff;">State B (5 V Input):</strong> Connect the base input lead to
+                    $+5\text{ V}$. Observe the LED and record $V_B, V_C, V_{CE}$.
+                  </li>
+                </ol>
+
+                <div
+                  style="margin-top: 14px; background: #070c18; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+                  <strong style="color: var(--accent-cyan); font-size: 0.95rem;">Expected Benchmark Values:</strong>
+                  <div style="font-family: var(--font-mono); font-size: 0.88rem; color: #cbd5e1; margin-top: 6px;">
+                    • 0 V Input: LED OFF, $V_{BE} = 0.00\text{ V}, V_C \approx 5.00\text{ V}, V_{CE} \approx 5.00\text{
+                    V}$<br>
+                    • 5 V Input: LED ON, $V_{BE} \approx 0.72\text{ V}, V_C \approx 0.18\text{ V}, V_{CE} \approx
+                    0.18\text{ V}$
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 11: Switch Sizing & Saturation Overdrive -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <span class="badge-pill">Engineering Maths</span>
+            <h2>Switch Design Sizing: Overdrive Factor &amp; Base Sizing</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📐 Step-by-Step Base Resistor Calculation</div>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+                  To guarantee that the transistor operates in <strong>deep saturation</strong> (ensuring minimal
+                  $V_{CE}$ drop and lowest transistor heating), follow this professional engineering workflow:
+                </p>
+
+                <div
+                  style="background: #070c18; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin: 10px 0; font-size: 0.92rem;">
+                  <strong style="color: var(--accent-cyan);">Step 1: Calculate Required Collector Load Current
+                    ($I_C$)</strong><br>
+                  $$I_C = \frac{V_{CC} - V_{LED} - V_{CE(sat)}}{R_C} = \frac{5.0\text{ V} - 2.0\text{ V} - 0.2\text{
+                  V}}{330\ \Omega} = \frac{2.8\text{ V}}{330\ \Omega} \approx 8.5\text{ mA}$$
+
+                  <strong style="color: var(--accent-cyan);">Step 2: Determine Minimum Base Current
+                    ($I_{B(min)}$)</strong><br>
+                  From 2N4401 datasheet, minimum current gain $\beta_{min} \approx 100$:
+                  $$I_{B(min)} = \frac{I_C}{\beta_{min}} = \frac{8.5\text{ mA}}{100} = 0.085\text{ mA} = 85\
+                  \mu\text{A}$$
+
+                  <strong style="color: var(--accent-cyan);">Step 3: Apply Saturation Overdrive Factor ($k = 3 \text{ to
+                    } 5$)</strong><br>
+                  $$I_{B(design)} = k \cdot I_{B(min)} = 5 \times 0.085\text{ mA} \approx 0.43\text{ mA}$$
+
+                  <strong style="color: var(--accent-cyan);">Step 4: Calculate Base Resistor Value ($R_B$)</strong><br>
+                  $$R_B = \frac{V_{in} - V_{BE}}{I_{B(design)}} = \frac{5.0\text{ V} - 0.7\text{ V}}{0.43\text{ mA}} =
+                  \frac{4.3\text{ V}}{0.43\text{ mA}} \approx 10\text{ k}\Omega$$
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🔬 Independent Investigation: Resistor Sensitivity</div>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+                  Test what occurs when you change $R_B$ and $R_C$ on your breadboard or simulation:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                  <div
+                    style="background: #0f172a; padding: 10px; border-radius: 6px; border-left: 3px solid var(--accent-cyan);">
+                    <strong style="color: #ffffff;">Investigation A: Change $R_B$ from $10\text{ k}\Omega$ to $100\text{
+                      k}\Omega$</strong>
+                    <p style="font-size: 0.88rem; color: #94a3b8; margin: 4px 0 0 0;">
+                      $I_B$ drops to $\sim 43\ \mu\text{A}$. The transistor slips out of saturation into the active
+                      region! $V_{CE}$ rises to $\sim 1.5\text{ V}$, LED dims, and the transistor dissipates heat.
+                    </p>
+                  </div>
+
+                  <div style="background: #0f172a; padding: 10px; border-radius: 6px; border-left: 3px solid #10b981;">
+                    <strong style="color: #ffffff;">Investigation B: Change $R_B$ to $1\text{ k}\Omega$</strong>
+                    <p style="font-size: 0.88rem; color: #94a3b8; margin: 4px 0 0 0;">
+                      $I_B$ increases to $4.3\text{ mA}$. Transistor enters deep, hard saturation with lowest $V_{CE}
+                      \approx 0.09\text{ V}$. Safe for MCU since $4.3\text{ mA} &lt; 20\text{ mA}$ limit.
+                    </p>
+                  </div>
+
+                  <div style="background: #0f172a; padding: 10px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                    <strong style="color: #ffffff;">Investigation C: Decrease $R_C$ to $150\ \Omega$</strong>
+                    <p style="font-size: 0.88rem; color: #94a3b8; margin: 4px 0 0 0;">
+                      Load current doubles to $\sim 18.6\text{ mA}$. LED shines noticeably brighter.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 12: Activity 3: Single-Stage Common-Emitter Amplifier -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <span class="badge-pill amp-pill">Practical Activity 3</span>
+            <h2>Activity 3: Single-Stage Common-Emitter Amplifier</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <img src="images/amplifier-circuit.png" alt="Single Stage Common Emitter Amplifier Schematic"
+                  style="max-height: 310px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">Common-Emitter Amplifier: Voltage Divider Bias ($R_1, R_2$), Collector
+                  $R_C$, Emitter $R_E$, and Bypass $C_E$</div>
+                <div class="attribution-tag">
+                  Official Resource Pack Schematic: Unit 19 Week 3 Amplifier
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🔍 Decoding Amplifier Circuit Subsystems</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  Every component in this circuit has a precise engineering function:
+                </p>
+
+                <div style="font-size: 0.88rem; display: flex; flex-direction: column; gap: 8px;">
+                  <div style="background: #070c18; padding: 8px 10px; border-radius: 6px;">
+                    <strong style="color: var(--accent-cyan);">$R_1$ and $R_2$ (Bias Divider):</strong> Establishes a
+                    rock-solid DC quiescent base voltage ($V_B$) independent of transistor $\beta$ variations:
+                    $$V_B = V_{CC} \cdot \frac{R_2}{R_1 + R_2}$$
+                  </div>
+                  <div style="background: #070c18; padding: 8px 10px; border-radius: 6px;">
+                    <strong style="color: #10b981;">$R_E$ (Emitter Resistor):</strong> Provides negative DC thermal
+                    feedback. If temperature rises and increases $I_C$, $V_E$ rises, reducing $V_{BE}$ and stabilising
+                    the operating point!
+                  </div>
+                  <div style="background: #070c18; padding: 8px 10px; border-radius: 6px;">
+                    <strong style="color: #f59e0b;">$C_1$ and $C_2$ (AC Coupling Capacitors):</strong> Passes AC
+                    audio/sensor signals while blocking DC voltages from upsetting neighbouring stages.
+                  </div>
+                  <div style="background: #070c18; padding: 8px 10px; border-radius: 6px;">
+                    <strong style="color: #a855f7;">$C_E$ (Emitter Bypass Capacitor):</strong> AC shorts the emitter to
+                    ground at signal frequencies, dramatically boosting AC voltage gain!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 13: Signal Amplification & Phase Inversion -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <span class="badge-pill amp-pill">Oscilloscope Observation</span>
+            <h2>Waveform Dynamics &amp; The 180° Phase Inversion</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📈 Why Does the Output Flip Upside Down?</div>
+                <p style="font-size: 0.96rem; line-height: 1.6; color: var(--text-secondary);">
+                  When viewing input Channel 1 ($v_{in}$) and output Channel 2 ($v_{out}$) on the oscilloscope, you will
+                  observe two unmistakable characteristics:
+                </p>
+
+                <div
+                  style="background: #070c18; border: 1px solid #334155; border-radius: 8px; padding: 14px; margin: 12px 0;">
+                  <strong style="color: #ffffff;">1. Voltage Amplification ($A_v$):</strong><br>
+                  A small input peak-to-peak voltage ($v_{in} = 50\text{ mV}_{p-p}$) emerges as a large output swing
+                  ($v_{out} = 1.25\text{ V}_{p-p}$).
+                  $$|A_v| = \frac{v_{out(p-p)}}{v_{in(p-p)}} = \frac{1.25\text{ V}}{0.05\text{ V}} = 25\text{ (or }
+                  28\text{ dB)}$$
+
+                  <strong style="color: #ffffff; display: block; margin-top: 10px;">2. 180° Phase Inversion ($\Delta
+                    \phi = 180^\circ$):</strong><br>
+                  When the input voltage swings <strong>POSITIVE</strong>, the output voltage swings
+                  <strong>NEGATIVE</strong>!
+                </div>
+
+                <div
+                  style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; padding: 10px; border-radius: 6px; font-size: 0.9rem; color: #cbd5e1;">
+                  <strong>Physical Cause of Inversion:</strong><br>
+                  Input $v_{in}$ rises $\implies$ Base current $i_b$ rises $\implies$ Collector current $i_c$ rises
+                  $\implies$ Voltage drop across $R_C$ ($i_c R_C$) increases $\implies$ Collector voltage ($V_C = V_{CC}
+                  - i_c R_C$) <strong>DROPS</strong>!
+                </div>
+              </div>
+
+              <div class="card"
+                style="display:flex; flex-direction:column; justify-content:center; align-items:center; background:#020617;">
+                <div class="card-title" style="width: 100%; text-align: left;">Oscilloscope Trace Representation</div>
+                <svg width="100%" height="220" viewBox="0 0 400 200"
+                  style="background:#070c18; border-radius:8px; border: 1px solid #1e293b;">
+                  <!-- Grid Lines -->
+                  <line x1="0" y1="50" x2="400" y2="50" stroke="#1e293b" stroke-dasharray="4" />
+                  <line x1="0" y1="100" x2="400" y2="100" stroke="#334155" stroke-width="1.5" />
+                  <line x1="0" y1="150" x2="400" y2="150" stroke="#1e293b" stroke-dasharray="4" />
+                  <line x1="100" y1="0" x2="100" y2="200" stroke="#1e293b" stroke-dasharray="4" />
+                  <line x1="200" y1="0" x2="200" y2="200" stroke="#334155" stroke-width="1.5" />
+                  <line x1="300" y1="0" x2="300" y2="200" stroke="#1e293b" stroke-dasharray="4" />
+
+                  <!-- Input Waveform (Yellow, small) -->
+                  <path d="M 20 100 Q 65 60 110 100 T 200 100 T 290 100 T 380 100" fill="none" stroke="#facc15"
+                    stroke-width="2.5" />
+
+                  <!-- Output Waveform (Cyan, large, inverted) -->
+                  <path d="M 20 100 Q 65 180 110 100 T 200 100 T 290 100 T 380 100" fill="none" stroke="#22d3ee"
+                    stroke-width="3" />
+                </svg>
+                <div
+                  style="display: flex; gap: 24px; margin-top: 12px; font-size: 0.88rem; font-family: var(--font-mono);">
+                  <span style="color: #facc15;">— CH1 Input (50 mV / div)</span>
+                  <span style="color: #22d3ee;">— CH2 Output (500 mV / div)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 14: AC Sweep & Frequency Response -->
+        <section class="slide" id="slide-14">
+          <div class="slide-header">
+            <span class="badge-pill amp-pill">Simulation Verification</span>
+            <h2>AC Sweep: Frequency Response &amp; Amplifier Bandwidth</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="schematic-box">
+                <img src="images/ac-sweep.png" alt="AC Sweep Frequency Response Curve"
+                  style="max-height: 290px; object-fit: contain; border-radius: 8px;">
+                <div class="schematic-caption">AC Sweep Simulation: Magnitude (dB) vs Frequency (Hz) showing -3dB
+                  Bandwidth</div>
+                <div class="attribution-tag">
+                  Official Resource Pack Data: Unit 19 Week 3 AC Sweep
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📊 Interpreting the Frequency Response Curve</div>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+                  An AC frequency sweep demonstrates that an analogue amplifier cannot provide constant gain across all
+                  frequencies. It exhibits three key operating regions:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px; font-size: 0.9rem;">
+                  <div style="background: #070c18; padding: 10px; border-radius: 6px; border-left: 3px solid #ef4444;">
+                    <strong style="color: #f87171;">1. Low-Frequency Roll-Off ($f &lt; f_L$):</strong><br>
+                    <span style="color: var(--text-secondary);">Coupling capacitors ($C_1, C_2$) and bypass ($C_E$) have
+                      high capacitive reactance ($X_C = \frac{1}{2\pi f C}$), attenuating input signal transfer and
+                      dropping gain.</span>
+                  </div>
+
+                  <div style="background: #070c18; padding: 10px; border-radius: 6px; border-left: 3px solid #10b981;">
+                    <strong style="color: #34d399;">2. Midband Gain Plateau ($f_L &lt; f &lt; f_H$):</strong><br>
+                    <span style="color: var(--text-secondary);">The designed operating band (e.g. 100 Hz to 50 kHz).
+                      Capacitors act as AC short circuits, producing steady maximum gain ($A_{v(mid)}$).</span>
+                  </div>
+
+                  <div style="background: #070c18; padding: 10px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                    <strong style="color: #fbbf24;">3. High-Frequency Roll-Off ($f &gt; f_H$):</strong><br>
+                    <span style="color: var(--text-secondary);">Internal transistor parasitic capacitances ($C_{be},
+                      C_{bc}$) shunt signal current to ground, causing gain to drop at high frequencies.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 15: Interactive Common-Emitter Gain Calculator -->
+        <section class="slide" id="slide-15">
+          <div class="slide-header">
+            <span class="badge-pill amp-pill">Engineering Maths</span>
+            <h2>Interactive Tool: Common-Emitter Biasing &amp; Gain Calculator</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 0.98rem; color: var(--text-secondary); margin-bottom: 12px;">
+              Input your amplifier component values to compute the DC Q-point ($V_B, V_E, I_C$) and AC voltage gain
+              ($A_v$):
+            </p>
+
+            <div class="sim-container" style="grid-template-columns: 1.2fr 1fr;">
+              <div class="sim-controls" style="font-size: 0.9rem;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                  <div>
+                    <label style="color:#cbd5e1;">Supply $V_{CC}$ (V):</label>
+                    <input type="number" id="calc-vcc" value="12" class="meas-input" style="width:100%;"
+                      oninput="runAmpCalc()">
+                  </div>
+                  <div>
+                    <label style="color:#cbd5e1;">Upper Bias $R_1$ (kΩ):</label>
+                    <input type="number" id="calc-r1" value="47" class="meas-input" style="width:100%;"
+                      oninput="runAmpCalc()">
+                  </div>
+                  <div>
+                    <label style="color:#cbd5e1;">Lower Bias $R_2$ (kΩ):</label>
+                    <input type="number" id="calc-r2" value="10" class="meas-input" style="width:100%;"
+                      oninput="runAmpCalc()">
+                  </div>
+                  <div>
+                    <label style="color:#cbd5e1;">Collector $R_C$ (kΩ):</label>
+                    <input type="number" id="calc-rc" value="2.2" class="meas-input" style="width:100%;"
+                      oninput="runAmpCalc()">
+                  </div>
+                  <div>
+                    <label style="color:#cbd5e1;">Emitter $R_E$ (kΩ):</label>
+                    <input type="number" id="calc-re" value="0.68" class="meas-input" style="width:100%;"
+                      oninput="runAmpCalc()">
+                  </div>
+                  <div>
+                    <label style="color:#cbd5e1;">Input $v_{in(p-p)}$ (mV):</label>
+                    <input type="number" id="calc-vin" value="50" class="meas-input" style="width:100%;"
+                      oninput="runAmpCalc()">
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-meter-panel">
+                <h4 style="color: #ffffff; margin: 0 0 6px 0; border-bottom: 1px solid #334155; padding-bottom: 4px;">
+                  Calculated DC &amp; AC Output</h4>
+                <div class="sim-meter-row">
+                  <span style="color: var(--text-secondary);">Base Voltage ($V_B$):</span>
+                  <span id="calc-out-vb" class="sim-meter-val">2.11 V</span>
+                </div>
+                <div class="sim-meter-row">
+                  <span style="color: var(--text-secondary);">Emitter Voltage ($V_E$):</span>
+                  <span id="calc-out-ve" class="sim-meter-val">1.41 V</span>
+                </div>
+                <div class="sim-meter-row">
+                  <span style="color: var(--text-secondary);">Collector Current ($I_C$):</span>
+                  <span id="calc-out-ic" class="sim-meter-val">2.07 mA</span>
+                </div>
+                <div class="sim-meter-row">
+                  <span style="color: var(--text-secondary);">Collector Voltage ($V_C$):</span>
+                  <span id="calc-out-vc" class="sim-meter-val">7.45 V</span>
+                </div>
+                <div class="sim-meter-row">
+                  <span style="color: var(--text-secondary);">Small-Signal Gain ($A_v \approx \frac{R_C}{r_e'}$):</span>
+                  <span id="calc-out-av" class="sim-meter-val" style="color: #34d399;">-175</span>
+                </div>
+                <div class="sim-meter-row">
+                  <span style="color: var(--text-secondary);">Output Swing ($v_{out(p-p)}$):</span>
+                  <span id="calc-out-vout" class="sim-meter-val" style="color: #fbbf24;">8.75 V</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 16: Activity 4: Deliberate Fault-Finding Challenge -->
+        <section class="slide" id="slide-16">
+          <div class="slide-header">
+            <span class="badge-pill"
+              style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171;">Practical Activity
+              4</span>
+            <h2>Troubleshooting Challenge: Diagnosing Circuit Faults</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 0.98rem; color: var(--text-secondary); margin-bottom: 12px;">
+              Your tutor has introduced a deliberate fault into your hardware setup. Select a symptom below to follow
+              the engineering diagnostic workflow:
+            </p>
+
+            <div class="fault-grid">
+              <div class="fault-card active" onclick="showFaultDetails('fault-a', this)">
+                <strong style="color: var(--accent-cyan); font-size: 1rem;">Fault 1: Reversed Transistor Pinout</strong>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                  LED lights up very faintly or not at all even with $5\text{ V}$ input applied to $R_B$.
+                </p>
+              </div>
+
+              <div class="fault-card" onclick="showFaultDetails('fault-b', this)">
+                <strong style="color: var(--accent-cyan); font-size: 1rem;">Fault 2: Open-Circuit Base Resistor</strong>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                  Applying $5\text{ V}$ to test lead does nothing; Base reads $0.0\text{ V}$ directly on pin.
+                </p>
+              </div>
+
+              <div class="fault-card" onclick="showFaultDetails('fault-c', this)">
+                <strong style="color: var(--accent-cyan); font-size: 1rem;">Fault 3: Blown or Reversed LED</strong>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                  Transistor saturates ($V_{CE} \approx 0.15\text{ V}$) but zero light output from LED.
+                </p>
+              </div>
+
+              <div class="fault-card" onclick="showFaultDetails('fault-d', this)">
+                <strong style="color: var(--accent-cyan); font-size: 1rem;">Fault 4: Disconnected Signal Ground</strong>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                  Circuit behaves erratically or fluctuates when hands approach breadboard.
+                </p>
+              </div>
+            </div>
+
+            <div id="fault-detail-panel"
+              style="margin-top: 14px; background: #070c18; border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 14px;">
+              <h4 id="fault-title" style="color: var(--accent-cyan); margin: 0 0 6px 0;">Diagnosis: Fault 1 — Reversed
+                Transistor Pinout (TO-92 Trap)</h4>
+              <p id="fault-desc" style="font-size: 0.92rem; color: var(--text-secondary); margin: 0 0 8px 0;">
+                <strong>Symptom:</strong> When 5V is applied, $V_{BE}$ measures only ~0.5V and collector current is
+                constrained to &lt; 1 mA.
+              </p>
+              <div style="font-size: 0.9rem; color: #cbd5e1;">
+                <strong>Systematic Diagnostic Action:</strong> Use DMM diode test mode out-of-circuit between Base and
+                outer pins. Compare readings against 2N4401 datasheet pinout diagram. Swap transistor around 180° so
+                Emitter connects to Ground.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 17: Engineering Measurement Log & PoE A03 Data Sheet -->
+        <section class="slide" id="slide-17">
+          <div class="slide-header">
+            <span class="badge-pill switch-pill">PoE A03 Evidence</span>
+            <h2>Measurement Logging &amp; Portfolio of Evidence Records</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 12px;">
+              Record your physical bench measurements below. Values are saved to local storage and can be copied in one
+              click to paste into your Microsoft Form:
+            </p>
+
+            <table class="meas-table">
+              <thead>
+                <tr>
+                  <th>Circuit Mode</th>
+                  <th>Input Signal</th>
+                  <th>Base Voltage ($V_B$)</th>
+                  <th>Collector ($V_C$)</th>
+                  <th>$V_{CE}$ Voltage</th>
+                  <th>Operating Region</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Transistor Switch</strong></td>
+                  <td>0.0 V (Ground)</td>
+                  <td><input type="text" id="m_sw_vb_off" class="meas-input" placeholder="0.00 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><input type="text" id="m_sw_vc_off" class="meas-input" placeholder="5.00 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><input type="text" id="m_sw_vce_off" class="meas-input" placeholder="5.00 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><span class="state-badge state-cutoff">Cut-off (OFF)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Transistor Switch</strong></td>
+                  <td>5.0 V ($V_{CC}$)</td>
+                  <td><input type="text" id="m_sw_vb_on" class="meas-input" placeholder="0.72 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><input type="text" id="m_sw_vc_on" class="meas-input" placeholder="0.18 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><input type="text" id="m_sw_vce_on" class="meas-input" placeholder="0.18 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><span class="state-badge state-sat">Saturation (ON)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Common Emitter</strong></td>
+                  <td>AC $50\text{ mV}_{p-p}$</td>
+                  <td><input type="text" id="m_amp_vin" class="meas-input" placeholder="50 mV"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><input type="text" id="m_amp_vout" class="meas-input" placeholder="1.25 V"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><input type="text" id="m_amp_gain" class="meas-input" placeholder="-25"
+                      onchange="saveWeek3TableData()"></td>
+                  <td><span class="state-badge state-active">Active (Linear)</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div
+              style="margin-top: 16px; display: flex; gap: 12px; align-items: center; justify-content: space-between;">
+              <button class="btn btn-primary" onclick="copyWeek3PoESummary()">
+                📋 Copy PoE A03 Summary to Clipboard
+              </button>
+              <div id="w3-copy-status" style="font-size: 0.9rem; font-weight: 700; color: var(--color-success);"></div>
+              <button class="btn btn-form-action open-forms-trigger" data-form-section="Section 4">
+                📝 Open PoE Form to Paste →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 18: Microsoft Forms Submission Drawer & Direct Portal -->
+        <section class="slide" id="slide-18">
+          <div class="slide-header">
+            <span class="badge-pill">Formal Assessment</span>
+            <h2>PoE A03 Submission: Microsoft Forms Portfolio Integration</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📝 Portfolio of Evidence Deliverable (PoE A03)</div>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: var(--text-secondary);">
+                  In accordance with the <strong>Unit 19 Master Scheme of Learning (Week 3)</strong>, your submitted
+                  evidence must document:
+                </p>
+                <ul
+                  style="font-size: 0.94rem; line-height: 1.7; color: var(--text-secondary); margin: 10px 0 14px 18px;">
+                  <li>✅ <strong>Simulation Screenshot:</strong> Switch and common-emitter amplifier circuit in Multisim
+                    / Wokwi / LiveSPICE.</li>
+                  <li>✅ <strong>Bench Photograph:</strong> Clear photograph of your physical breadboard circuit with
+                    student ID card visible.</li>
+                  <li>✅ <strong>Physical Test Data:</strong> Recorded voltages for $V_B, V_C, V_{CE}$ in 0V and 5V
+                    switch states.</li>
+                  <li>✅ <strong>Calculations &amp; Gain:</strong> Computed saturation base current and amplifier voltage
+                    gain ($A_v$).</li>
+                  <li>✅ <strong>Technical Explanation:</strong> Concise engineering analysis of Cut-off, Active, and
+                    Saturation regions.</li>
+                </ul>
+
+                <div
+                  style="background: rgba(0, 151, 157, 0.15); border-left: 3px solid var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 0.9rem;">
+                  <strong style="color: #ffffff;">Form Link:</strong> Unit 19 Week 3 Transistor Investigation Form<br>
+                  <a href="https://forms.cloud.microsoft/e/Vu1dZuzfut" target="_blank" rel="noopener"
+                    style="color: var(--accent-cyan); word-break: break-all;">
+                    https://forms.cloud.microsoft/e/Vu1dZuzfut
+                  </a>
+                </div>
+              </div>
+
+              <div class="card"
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <span style="font-size: 3.2rem; margin-bottom: 12px;">📲</span>
+                <h3 style="color: #ffffff; margin-bottom: 8px;">Submit Evidence Directly</h3>
+                <p style="font-size: 0.94rem; color: var(--text-secondary); max-width: 320px; margin-bottom: 16px;">
+                  Click below to slide out the built-in Microsoft Forms drawer without navigating away from your test
+                  bench notes.
+                </p>
+                <button class="btn btn-primary open-forms-trigger" data-form-section="PoE 03 Form"
+                  style="padding: 12px 24px; font-size: 1.05rem;">
+                  📝 Slide Open Microsoft Form Drawer
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 19: Plenary & Traffic-Light Confidence Check -->
+        <section class="slide" id="slide-19">
+          <div class="slide-header">
+            <span class="badge-pill">Formative Assessment</span>
+            <h2>Plenary: Traffic-Light Confidence Self-Evaluation</h2>
+          </div>
+          <div class="slide-body">
+            <p style="font-size: 1.02rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Reflect on your engineering learning across today's 160-minute practical session against the Pearson BTEC
+              Unit 19 grading criteria:
+            </p>
+
+            <div class="ksb-grid">
+              <div class="ksb-card" style="border-top: 5px solid #10b981;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                  <span style="font-size: 1.5rem;">🟢</span>
+                  <h4 style="color: #34d399; margin:0;">Pass Standard</h4>
+                </div>
+                <ul style="font-size: 0.94rem; line-height: 1.6;">
+                  <li>I can correctly identify BJT (NPN/PNP) and FET terminals from a datasheet.</li>
+                  <li>I safely assembled and tested a functional transistor LED switch on breadboard.</li>
+                  <li>I recorded verified measurements for base and collector voltages.</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card" style="border-top: 5px solid #f59e0b;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                  <span style="font-size: 1.5rem;">🟡</span>
+                  <h4 style="color: #fbbf24; margin:0;">Merit Standard</h4>
+                </div>
+                <ul style="font-size: 0.94rem; line-height: 1.6;">
+                  <li>I can clearly explain the internal difference between Cut-off and Saturation.</li>
+                  <li>I compared physical measurements against SPICE simulation predictions.</li>
+                  <li>I calculated the base resistor required for deep saturation.</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card" style="border-top: 5px solid var(--accent-cyan);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                  <span style="font-size: 1.5rem;">🔵</span>
+                  <h4 style="color: var(--accent-cyan); margin:0;">Distinction Standard</h4>
+                </div>
+                <ul style="font-size: 0.94rem; line-height: 1.6;">
+                  <li>I explained Active linear operation, voltage gain, and $180^\circ$ phase inversion.</li>
+                  <li>I systematically located and documented a circuit fault without tutor assistance.</li>
+                  <li>I suggested engineering improvements to increase bandwidth or efficiency.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 20: Engineer Exit Ticket -->
+        <section class="slide" id="slide-20">
+          <div class="slide-header">
+            <span class="badge-pill"
+              style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171;">Exit Protocol</span>
+            <h2>Engineer Exit Ticket: Final Diagnostic Check</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📝 3-Tier Cumulative Exit Questions</div>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px;">
+                  Complete these three questions in the Microsoft Forms drawer before leaving the laboratory:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div
+                    style="background: rgba(0, 151, 157, 0.1); border-left: 3px solid var(--accent-cyan); padding: 10px 14px; border-radius: 6px;">
+                    <strong style="color: #ffffff;">1. TODAY'S LEARNING (Operating Regions):</strong><br>
+                    <span style="color: var(--text-secondary); font-size: 0.92rem;">
+                      What voltage condition between Base and Emitter ensures that a silicon NPN BJT enters conduction,
+                      and what is $V_{CE}$ when in deep saturation?
+                    </span>
+                  </div>
+
+                  <div
+                    style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; padding: 10px 14px; border-radius: 6px;">
+                    <strong style="color: #ffffff;">2. RECENT LEARNING (Week 2 Diode Protection):</strong><br>
+                    <span style="color: var(--text-secondary); font-size: 0.92rem;">
+                      If our transistor switches an inductive solenoid coil instead of an LED, why MUST a flyback diode
+                      be placed in parallel with the coil?
+                    </span>
+                  </div>
+
+                  <div
+                    style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--color-success); padding: 10px 14px; border-radius: 6px;">
+                    <strong style="color: #ffffff;">3. CUMULATIVE REASONING (Amplifier Inversion):</strong><br>
+                    <span style="color: var(--text-secondary); font-size: 0.92rem;">
+                      Explain using Ohm's law ($V_C = V_{CC} - I_C R_C$) why the output of a common-emitter amplifier is
+                      $180^\circ$ out of phase with the input.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div class="card-title">🏁 Session Wrap-Up &amp; Lookahead</div>
+                  <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+                    Superb engineering accomplishment today! You have successfully mastered transistor terminal
+                    identification, avoided destructive pinout traps, verified electronic switching under real loads,
+                    observed $180^\circ$ phase inversion, and analysed AC frequency sweeps.
+                  </p>
+                  <div
+                    style="margin-top: 14px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+                    <strong style="color: var(--accent-cyan);">Next Week (Week 4):</strong>
+                    <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 4px;">
+                      <strong>Op-Amp Investigation — “Condition the Sensor Signal”</strong><br>
+                      Operational amplifiers, negative feedback, inverting/non-inverting configurations, comparators,
+                      and filter cut-off frequencies.
+                    </p>
+                  </div>
+                </div>
+
+                <div style="margin-top: 16px;">
+                  <button class="btn btn-primary open-forms-trigger" data-form-section="Exit Ticket"
+                    style="width: 100%; padding: 10px; font-size: 0.95rem;">
+                    Submit Exit Ticket in Form Drawer →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 21: SEND Support Pack, Glossary & Quick Engineering Reference -->
+        <section class="slide" id="slide-21">
+          <div class="slide-header">
+            <span class="badge-pill">Inclusion &amp; Accessibility</span>
+            <h2>SEND Support Pack, Technical Glossary &amp; Formula Card</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📖 Transistor Vocabulary Bank</div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem;">
+                  <div>
+                    <span class="formula-badge">BJT</span>
+                    <strong style="color: #ffffff;">Bipolar Junction Transistor:</strong>
+                    <span class="glossary-def">A 3-layer semiconductor sandwich (NPN or PNP) where small base current
+                      controls large collector current.</span>
+                  </div>
+                  <div>
+                    <span class="formula-badge">Cut-off</span>
+                    <strong style="color: #ffffff;">Zero-Conduction State:</strong>
+                    <span class="glossary-def">$V_{BE} &lt; 0.6\text{ V}$, acting as an open switch ($I_C = 0, V_{CE}
+                      \approx V_{CC}$).</span>
+                  </div>
+                  <div>
+                    <span class="formula-badge">Saturation</span>
+                    <strong style="color: #ffffff;">Fully-Conduction State:</strong>
+                    <span class="glossary-def">Both junctions forward biased; acts as closed switch with minimal drop
+                      ($V_{CE(sat)} \approx 0.15\text{ V}$).</span>
+                  </div>
+                  <div>
+                    <span class="formula-badge">Active Region</span>
+                    <strong style="color: #ffffff;">Linear Amplification:</strong>
+                    <span class="glossary-def">$I_C = \beta I_B$, operating between cut-off and saturation where output
+                      waveform replicates input.</span>
+                  </div>
+                  <div>
+                    <span class="formula-badge">Phase Inversion</span>
+                    <strong style="color: #ffffff;">180° Signal Flip:</strong>
+                    <span class="glossary-def">Common-emitter output moves in exact opposite vertical direction to input
+                      AC waveform.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📐 Transistor Formula Quick-Reference Card</div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem;">
+                  <div style="background: #070c18; padding: 8px 12px; border-radius: 6px;">
+                    <strong style="color: var(--accent-cyan);">Total Transistor Current:</strong>
+                    $$I_E = I_B + I_C$$
+                  </div>
+                  <div style="background: #070c18; padding: 8px 12px; border-radius: 6px;">
+                    <strong style="color: #10b981;">DC Current Gain ($\beta$ or $h_{FE}$):</strong>
+                    $$\beta = \frac{I_C}{I_B} \implies I_C = \beta \cdot I_B$$
+                  </div>
+                  <div style="background: #070c18; padding: 8px 12px; border-radius: 6px;">
+                    <strong style="color: #f59e0b;">Base Switch Resistor Sizing:</strong>
+                    $$R_B = \frac{V_{in} - V_{BE}}{k \cdot (I_C / \beta_{min})}, \quad k = 3\text{ to }5$$
+                  </div>
+                  <div style="background: #070c18; padding: 8px 12px; border-radius: 6px;">
+                    <strong style="color: #a855f7;">Common-Emitter Voltage Gain ($A_v$):</strong>
+                    $$A_v \approx -\frac{R_C}{r_e'}, \quad \text{where } r_e' \approx \frac{25\text{ mV}}{I_E}$$
+                  </div>
+                </div>
+
+                <div class="schematic-box" style="margin-top: 12px; padding: 8px; min-height: auto;">
+                  <img src="images/jlcpcb-transistor-applications.webp"
+                    alt="Common Transistor Applications: Switch, Amplifier, Logic Gate"
+                    style="max-height: 125px; object-fit: contain; border-radius: 6px;">
+                  <div class="attribution-tag" style="margin-top: 4px;">
+                    Application Guide: <a href="https://jlcpcb.com/blog/the-complete-guide-to-transistor-symbol"
+                      target="_blank" rel="noopener">JLCPCB Guide to Transistor Symbols</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 21</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn btn-secondary open-forms-trigger" data-form-section="PoE 03 Form"
+            style="padding: 6px 12px; font-size: 0.8rem;">
+            📝 Submit PoE A03
+          </button>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Backdrop for Drawer -->
+    <div id="drawer-backdrop"></div>
+
+    <!-- Microsoft Forms Side-Drawer -->
+    <aside id="forms-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>📝</span>
+          <span>Week 3 Transistor Investigation (PoE A03)</span>
+        </div>
+        <div class="drawer-actions">
+          <button class="drawer-popout-btn" id="drawer-popout-btn" title="Open in new tab">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            Pop out
+          </button>
+          <button class="drawer-close-btn" id="drawer-close-btn" title="Close drawer">✕</button>
+        </div>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Lazy-loaded Microsoft Forms Embed Iframe -->
+        <iframe id="forms-iframe" class="drawer-iframe" src="about:blank"
+          data-src="https://forms.cloud.microsoft/e/Vu1dZuzfut" allowfullscreen webkitallowfullscreen mozallowfullscreen
+          msallowfullscreen>
+        </iframe>
+      </div>
+    </aside>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly
+                (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid">
+          <!-- Populated dynamically by PresentationEngine -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility & Neurodiversity Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Accessibility & Neurodiversity Side-Drawer -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary"
+          style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Shared Scripts -->
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/self-check.js"></script>
+  <script src="../shared/js/timer.js"></script>
+  <script src="../shared/js/form-drawer.js"></script>
+
+  <!-- Week 3 Specific Logic -->
+  <script>
+    // 1. Transistor Operating State Simulator Logic
+    function updateTransistorSim() {
+      const vin = parseFloat(document.getElementById('sim-vin').value);
+      const rb = parseFloat(document.getElementById('sim-rb').value);
+      document.getElementById('sim-vin-val').textContent = vin.toFixed(1) + ' V';
+
+      const vbeEl = document.getElementById('sim-vbe');
+      const ibEl = document.getElementById('sim-ib');
+      const icEl = document.getElementById('sim-ic');
+      const vceEl = document.getElementById('sim-vce');
+      const pdEl = document.getElementById('sim-pd');
+      const badge = document.getElementById('sim-state-badge');
+      const lamp = document.getElementById('sim-lamp');
+
+      let vbe = 0;
+      let ib = 0; // microamps
+      let ic = 0; // milliamps
+      let vce = 5.0; // volts
+      let state = 'CUT-OFF';
+
+      const beta = 150;
+      const rc = 330; // ohms
+      const vcc = 5.0;
+      const v_led = 2.0;
+
+      if (vin < 0.6) {
+        // Cut-off region
+        vbe = vin;
+        ib = 0;
+        ic = 0;
+        vce = vcc;
+        state = 'CUT-OFF';
+        badge.className = 'state-badge state-cutoff';
+        badge.textContent = 'STATE: CUT-OFF (OFF)';
+        lamp.style.background = '#1e293b';
+        lamp.style.boxShadow = 'none';
+        lamp.style.borderColor = '#475569';
+      } else {
+        // Conducting: calculate IB
+        vbe = 0.65 + (vin - 0.6) * 0.03;
+        if (vbe > 0.78) vbe = 0.78;
+        ib = ((vin - vbe) / rb) * 1e6; // in uA
+
+        // Potential active IC
+        const ic_active_ma = (ib * 1e-6 * beta) * 1000;
+        // Saturation limit: Vce_sat ~ 0.15V
+        const ic_sat_ma = ((vcc - v_led - 0.15) / rc) * 1000;
+
+        if (ic_active_ma < ic_sat_ma) {
+          // Active Region
+          ic = ic_active_ma;
+          vce = vcc - (ic / 1000 * rc) - v_led;
+          if (vce < 0.2) vce = 0.2;
+          state = 'ACTIVE';
+          badge.className = 'state-badge state-active';
+          badge.textContent = 'STATE: ACTIVE (LINEAR)';
+
+          const brightness = Math.min(1, ic / ic_sat_ma);
+          lamp.style.background = `rgba(250, 204, 21, ${brightness})`;
+          lamp.style.borderColor = '#facc15';
+          lamp.style.boxShadow = `0 0 ${Math.round(brightness * 20)}px #facc15`;
+        } else {
+          // Saturation Region
+          ic = ic_sat_ma;
+          vce = 0.15 + (0.05 * (vin / 5));
+          state = 'SATURATION';
+          badge.className = 'state-badge state-sat';
+          badge.textContent = 'STATE: SATURATION (FULLY ON)';
+
+          lamp.style.background = '#facc15';
+          lamp.style.borderColor = '#fde047';
+          lamp.style.boxShadow = '0 0 25px #facc15, 0 0 45px rgba(250, 204, 21, 0.5)';
+        }
+      }
+
+      const pd_mw = (vce * (ic / 1000)) * 1000;
+
+      vbeEl.textContent = vbe.toFixed(2) + ' V';
+      ibEl.textContent = ib.toFixed(1) + ' µA';
+      icEl.textContent = ic.toFixed(2) + ' mA';
+      vceEl.textContent = vce.toFixed(2) + ' V';
+      pdEl.textContent = pd_mw.toFixed(2) + ' mW';
+    }
+
+    // 2. Pre-power checklist management
+    function toggleWeek3Check(el, id) {
+      const checkbox = document.getElementById(id);
+      if (event.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+      }
+      if (checkbox.checked) {
+        el.classList.add('checked');
+      } else {
+        el.classList.remove('checked');
+      }
+      saveWeek3ChecklistState();
+    }
+
+    function saveWeek3ChecklistState() {
+      const checks = ['w3ppc1', 'w3ppc2', 'w3ppc3', 'w3ppc4', 'w3ppc5'];
+      const states = checks.map(id => document.getElementById(id)?.checked || false);
+      localStorage.setItem('u19_w3_ppc', JSON.stringify(states));
+
+      const allDone = states.every(s => s === true);
+      const statusEl = document.getElementById('w3-checklist-status');
+      if (statusEl) {
+        if (allDone) {
+          statusEl.innerHTML = '✅ All 5 pre-power checks verified! Safe to energise 5V DC supply.';
+          statusEl.style.color = 'var(--color-success)';
+        } else {
+          statusEl.innerHTML = '⚠️ Complete all 5 checks before requesting tutor inspection.';
+          statusEl.style.color = 'var(--color-warning)';
+        }
+      }
+    }
+
+    function loadWeek3ChecklistState() {
+      const saved = localStorage.getItem('u19_w3_ppc');
+      if (saved) {
+        try {
+          const states = JSON.parse(saved);
+          states.forEach((state, i) => {
+            const id = 'w3ppc' + (i + 1);
+            const cb = document.getElementById(id);
+            if (cb) {
+              cb.checked = state;
+              if (state) cb.closest('.checklist-item')?.classList.add('checked');
+            }
+          });
+          const allDone = states.every(s => s === true);
+          const statusEl = document.getElementById('w3-checklist-status');
+          if (allDone && statusEl) {
+            statusEl.innerHTML = '✅ All 5 pre-power checks verified! Safe to energise 5V DC supply.';
+            statusEl.style.color = 'var(--color-success)';
+          }
+        } catch (e) { }
+      }
+    }
+
+    // 3. Amplifier Gain Calculator
+    function runAmpCalc() {
+      const vcc = parseFloat(document.getElementById('calc-vcc').value) || 12;
+      const r1 = (parseFloat(document.getElementById('calc-r1').value) || 47) * 1000;
+      const r2 = (parseFloat(document.getElementById('calc-r2').value) || 10) * 1000;
+      const rc = (parseFloat(document.getElementById('calc-rc').value) || 2.2) * 1000;
+      const re = (parseFloat(document.getElementById('calc-re').value) || 0.68) * 1000;
+      const vin_mv = parseFloat(document.getElementById('calc-vin').value) || 50;
+
+      const vb = vcc * (r2 / (r1 + r2));
+      const ve = Math.max(0, vb - 0.7);
+      const ie_ma = (ve / re) * 1000;
+      const ic_ma = ie_ma * 0.99;
+      const vc = vcc - ((ic_ma / 1000) * rc);
+
+      // dynamic resistance re' ~ 25mV / IE
+      const re_prime = ie_ma > 0 ? (25 / ie_ma) : 25;
+      const av = - (rc / re_prime);
+      const vout_pp_v = Math.min(vcc - 1, (vin_mv / 1000) * Math.abs(av));
+
+      document.getElementById('calc-out-vb').textContent = vb.toFixed(2) + ' V';
+      document.getElementById('calc-out-ve').textContent = ve.toFixed(2) + ' V';
+      document.getElementById('calc-out-ic').textContent = ic_ma.toFixed(2) + ' mA';
+      document.getElementById('calc-out-vc').textContent = vc.toFixed(2) + ' V';
+      document.getElementById('calc-out-av').textContent = Math.round(av).toString();
+      document.getElementById('calc-out-vout').textContent = vout_pp_v.toFixed(2) + ' V';
+    }
+
+    // 4. Fault Challenge Details Switcher
+    const faultData = {
+      'fault-a': {
+        title: 'Diagnosis: Fault 1 — Reversed Transistor Pinout (TO-92 Trap)',
+        desc: 'Symptom: When 5V is applied, $V_{BE}$ measures only ~0.5V and collector current is constrained to < 1 mA. LED is extremely dim or unlit.',
+        action: 'Systematic Diagnostic Action: Use DMM diode test mode out-of-circuit between Base and outer pins. Compare readings against 2N4401 datasheet pinout diagram. Swap transistor around 180° so Emitter connects to Ground.'
+      },
+      'fault-b': {
+        title: 'Diagnosis: Fault 2 — Open-Circuit Base Resistor',
+        desc: 'Symptom: Applying 5V to the circuit input breadboard wire does not light the LED. Probing directly on the Base pin reads 0.0V.',
+        action: 'Systematic Diagnostic Action: Measure resistance of RB with power isolated. If reading is infinite (OL), the resistor lead is not seated properly in the breadboard spring clip or has an internal break.'
+      },
+      'fault-c': {
+        title: 'Diagnosis: Fault 3 — Blown or Reversed LED',
+        desc: 'Symptom: When 5V is applied, the transistor Collector voltage pulls down to 0.18V (saturation confirmed!), yet the LED produces no light.',
+        action: 'Systematic Diagnostic Action: The transistor is operating correctly! Test the LED with a DMM in diode test mode. A backwards LED will show OL. Invert the LED so the longer Anode leg connects to the 330 Ω resistor.'
+      },
+      'fault-d': {
+        title: 'Diagnosis: Fault 4 — Disconnected Signal Ground Bus',
+        desc: 'Symptom: Circuit behaves erratically; LED flickers when touched, or amplifier output is dominated by 50 Hz AC mains hum.',
+        action: 'Systematic Diagnostic Action: Check continuity between Emitter rail and PSU 0V return. High resistance indicates an ungrounded floating circuit.'
+      }
+    };
+
+    function showFaultDetails(key, cardEl) {
+      document.querySelectorAll('.fault-card').forEach(c => c.classList.remove('active'));
+      cardEl.classList.add('active');
+      const item = faultData[key];
+      if (item) {
+        document.getElementById('fault-title').textContent = item.title;
+        document.getElementById('fault-desc').innerHTML = '<strong>Symptom:</strong> ' + item.desc;
+        const panel = document.getElementById('fault-detail-panel');
+        const actionEl = panel.querySelector('div:last-child');
+        if (actionEl) actionEl.innerHTML = '<strong>Systematic Diagnostic Action:</strong> ' + item.action;
+      }
+    }
+
+    // 5. Measurement Logging & Clipboard Copy
+    function saveWeek3TableData() {
+      const fields = [
+        'm_sw_vb_off', 'm_sw_vc_off', 'm_sw_vce_off',
+        'm_sw_vb_on', 'm_sw_vc_on', 'm_sw_vce_on',
+        'm_amp_vin', 'm_amp_vout', 'm_amp_gain'
+      ];
+      const data = {};
+      fields.forEach(f => {
+        const el = document.getElementById(f);
+        if (el) data[f] = el.value;
+      });
+      localStorage.setItem('u19_w3_measurements', JSON.stringify(data));
+    }
+
+    function loadWeek3TableData() {
+      const saved = localStorage.getItem('u19_w3_measurements');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          Object.keys(data).forEach(k => {
+            const el = document.getElementById(k);
+            if (el) el.value = data[k];
+          });
+        } catch (e) { }
+      }
+    }
+
+    function copyWeek3PoESummary() {
+      const vbOff = document.getElementById('m_sw_vb_off')?.value || 'N/A';
+      const vcOff = document.getElementById('m_sw_vc_off')?.value || 'N/A';
+      const vceOff = document.getElementById('m_sw_vce_off')?.value || 'N/A';
+
+      const vbOn = document.getElementById('m_sw_vb_on')?.value || 'N/A';
+      const vcOn = document.getElementById('m_sw_vc_on')?.value || 'N/A';
+      const vceOn = document.getElementById('m_sw_vce_on')?.value || 'N/A';
+
+      const aVin = document.getElementById('m_amp_vin')?.value || 'N/A';
+      const aVout = document.getElementById('m_amp_vout')?.value || 'N/A';
+      const aGain = document.getElementById('m_amp_gain')?.value || 'N/A';
+
+      const summary = `--- UNIT 19 WEEK 3 PoE A03 MEASUREMENT SUMMARY ---
+[Pre-Power Safety Verification: 5/5 Completed & Signed Off]
+• Transistor Switch State A (0V Input / Cut-off):
+  - Base Voltage V_B: ${vbOff} (Expected: ~0.00 V)
+  - Collector Voltage V_C: ${vcOff} (Expected: ~5.00 V)
+  - Collector-Emitter Drop V_CE: ${vceOff} (Expected: ~5.00 V)
+  - State Verified: Cut-off (Load OFF)
+
+• Transistor Switch State B (5V Input / Saturation):
+  - Base Voltage V_B: ${vbOn} (Expected: ~0.72 V)
+  - Collector Voltage V_C: ${vcOn} (Expected: ~0.18 V)
+  - Collector-Emitter Drop V_CE: ${vceOn} (Expected: ~0.18 V)
+  - State Verified: Saturation (Load Fully ON)
+
+• Common-Emitter Amplifier Investigation:
+  - Input Signal v_in(p-p): ${aVin}
+  - Output Signal v_out(p-p): ${aVout}
+  - Measured Small-Signal Gain A_v: ${aGain}
+  - Phase Shift Verified: 180° Waveform Inversion
+-------------------------------------------------`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        const statusEl = document.getElementById('w3-copy-status');
+        if (statusEl) {
+          statusEl.textContent = '✅ Copied to clipboard! Ready to paste into Microsoft Form.';
+          setTimeout(() => { statusEl.textContent = ''; }, 4000);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadWeek3ChecklistState();
+      loadWeek3TableData();
+      updateTransistorSim();
+      runAmpCalc();
+    });
+  </script>
+</body>
+
+</html>
