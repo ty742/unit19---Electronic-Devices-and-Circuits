@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unit 19: Electronic Devices &amp; Circuits — Week 4 Op-Amp Investigation</title>
+  <title>Unit 19: Electronic Devices &amp; Circuits — Week 4 Operational Amplifiers</title>
   <meta name="description"
-    content="Unit 19 Learning Aim A Week 4: Operational Amplifiers (LM358), Open-Loop Comparators, Closed-Loop Negative Feedback, Inverting &amp; Non-Inverting Virtual Simulation in Multisim.">
+    content="Week 4 Student Learning Resource: Operational Amplifiers — Making a Small Signal Useful. Open-loop comparators, negative feedback, inverting and non-inverting op-amp circuits in Multisim.">
 
   <!-- Shared CSS Tokens & Component Styling -->
   <link rel="stylesheet" href="../shared/css/presentation.css">
@@ -27,19 +27,27 @@
   <style>
     /* Week 4 Specific Component Styling */
     .hero-title {
-      font-size: 3.1rem;
+      font-size: 2.8rem;
       font-weight: 800;
       background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 16px;
     }
 
     .badge-bar {
       display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
+      gap: 10px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
@@ -47,9 +55,9 @@
       background: rgba(0, 151, 157, 0.2);
       border: 1px solid var(--accent-arduino);
       color: var(--accent-cyan);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 700;
-      padding: 6px 16px;
+      padding: 6px 14px;
       border-radius: 20px;
       letter-spacing: 0.5px;
     }
@@ -75,14 +83,14 @@
     .ksb-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 18px;
     }
 
     .ksb-card {
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 20px 24px;
+      padding: 18px 22px;
     }
 
     .ksb-card.k { border-top: 5px solid var(--accent-cyan); }
@@ -92,10 +100,17 @@
     .ksb-card h4 {
       font-size: 1.25rem;
       font-weight: 800;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .ksb-card p.ksb-intro {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
     }
 
     .ksb-card ul {
@@ -103,9 +118,10 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      font-size: 0.95rem;
+      gap: 8px;
+      font-size: 0.92rem;
       color: var(--text-secondary);
+      line-height: 1.45;
     }
 
     .ksb-card ul li::before {
@@ -115,19 +131,62 @@
       margin-right: 8px;
     }
 
+    /* ASCII Op-Amp Diagram Box */
+    .ascii-box {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+      line-height: 1.35;
+      color: #38bdf8;
+      white-space: pre;
+      overflow-x: auto;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Key Connections Grid */
+    .conn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .conn-item {
+      background: #030712;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .conn-title {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 4px;
+      font-size: 0.98rem;
+    }
+
+    .conn-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
     /* Interactive Calculator & Sandbox Cards */
     .calc-box {
       background: #090e1a;
       border: 1px solid #1e293b;
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px;
     }
 
     .calc-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 14px;
+      gap: 14px;
+      margin-top: 12px;
     }
 
     .calc-input-group label {
@@ -146,7 +205,7 @@
       padding: 8px 12px;
       color: #ffffff;
       font-family: var(--font-mono);
-      font-size: 0.98rem;
+      font-size: 0.95rem;
     }
 
     .calc-input-group input:focus, .calc-input-group select:focus {
@@ -159,15 +218,15 @@
       grid-column: span 2;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
       margin-top: 10px;
     }
 
     .calc-readout-item {
       background: #030712;
       border: 1px solid rgba(6, 182, 212, 0.4);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border-radius: 8px;
+      padding: 10px 12px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -175,14 +234,14 @@
     }
 
     .calc-readout-item .readout-label {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       color: var(--text-secondary);
       text-transform: uppercase;
     }
 
     .calc-readout-item .readout-val {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       font-family: var(--font-mono);
       color: var(--accent-cyan);
@@ -193,26 +252,26 @@
       background: rgba(6, 182, 212, 0.08);
       border: 1px solid rgba(6, 182, 212, 0.3);
       border-radius: 12px;
-      padding: 18px;
-      margin-top: 14px;
+      padding: 16px;
+      margin-top: 12px;
     }
 
     .prediction-options {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .pred-btn {
       text-align: left;
       background: #0f172a;
       border: 1px solid #334155;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: 8px;
       color: #ffffff;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       transition: all 0.2s;
     }
 
@@ -233,11 +292,11 @@
 
     .pred-feedback {
       display: none;
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-radius: 8px;
-      margin-top: 12px;
-      font-size: 0.92rem;
-      line-height: 1.5;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      line-height: 1.45;
     }
 
     .pred-feedback.success {
@@ -259,27 +318,27 @@
       background: #050b14;
       border: 1px solid #1e293b;
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 260px;
+      min-height: 240px;
     }
 
     .schematic-img {
       max-width: 100%;
-      max-height: 220px;
+      max-height: 210px;
       object-fit: contain;
       border-radius: 8px;
       filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
     }
 
     .schematic-caption {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: var(--accent-cyan);
-      margin-top: 10px;
+      margin-top: 8px;
       text-align: center;
       background: rgba(6, 182, 212, 0.12);
       padding: 4px 12px;
@@ -291,16 +350,16 @@
     .chip-container {
       display: flex;
       justify-content: center;
-      margin: 16px 0;
+      margin: 12px 0;
     }
 
     .dip-chip {
       background: #1e293b;
       border: 2px solid #475569;
       border-radius: 10px;
-      padding: 16px 24px;
+      padding: 14px 22px;
       position: relative;
-      width: 240px;
+      width: 230px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     }
 
@@ -321,17 +380,17 @@
       font-family: var(--font-mono);
       font-weight: 800;
       color: #e2e8f0;
-      margin-bottom: 12px;
-      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
       letter-spacing: 1px;
     }
 
     .pin-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
     }
 
     .pin-left { color: var(--accent-cyan); }
@@ -341,7 +400,7 @@
     .meas-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       background: #090e1a;
       border-radius: 8px;
       overflow: hidden;
@@ -350,27 +409,27 @@
     .meas-table th {
       background: #111827;
       color: var(--accent-cyan);
-      padding: 10px 12px;
+      padding: 8px 12px;
       text-align: center;
       border-bottom: 1px solid #334155;
       font-weight: 700;
     }
 
     .meas-table td {
-      padding: 8px 12px;
+      padding: 7px 12px;
       border-bottom: 1px solid #1e293b;
       text-align: center;
     }
 
     .meas-input {
-      width: 90px;
-      padding: 6px 10px;
+      width: 100px;
+      padding: 5px 8px;
       background: #020617;
       border: 1px solid #334155;
       border-radius: 6px;
       color: #ffffff;
       font-family: var(--font-mono);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       text-align: center;
     }
 
@@ -380,11 +439,32 @@
       box-shadow: 0 0 8px var(--accent-glow);
     }
 
+    /* Text Response Areas */
+    .text-response {
+      width: 100%;
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #ffffff;
+      font-family: var(--font-main);
+      font-size: 0.92rem;
+      margin-top: 6px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .text-response:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 151, 157, 0.4);
+    }
+
     /* Mode Pill Switches */
     .tab-pills {
       display: flex;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .tab-pill {
@@ -405,6 +485,28 @@
       color: #ffffff;
       box-shadow: 0 0 12px rgba(0, 151, 157, 0.4);
     }
+
+    .remember-card {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(16, 185, 129, 0.12));
+      border: 2px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .remember-card h3 {
+      font-size: 1.35rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .remember-card p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 
@@ -420,9 +522,9 @@
           </a>
           <div class="brand-badge">
             <span class="pill">UNIT 19</span>
-            <span>Electronic Devices</span>
+            <span>Electronic Devices &amp; Circuits</span>
             <span style="color: var(--text-muted);">|</span>
-            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Week 4: Op-Amp Virtual Simulation</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Week 4: Operational Amplifiers</span>
           </div>
         </div>
         <div class="header-actions">
@@ -442,111 +544,104 @@
       <!-- Slides Wrapper -->
       <main id="slides-wrapper">
 
-        <!-- Slide 1: Welcome & Title -->
+        <!-- Slide 1: Welcome & Workplace Scenario -->
         <section class="slide active" id="slide-1">
           <div class="slide-body" style="justify-content: center; align-items: flex-start;">
             <div class="badge-bar">
-              <span class="badge-pill">Session: Week 4</span>
-              <span class="badge-pill">Date: 28 September 2026</span>
-              <span class="badge-pill">Duration: 3 Hours (160 Mins Active)</span>
-              <span class="badge-pill role-pill">Role: Junior Instrumentation Engineer</span>
-              <span class="badge-pill sim-pill">Simulation Mission: Multisim</span>
-              <span class="badge-pill opamp-pill">LM358 Dual Op-Amp</span>
+              <span class="badge-pill">Week 4 Student Learning Resource</span>
+              <span class="badge-pill role-pill">Workplace Role: Junior Instrumentation Engineer</span>
+              <span class="badge-pill sim-pill">Multisim Simulation</span>
+              <span class="badge-pill opamp-pill">LM358 Op-Amp</span>
             </div>
-            <h1 class="hero-title">Op-Amp Investigation:<br>“Condition the Sensor Signal”</h1>
-            <p class="hero-subtitle">
-              Mastering Operational Amplifiers: Open-Loop Voltage Comparators, Closed-Loop Negative Feedback,
-              and Inverting &amp; Non-Inverting Virtual Simulation in Multisim.
-            </p>
+            <h1 class="hero-title">Operational Amplifiers</h1>
+            <div class="hero-subtitle">Making a Small Signal Useful</div>
 
-            <div class="ksb-grid" style="margin-top: 24px; width: 100%;">
-              <div class="ksb-card k">
-                <h4>🧠 Knowledge (K)</h4>
-                <ul>
-                  <li>Op-amp fundamentals &amp; Golden Rules ($R_{in} = \infty, I = 0$)</li>
-                  <li>Open-loop comparators vs closed-loop amplifiers</li>
-                  <li>The purpose &amp; power of negative feedback</li>
-                  <li>Inverting ($A_v = -R_f/R_{in}$) vs Non-inverting ($A_v = 1 + R_f/R_1$)</li>
-                  <li>Why simulated results may differ from theoretical predictions</li>
+            <div class="grid-2col" style="width: 100%; margin-top: 10px;">
+              <div class="card">
+                <div class="card-title">🏭 Workplace Scenario</div>
+                <p style="font-size: 1.02rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 10px;">
+                  A prototype sensor is producing a small voltage signal.
+                </p>
+                <p style="font-size: 1.02rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px;">
+                  The control system cannot use the sensor signal directly.
+                </p>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: #ffffff; font-weight: 600;">
+                  Your engineering team has been asked to investigate how operational amplifiers can help by:
+                </p>
+                <ul style="color: var(--text-secondary); line-height: 1.6; padding-left: 20px; font-size: 0.95rem; margin-bottom: 14px;">
+                  <li>Making decisions from analogue signals.</li>
+                  <li>Increasing small signals to useful levels.</li>
                 </ul>
+                <div style="background: rgba(6, 182, 212, 0.1); border-left: 4px solid var(--accent-cyan); padding: 10px 14px; border-radius: 8px; font-size: 0.92rem; color: #a5f3fc;">
+                  Before any circuit is approved for production, engineers must predict what should happen, test the design and explain the results.
+                </div>
               </div>
-              <div class="ksb-card s">
-                <h4>🛠️ Skills (S)</h4>
-                <ul>
-                  <li>Calculating amplifier gain and predicting output voltage</li>
-                  <li>Capturing virtual op-amp schematics in Multisim</li>
-                  <li>Running interactive DC &amp; transient simulations</li>
-                  <li>Using virtual oscilloscopes to measure $V_{p-p}$ and phase inversion</li>
-                  <li>Comparing theoretical and simulated results methodically</li>
-                </ul>
-              </div>
-              <div class="ksb-card b">
-                <h4>💼 Behaviours (B)</h4>
-                <ul>
-                  <li>Predict $\rightarrow$ Simulate $\rightarrow$ Compare $\rightarrow$ Explain</li>
-                  <li>Evidence-backed engineering decision making</li>
-                  <li>Attention to detail in component values &amp; supply limits</li>
-                  <li>Independent technical problem solving in simulation</li>
-                </ul>
+
+              <div class="card">
+                <div class="card-title">🎯 Lasting Learning Outcome</div>
+                <p style="font-size: 1.02rem; line-height: 1.65; color: var(--text-secondary); margin-bottom: 16px;">
+                  Given an unfamiliar op-amp amplifier circuit, you can predict what it should do, calculate its gain, simulate its operation, evaluate its performance and explain how the circuit achieves its function.
+                </p>
+
+                <div class="card-title" style="margin-top: 14px; color: #fbbf24;">❓ Engineering Question</div>
+                <div style="background: #020617; border: 1px solid #334155; padding: 14px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; color: #ffffff; line-height: 1.5;">
+                  How can an op-amp turn a small sensor signal into useful information, and how can we prove that it works?
+                </div>
               </div>
             </div>
 
-            <div style="margin-top: 28px; display: flex; gap: 14px; align-items: center;">
+            <div style="margin-top: 22px; display: flex; gap: 14px; align-items: center;">
               <button class="btn btn-primary" onclick="window.PresentationEngine.nextSlide()">
-                Begin Simulation Mission →
+                Explore Knowledge, Skills &amp; Behaviours →
               </button>
             </div>
           </div>
         </section>
 
-        <!-- Slide 2: Workplace Scenario & Industrial Challenge -->
+        <!-- Slide 2: Knowledge, Skills and Behaviours (KSBs) -->
         <section class="slide" id="slide-2">
           <div class="slide-header">
-            <span class="badge-pill role-pill">Workplace Engineering Scenario</span>
-            <h2>The Sensor Signal Conditioning Challenge</h2>
+            <span class="badge-pill">Curriculum Standards</span>
+            <h2>Knowledge, Skills and Behaviours (KSBs)</h2>
           </div>
           <div class="slide-body">
-            <div class="grid-2col">
-              <div class="card">
-                <div class="card-title">🏭 Industrial Context: Process Instrumentation Interface</div>
-                <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary);">
-                  <strong style="color: #ffffff;">The Scenario:</strong> You are working as a
-                  <strong style="color: var(--accent-cyan);">Junior Instrumentation Engineer</strong> on a factory automation monitoring system.
-                </p>
-                <p style="font-size: 1.02rem; line-height: 1.7; color: var(--text-secondary);">
-                  A prototype sensor is producing a small voltage signal of only <strong>0.1 V (100 mV)</strong>.
-                  The control system analogue-to-digital converter (ADC) cannot use this raw sensor signal directly and requires <strong>1.0 V</strong>.
-                </p>
-                <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px; margin: 14px 0;">
-                  <strong style="color: #f87171;">⚠️ The Engineering Problem:</strong><br>
-                  1. The signal is 10× too small for the control system to resolve.<br>
-                  2. The safety interlock needs an immediate decision: Is sensor voltage above or below <strong>0.50 V</strong>?<br>
-                  Before any circuit is approved for manufacturing, engineers must <strong>predict what should happen, simulate the design, and explain the results</strong>.
-                </div>
-                <p style="font-size: 0.98rem; color: var(--text-secondary);">
-                  Your team will design, predict, and simulate op-amp circuits in Multisim to evaluate both decision-making and amplification stages!
-                </p>
+            <div class="ksb-grid" style="width: 100%;">
+              <div class="ksb-card k">
+                <h4>🧠 Knowledge</h4>
+                <p class="ksb-intro">You will know:</p>
+                <ul>
+                  <li>What an operational amplifier (op-amp) is.</li>
+                  <li>The difference between a comparator and an amplifier.</li>
+                  <li>The purpose of negative feedback.</li>
+                  <li>The difference between open-loop and closed-loop operation.</li>
+                  <li>The difference between inverting and non-inverting amplifiers.</li>
+                  <li>What voltage gain means.</li>
+                  <li>Why measured results may differ from predictions.</li>
+                </ul>
               </div>
 
-              <div class="card">
-                <div class="card-title">🎯 Virtual Simulation Objectives</div>
-                <ul style="display:flex; flex-direction:column; gap:12px; color:var(--text-secondary); margin-top:10px; font-size:0.98rem; list-style:none; padding:0;">
-                  <li style="display:flex; gap:10px;">
-                    <span style="color:var(--accent-cyan); font-weight:bold;">1.</span>
-                    <span><strong>Comparator Challenge:</strong> Simulate an open-loop comparator to trigger at $V_{ref} = 0.50\text{ V}$.</span>
-                  </li>
-                  <li style="display:flex; gap:10px;">
-                    <span style="color:var(--color-success); font-weight:bold;">2.</span>
-                    <span><strong>Non-Inverting Simulation:</strong> Model a closed-loop non-inverting amplifier ($A_v = 10$) and verify in-phase amplification ($0.1\text{ V} \rightarrow 1.0\text{ V}$).</span>
-                  </li>
-                  <li style="display:flex; gap:10px;">
-                    <span style="color:#f59e0b; font-weight:bold;">3.</span>
-                    <span><strong>Inverting Simulation:</strong> Model an inverting amplifier ($A_v = -10$) and verify $180^\circ$ phase inversion.</span>
-                  </li>
-                  <li style="display:flex; gap:10px;">
-                    <span style="color:var(--color-warning); font-weight:bold;">4.</span>
-                    <span><strong>Verification Analysis:</strong> Compare theoretical predictions with Multisim simulated waveforms and explain any observed differences.</span>
-                  </li>
+              <div class="ksb-card s">
+                <h4>🛠️ Skills</h4>
+                <p class="ksb-intro">You will be able to:</p>
+                <ul>
+                  <li>Identify op-amp terminals on a schematic.</li>
+                  <li>Calculate amplifier gain.</li>
+                  <li>Predict output voltage.</li>
+                  <li>Use Multisim to simulate op-amp circuits.</li>
+                  <li>Compare theoretical and simulated results.</li>
+                  <li>Explain circuit behaviour using engineering language.</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card b">
+                <h4>💼 Behaviours</h4>
+                <p class="ksb-intro">You will demonstrate:</p>
+                <ul>
+                  <li>Professional working practices.</li>
+                  <li>Logical engineering thinking.</li>
+                  <li>Evidence-based decision making.</li>
+                  <li>Attention to detail.</li>
+                  <li>Independence when investigating circuits.</li>
                 </ul>
               </div>
             </div>
@@ -562,7 +657,7 @@
           <div class="slide-body">
             <div class="grid-2col">
               <div class="card">
-                <div class="card-title">⚡ Interactive Retrieval Checkpoint</div>
+                <div class="card-title">⚡ Cumulative Recall Checkpoint</div>
                 <div class="prediction-box" style="margin-top: 0;">
                   <h4>Question: In Week 3, how did we prove a BJT was operating in Saturation?</h4>
                   <div class="prediction-options">
@@ -601,8 +696,8 @@
                     $$V = I \cdot R, \quad P = V \cdot I = I^2 R$$
                   </div>
                   <div style="background:#020617; padding:12px; border-radius:8px; border:1px solid #1e293b;">
-                    <strong style="color:var(--color-success);">Week 2 — Diode Forward Drop &amp; Ripple:</strong>
-                    $$V_{DC(pk)} = V_{AC(pk)} - 2 V_F, \quad V_{ripple} \approx \frac{I_{load}}{f \cdot C}$$
+                    <strong style="color:var(--color-success);">Week 2 — Diode Forward Drop:</strong>
+                    $$V_{F} \approx 0.7\text{ V (Silicon)}, \quad V_{DC(pk)} = V_{AC(pk)} - 2 V_F$$
                   </div>
                   <div style="background:#020617; padding:12px; border-radius:8px; border:1px solid #1e293b;">
                     <strong style="color:#fbbf24;">Week 3 — BJT Current Gain:</strong>
@@ -614,391 +709,250 @@
           </div>
         </section>
 
-        <!-- Slide 4: Inside the Op-Amp & LM358 Pinout -->
+        <!-- Slide 4: What Is an Operational Amplifier? -->
         <section class="slide" id="slide-4">
           <div class="slide-header">
-            <span class="badge-pill opamp-pill">Core Anatomy</span>
-            <h2>What Is an Operational Amplifier? (Golden Rules &amp; Pinout)</h2>
+            <span class="badge-pill opamp-pill">Core Concept</span>
+            <h2>What Is an Operational Amplifier?</h2>
           </div>
           <div class="slide-body">
             <div class="grid-2col">
               <div class="card">
-                <div class="card-title">⚡ The Ideal Op-Amp &amp; The Two Golden Rules</div>
-                <p style="color:var(--text-secondary); line-height:1.6;">
-                  An <strong>operational amplifier</strong> is a high-gain DC-coupled differential amplifier. It takes two inputs and amplifies the difference between them.
+                <div class="card-title">⚡ Operational Amplifier Definition</div>
+                <p style="font-size: 1.02rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px;">
+                  An operational amplifier, usually called an op-amp, is an electronic component that compares two input voltages and produces an output voltage.
                 </p>
-                <div style="background:#020617; border-left:4px solid var(--accent-cyan); padding:12px; border-radius:8px; margin:12px 0;">
-                  <strong style="color:var(--accent-cyan);">Golden Rule 1: Zero Input Current ($I_+ = I_- = 0$)</strong><br>
-                  The input impedance is practically infinite ($R_{in} \approx 10^{12}\,\Omega$). No current flows into either input terminal!
-                </div>
-                <div style="background:#020617; border-left:4px solid var(--color-success); padding:12px; border-radius:8px; margin:12px 0;">
-                  <strong style="color:var(--color-success);">Golden Rule 2: Virtual Short ($V_+ = V_-$)</strong><br>
-                  When negative feedback is connected, the op-amp output drives until the inverting input $(-)$ equals the non-inverting input $(+)$.
+                <p style="font-size: 1.02rem; line-height: 1.6; color: #ffffff; font-weight: 600; margin-bottom: 10px;">
+                  Think of it as a very powerful electronic decision-maker.
+                </p>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px;">
+                  It can be used to:
+                </p>
+                <ul style="color: var(--text-secondary); line-height: 1.6; padding-left: 20px; font-size: 0.95rem; margin-bottom: 14px;">
+                  <li>Compare voltages</li>
+                  <li>Amplify signals</li>
+                  <li>Condition sensor outputs</li>
+                  <li>Form part of larger control systems</li>
+                </ul>
+
+                <div class="card-title" style="margin-top: 12px;">Op-Amp Symbol</div>
+                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; justify-content: center; align-items: center; margin-top: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
+                  <img src="images/opamp-symbol.png" alt="Operational Amplifier Symbol (+, -, Vout)" style="max-height: 155px; max-width: 100%; object-fit: contain;">
                 </div>
               </div>
 
               <div class="card">
-                <div class="card-title">📌 LM358 Dual Op-Amp Pinout (DIP-8)</div>
-                <div class="chip-container">
-                  <div class="dip-chip">
-                    <div class="dip-notch"></div>
-                    <div class="dip-label">LM358</div>
-                    <div class="pin-row"><span class="pin-left">1: OUT 1</span><span class="pin-right">8: +V_CC</span></div>
-                    <div class="pin-row"><span class="pin-left">2: IN 1 (-)</span><span class="pin-right">7: OUT 2</span></div>
-                    <div class="pin-row"><span class="pin-left">3: IN 1 (+)</span><span class="pin-right">6: IN 2 (-)</span></div>
-                    <div class="pin-row"><span class="pin-left">4: GND / -V_EE</span><span class="pin-right">5: IN 2 (+)</span></div>
+                <div class="card-title">📌 Key Op-Amp Connections</div>
+                <div class="conn-list">
+                  <div class="conn-item">
+                    <div class="conn-title">Non-Inverting Input (+)</div>
+                    <div class="conn-desc">
+                      The positive input. If this voltage becomes higher than the voltage on the negative input, the op-amp output increases.
+                    </div>
+                  </div>
+                  <div class="conn-item">
+                    <div class="conn-title">Inverting Input (-)</div>
+                    <div class="conn-desc">
+                      The negative input. If this voltage becomes higher than the voltage on the positive input, the op-amp output decreases.
+                    </div>
+                  </div>
+                  <div class="conn-item">
+                    <div class="conn-title">Output</div>
+                    <div class="conn-desc">
+                      The voltage produced by the op-amp.
+                    </div>
+                  </div>
+                  <div class="conn-item">
+                    <div class="conn-title">Power Supply</div>
+                    <div class="conn-desc">
+                      The op-amp needs electrical power to operate. Without a power supply, no amplification can occur.
+                    </div>
                   </div>
                 </div>
-                <div style="background:rgba(6, 182, 212, 0.1); border:1px solid var(--accent-cyan); padding:10px; border-radius:8px; font-size:0.88rem; color:#a5f3fc;">
-                  ℹ️ <strong>Multisim Simulation Note:</strong> When placing the LM358 in Multisim, ensure Pin 8 connects to $+V_{CC}$ and Pin 4 connects to Ground or $-V_{EE}$ so the virtual model is fully energized.
+
+                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; justify-content: center; align-items: center; margin-top: 14px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
+                  <img src="images/lm358-pinout.png" alt="LM358 Dual Op-Amp DIP-8 Pinout Diagram" style="max-height: 175px; max-width: 100%; object-fit: contain;">
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Slide 5: Challenge 1 — Open-Loop Comparator -->
+        <!-- Slide 5: Part 1 – Comparator Circuits -->
         <section class="slide" id="slide-5">
           <div class="slide-header">
-            <span class="badge-pill">Circuit 1</span>
-            <h2>Part 1: The Open-Loop Comparator (Decision Maker)</h2>
+            <span class="badge-pill">Part 1</span>
+            <h2>Part 1 – Comparator Circuits</h2>
           </div>
           <div class="slide-body">
             <div class="grid-2col">
               <div class="card">
-                <div class="card-title">🔍 How an Open-Loop Comparator Operates</div>
-                <p style="color:var(--text-secondary); line-height:1.7;">
-                  When an op-amp has <strong>no feedback path</strong>, it operates in <strong>open-loop mode</strong>.
-                  Because the open-loop gain is gigantic ($A_{OL} \approx 100{,}000+$), even a microscopic difference between inputs drives the output directly to its power rails.
-                </p>
-                <div style="background:#020617; padding:14px; border-radius:8px; border:1px solid #1e293b; margin:14px 0;">
-                  <strong style="color:#ffffff;">The Switching Decision:</strong>
-                  <ul style="margin-top:8px; color:var(--text-secondary); display:flex; flex-direction:column; gap:6px;">
-                    <li>If $V_{in} > V_{ref} \implies$ Output snaps <strong>HIGH</strong> ($\approx +V_{CC} - 1.5\text{ V}$)</li>
-                    <li>If $V_{in} < V_{ref} \implies$ Output snaps <strong>LOW</strong> ($\approx 0\text{ V}$)</li>
-                  </ul>
+                <div class="card-title">⚠️ Engineering Challenge</div>
+                <div style="background:#020617; padding:12px 16px; border-radius:8px; border:1px solid #1e293b; margin-bottom:12px; font-family:var(--font-mono); font-size:0.98rem; line-height:1.6;">
+                  Sensor voltage = 0.35 V<br>
+                  Control-system threshold = 0.50 V
                 </div>
-                <p style="font-size:0.95rem; color:var(--text-secondary);">
-                  In our factory scenario: $V_{ref} = 0.50\text{ V}$. If the sensor drops below $0.50\text{ V}$, the comparator detects a pressure loss and outputs a digital LOW.
+                <p style="font-size:0.98rem; color:#ffffff; font-weight:600; margin-bottom:4px;">
+                  The system needs to know:
+                </p>
+                <div style="background:rgba(245, 158, 11, 0.12); border-left:4px solid #f59e0b; padding:10px 14px; border-radius:6px; font-weight:700; color:#fbbf24; margin-bottom:14px;">
+                  Is the sensor voltage above or below 0.50 V?
+                </div>
+
+                <div class="card-title">What Is a Comparator?</div>
+                <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.55; margin-bottom:8px;">
+                  A comparator uses an op-amp to compare two voltages.
+                </p>
+                <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.55; margin-bottom:8px;">
+                  It answers a simple question: <strong>Which voltage is bigger?</strong>
+                </p>
+                <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.55; margin-bottom:8px;">
+                  The output behaves like a switch.
+                </p>
+                <div style="background:#020617; border:1px solid #1e293b; border-radius:8px; padding:10px 14px; font-family:var(--font-mono); font-size:0.9rem; margin-bottom:8px;">
+                  If: $V_{in} > V_{ref} \implies$ Output becomes <strong>HIGH</strong>.<br>
+                  If: $V_{in} < V_{ref} \implies$ Output becomes <strong>LOW</strong>.
+                </div>
+                <p style="font-size:0.92rem; color:var(--text-secondary);">
+                  The output changes suddenly rather than gradually.
                 </p>
               </div>
 
-              <div class="schematic-box">
-                <img src="images/comparator.png" alt="Op-Amp Voltage Comparator Schematic Diagram" class="schematic-img">
-                <div class="schematic-caption">Figure 4.1: Open-Loop Voltage Comparator ($V_{ref} = 0.50\text{ V}$ Threshold)</div>
+              <div class="card">
+                <div class="card-title">🔄 Open-Loop Operation</div>
+                <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.55; margin-bottom:10px;">
+                  When an op-amp has no feedback path, it is operating in open-loop mode.
+                </p>
+                <p style="font-size:0.95rem; color:#ffffff; font-weight:600; line-height:1.55; margin-bottom:8px;">
+                  In simple terms:
+                </p>
+                <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.55; margin-bottom:10px;">
+                  The op-amp is making a decision rather than providing controlled amplification.
+                </p>
+                <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.55; margin-bottom:12px;">
+                  Even a very small difference between the inputs can cause the output to switch fully high or fully low.
+                </p>
+                <p style="font-size:0.92rem; color:#a5f3fc; background:rgba(6, 182, 212, 0.1); padding:8px 12px; border-radius:6px; border:1px solid rgba(6, 182, 212, 0.3); margin-bottom:14px;">
+                  This makes open-loop operation useful for comparator circuits.
+                </p>
+
+                <div class="schematic-box">
+                  <img src="images/comparator.png" alt="Comparator Schematic Diagram" class="schematic-img">
+                  <div class="schematic-caption">Comparator Circuit ($V_{ref} = 0.50\text{ V}$)</div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Slide 6: Interactive Comparator Simulator -->
+        <!-- Slide 6: Comparator Investigation -->
         <section class="slide" id="slide-6">
           <div class="slide-header">
-            <span class="badge-pill">Interactive Sandbox</span>
-            <h2>Interactive Comparator Threshold Tester</h2>
-          </div>
-          <div class="slide-body">
-            <div class="grid-2col">
-              <div class="calc-box">
-                <div class="card-title">⚡ Live Comparator Simulation</div>
-                <p style="font-size:0.9rem; color:var(--text-secondary);">
-                  Vary the Sensor Input Voltage ($V_{in}$) across the fixed Reference Voltage ($V_{ref} = 0.50\text{ V}$):
-                </p>
-                <div class="calc-grid">
-                  <div class="calc-input-group" style="grid-column: span 2;">
-                    <label for="comp-vin">Sensor Input Voltage $V_{in}$ (Volts): <span id="comp-vin-val" style="color:var(--accent-cyan); font-weight:bold;">0.35 V</span></label>
-                    <input type="range" id="comp-vin" min="0.0" max="1.0" step="0.05" value="0.35" oninput="updateComparatorSim()">
-                  </div>
-                  <div class="calc-input-group">
-                    <label for="comp-vref">Reference Threshold $V_{ref}$:</label>
-                    <input type="text" id="comp-vref" value="0.50 V" readonly style="color:var(--text-muted);">
-                  </div>
-                  <div class="calc-input-group">
-                    <label for="comp-vcc">Supply Voltage ($V_{CC}$):</label>
-                    <input type="text" id="comp-vcc" value="5.0 V" readonly style="color:var(--text-muted);">
-                  </div>
-                  <div class="calc-readout-grid">
-                    <div class="calc-readout-item">
-                      <span class="readout-label">Input Difference</span>
-                      <span class="readout-val" id="comp-diff">-0.15 V</span>
-                    </div>
-                    <div class="calc-readout-item">
-                      <span class="readout-label">Output State</span>
-                      <span class="readout-val" id="comp-state" style="color:var(--color-danger);">LOW</span>
-                    </div>
-                    <div class="calc-readout-item">
-                      <span class="readout-label">Output $V_{out}$</span>
-                      <span class="readout-val" id="comp-vout">0.05 V</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-title">🔮 Prediction Checkpoint: Comparator Switching</div>
-                <div class="prediction-box" style="margin-top: 0;">
-                  <h4>What happens to $V_{out}$ when $V_{in}$ changes from 0.45V to 0.55V?</h4>
-                  <div class="prediction-options">
-                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Comparators have huge gain; they snap between rails rather than rising gradually!')">
-                      The output increases gradually by 0.10 V.
-                    </button>
-                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! The output snaps instantly from LOW (~0V) to HIGH (~3.6V). The transition is digital!')">
-                      The output snaps instantly from LOW (~0.05 V) to HIGH (~3.6 V).
-                    </button>
-                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Check the formula: Vin > Vref causes output to go HIGH.')">
-                      The output drops from HIGH to LOW.
-                    </button>
-                  </div>
-                  <div class="pred-feedback"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Slide 7: Why Negative Feedback? -->
-        <section class="slide" id="slide-7">
-          <div class="slide-header">
-            <span class="badge-pill">Foundational Principle</span>
-            <h2>Why Feedback? The Magic of Negative Feedback</h2>
+            <span class="badge-pill">Investigation</span>
+            <h2>Comparator Investigation</h2>
           </div>
           <div class="slide-body">
             <div class="grid-2col">
               <div class="card">
-                <div class="card-title">🚗 The Speedometer Analogy</div>
-                <p style="font-size:1.02rem; line-height:1.7; color:var(--text-secondary);">
-                  Imagine driving a powerful racing car on a motorway with your eyes closed to the speedometer. The engine is so powerful that any slight depression of the accelerator drives the car to maximum speed.
+                <div class="card-title">📊 Comparator Investigation</div>
+                <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:12px;">
+                  Change the input voltage and record what happens.
                 </p>
-                <p style="font-size:1.02rem; line-height:1.7; color:var(--text-secondary);">
-                  The <strong>speedometer provides feedback</strong>. By observing the speedometer and easing off the throttle, you hold a steady, predictable 70 mph regardless of road gradient or wind.
-                </p>
-                <div style="background:rgba(16, 185, 129, 0.1); border-left:4px solid var(--color-success); padding:12px; border-radius:8px; margin-top:14px;">
-                  <strong style="color:var(--color-success);">Electronic Negative Feedback:</strong><br>
-                  We return a controlled portion of the output voltage back to the <strong>inverting input ($-$)</strong>. This subtracts from the input, self-correcting the amplifier and turning an erratic $100{,}000$ open-loop gain into a rock-solid, predictable closed-loop gain!
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-title">⚖️ Open-Loop vs Closed-Loop Comparison</div>
-                <table style="width:100%; border-collapse:collapse; font-size:0.95rem; margin-top:10px;">
+                <table class="meas-table">
                   <thead>
-                    <tr style="border-bottom:1px solid #334155; color:var(--accent-cyan);">
-                      <th style="padding:10px; text-align:left;">Feature</th>
-                      <th style="padding:10px; text-align:center;">Open-Loop</th>
-                      <th style="padding:10px; text-align:center;">Closed-Loop</th>
+                    <tr>
+                      <th>$V_{in}$</th>
+                      <th>$V_{out}$</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td style="padding:10px; font-weight:600;">Feedback Path?</td>
-                      <td style="padding:10px; text-align:center; color:var(--color-danger);">None (Open)</td>
-                      <td style="padding:10px; text-align:center; color:var(--color-success);">Yes (Negative to $-$)</td>
+                      <td>0.2 V</td>
+                      <td><input type="text" id="m_comp_v02" class="meas-input" placeholder="e.g. LOW (0.05V)" oninput="saveWeek4TableData()"></td>
                     </tr>
                     <tr>
-                      <td style="padding:10px; font-weight:600;">Voltage Gain ($A_v$)</td>
-                      <td style="padding:10px; text-align:center;">$\approx 100{,}000$ (Uncontrolled)</td>
-                      <td style="padding:10px; text-align:center;">Set by external resistors</td>
+                      <td>0.4 V</td>
+                      <td><input type="text" id="m_comp_v04" class="meas-input" placeholder="e.g. LOW (0.05V)" oninput="saveWeek4TableData()"></td>
                     </tr>
                     <tr>
-                      <td style="padding:10px; font-weight:600;">Output Behavior</td>
-                      <td style="padding:10px; text-align:center;">Snaps to Saturation Rails</td>
-                      <td style="padding:10px; text-align:center;">Faithful linear replica</td>
+                      <td>0.5 V</td>
+                      <td><input type="text" id="m_comp_v05" class="meas-input" placeholder="e.g. Switching" oninput="saveWeek4TableData()"></td>
                     </tr>
                     <tr>
-                      <td style="padding:10px; font-weight:600;">Primary Application</td>
-                      <td style="padding:10px; text-align:center;">Comparator / Decision Switch</td>
-                      <td style="padding:10px; text-align:center;">Sensor Preamplifier</td>
+                      <td>0.7 V</td>
+                      <td><input type="text" id="m_comp_v07" class="meas-input" placeholder="e.g. HIGH (3.6V)" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td>1.0 V</td>
+                      <td><input type="text" id="m_comp_v10" class="meas-input" placeholder="e.g. HIGH (3.6V)" oninput="saveWeek4TableData()"></td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <!-- Slide 8: Circuit 2 — Non-Inverting Amplifier -->
-        <section class="slide" id="slide-8">
-          <div class="slide-header">
-            <span class="badge-pill">Circuit 2</span>
-            <h2>Part 2: The Non-Inverting Amplifier ($A_v = 1 + R_f / R_1$)</h2>
-          </div>
-          <div class="slide-body">
-            <div class="grid-2col">
-              <div class="card">
-                <div class="card-title">📐 Circuit Operation &amp; Derivation</div>
-                <p style="color:var(--text-secondary); line-height:1.7;">
-                  In a <strong>non-inverting amplifier</strong>, the sensor signal $V_{in}$ connects directly to the non-inverting terminal $(+)$.
-                  Because no current enters the $(+)$ input, the circuit presents an <strong>extremely high input impedance</strong>, preventing sensor loading.
-                </p>
-                <div style="background:#020617; padding:12px; border-radius:8px; border:1px solid #1e293b; margin:12px 0;">
-                  <strong style="color:var(--accent-cyan);">Non-Inverting Voltage Gain Formula:</strong>
-                  <div style="font-size:1.3rem; margin:8px 0; text-align:center;">
-                    $$A_v = 1 + \frac{R_f}{R_1}$$
-                  </div>
-                  $$V_{out} = V_{in} \cdot \left(1 + \frac{R_f}{R_1}\right)$$
-                </div>
-                <p style="font-size:0.95rem; color:var(--text-secondary);">
-                  <strong>Phase Relationship:</strong> The output signal is <strong>in-phase ($0^\circ$)</strong> with the input. When input rises, output rises!
-                </p>
-              </div>
-
-              <div class="schematic-box">
-                <img src="images/non-inverting-amplifier.png" alt="Non-Inverting Op-Amp Amplifier Schematic" class="schematic-img">
-                <div class="schematic-caption">Figure 4.2: Non-Inverting Op-Amp ($R_1 = 1\text{ k}\Omega, R_f = 9\text{ k}\Omega \implies A_v = 10$)</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Slide 9: Circuit 3 — Inverting Amplifier -->
-        <section class="slide" id="slide-9">
-          <div class="slide-header">
-            <span class="badge-pill">Circuit 3</span>
-            <h2>Part 3: The Inverting Amplifier ($A_v = -R_f / R_{in}$)</h2>
-          </div>
-          <div class="slide-body">
-            <div class="grid-2col">
-              <div class="card">
-                <div class="card-title">🔄 Inversion &amp; Virtual Earth Concept</div>
-                <p style="color:var(--text-secondary); line-height:1.7;">
-                  In an <strong>inverting amplifier</strong>, the non-inverting terminal $(+)$ is tied to Ground ($0\text{ V}$).
-                  Due to Golden Rule 2 ($V_+ = V_-$), the inverting terminal $(-)$ is also held at <strong>Virtual Earth (0 V)</strong>!
-                </p>
-                <div style="background:#020617; padding:12px; border-radius:8px; border:1px solid #1e293b; margin:12px 0;">
-                  <strong style="color:var(--accent-cyan);">Inverting Voltage Gain Formula:</strong>
-                  <div style="font-size:1.3rem; margin:8px 0; text-align:center;">
-                    $$A_v = -\frac{R_f}{R_{in}}$$
-                  </div>
-                  $$V_{out} = -V_{in} \cdot \frac{R_f}{R_{in}}$$
-                </div>
-                <p style="font-size:0.95rem; color:var(--text-secondary);">
-                  <strong>Phase Relationship:</strong> The negative sign represents a <strong>$180^\circ$ phase inversion</strong>. When input swings positive, output swings negative!
-                </p>
-              </div>
-
-              <div class="schematic-box">
-                <img src="images/inverting-amplifier.png" alt="Inverting Op-Amp Amplifier Schematic" class="schematic-img">
-                <div class="schematic-caption">Figure 4.3: Inverting Op-Amp ($R_{in} = 1\text{ k}\Omega, R_f = 10\text{ k}\Omega \implies A_v = -10$)</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Slide 10: Comparative Matrix -->
-        <section class="slide" id="slide-10">
-          <div class="slide-header">
-            <span class="badge-pill">Engineering Comparison</span>
-            <h2>Engineering Selection: Inverting vs Non-Inverting</h2>
-          </div>
-          <div class="slide-body">
-            <div class="card">
-              <div class="card-title">⚖️ Performance Trade-Off Matrix</div>
-              <table style="width:100%; border-collapse:collapse; font-size:0.95rem; margin-top:10px;">
-                <thead>
-                  <tr style="border-bottom:1px solid #334155; color:var(--accent-cyan);">
-                    <th style="padding:10px; text-align:left;">Parameter</th>
-                    <th style="padding:10px; text-align:center;">Non-Inverting Configuration</th>
-                    <th style="padding:10px; text-align:center;">Inverting Configuration</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="padding:10px; font-weight:600;">Closed-Loop Gain Formula</td>
-                    <td style="padding:10px; text-align:center; font-family:var(--font-mono); color:var(--color-success);">$A_v = 1 + \frac{R_f}{R_1}$</td>
-                    <td style="padding:10px; text-align:center; font-family:var(--font-mono); color:#f59e0b;">$A_v = -\frac{R_f}{R_{in}}$</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px; font-weight:600;">Minimum Voltage Gain</td>
-                    <td style="padding:10px; text-align:center;">$1$ (Unity Gain Buffer when $R_f = 0$)</td>
-                    <td style="padding:10px; text-align:center;">Can attenuate ($|A_v| < 1$ if $R_f < R_{in}$)</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px; font-weight:600;">Input Impedance ($Z_{in}$)</td>
-                    <td style="padding:10px; text-align:center; color:var(--color-success);">Extremely High ($> 10^9\,\Omega$) — Ideal for weak sensors</td>
-                    <td style="padding:10px; text-align:center;">Equal to $R_{in}$ (Loads high-impedance sensors)</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px; font-weight:600;">Phase Shift</td>
-                    <td style="padding:10px; text-align:center;">$0^\circ$ (In Phase)</td>
-                    <td style="padding:10px; text-align:center;">$180^\circ$ Inverted (Upside down)</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px; font-weight:600;">Input Connection Point</td>
-                    <td style="padding:10px; text-align:center;">Non-inverting pin $(+)$</td>
-                    <td style="padding:10px; text-align:center;">Input resistor $R_{in}$ to inverting pin $(-)$</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- Slide 11: Mandatory Interactive Circuit Calculator Widget -->
-        <section class="slide" id="slide-11">
-          <div class="slide-header">
-            <span class="badge-pill">Interactive Modeler</span>
-            <h2>Op-Amp Closed-Loop Gain &amp; Saturation Modeler</h2>
-          </div>
-          <div class="slide-body">
-            <div class="grid-2col">
-              <div class="calc-box">
-                <div class="tab-pills">
-                  <button class="tab-pill active" id="tab-noninv" onclick="setOpAmpMode('non-inverting')">Non-Inverting Mode</button>
-                  <button class="tab-pill" id="tab-inv" onclick="setOpAmpMode('inverting')">Inverting Mode</button>
-                </div>
-
-                <div class="calc-grid">
-                  <div class="calc-input-group">
-                    <label for="op-rf">Feedback Resistor $R_f$ ($\text{k}\Omega$):</label>
-                    <input type="number" id="op-rf" value="9" min="1" max="100" step="1" oninput="runOpAmpCalculation()">
-                  </div>
-                  <div class="calc-input-group">
-                    <label for="op-r1" id="label-r1">Input Resistor $R_1$ ($\text{k}\Omega$):</label>
-                    <input type="number" id="op-r1" value="1" min="0.5" max="20" step="0.5" oninput="runOpAmpCalculation()">
-                  </div>
-                  <div class="calc-input-group">
-                    <label for="op-vin">Sensor Input $V_{in}$ (Volts):</label>
-                    <input type="number" id="op-vin" value="0.10" min="-2.0" max="2.0" step="0.05" oninput="runOpAmpCalculation()">
-                  </div>
-                  <div class="calc-input-group">
-                    <label for="op-vcc">Dual Supply Rail ($\pm V_{CC}$):</label>
-                    <select id="op-vcc" onchange="runOpAmpCalculation()">
-                      <option value="5">Single +5V / GND (LM358)</option>
-                      <option value="12" selected>Dual ±12V Supplies</option>
-                      <option value="15">Dual ±15V Standard Lab</option>
-                    </select>
-                  </div>
-
-                  <div class="calc-readout-grid">
-                    <div class="calc-readout-item">
-                      <span class="readout-label">Voltage Gain ($A_v$)</span>
-                      <span class="readout-val" id="op-out-gain">10.0 V/V</span>
+                <div style="margin-top:16px;">
+                  <div class="card-title">Questions</div>
+                  <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div>
+                      <label style="font-size:0.88rem; color:var(--accent-cyan); font-weight:600;">At what voltage does the output change state?</label>
+                      <input type="text" id="q_comp_state" class="text-response" placeholder="Enter voltage threshold..." oninput="saveWeek4TableData()">
                     </div>
-                    <div class="calc-readout-item">
-                      <span class="readout-label">Output $V_{out}$</span>
-                      <span class="readout-val" id="op-out-vout">1.00 V</span>
+                    <div>
+                      <label style="font-size:0.88rem; color:var(--accent-cyan); font-weight:600;">Does the output change suddenly or gradually?</label>
+                      <input type="text" id="q_comp_speed" class="text-response" placeholder="Enter suddenly or gradually..." oninput="saveWeek4TableData()">
                     </div>
-                    <div class="calc-readout-item">
-                      <span class="readout-label">Operating State</span>
-                      <span class="readout-val" id="op-out-state" style="color:var(--color-success); font-size:1.05rem;">LINEAR</span>
+                    <div>
+                      <label style="font-size:0.88rem; color:var(--accent-cyan); font-weight:600;">Why is this useful in a control system?</label>
+                      <input type="text" id="q_comp_ctrl" class="text-response" placeholder="Explain utility for digital decisions / alarms..." oninput="saveWeek4TableData()">
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="card">
-                <div class="card-title">🔮 Prediction Checkpoint: Saturation Limits</div>
-                <div class="prediction-box" style="margin-top: 0;">
-                  <h4>What happens in Multisim if $V_{in} = 2.0\text{ V}$ with $A_v = 10$ on a $\pm 12\text{ V}$ supply?</h4>
+              <div>
+                <div class="calc-box">
+                  <div class="card-title">⚡ Interactive Comparator Simulation</div>
+                  <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:10px;">
+                    Adjust $V_{in}$ to simulate sensor changes against $V_{ref} = 0.50\text{ V}$:
+                  </p>
+                  <div class="calc-grid">
+                    <div class="calc-input-group" style="grid-column: span 2;">
+                      <label for="comp-vin">Sensor Input Voltage $V_{in}$: <span id="comp-vin-val" style="color:var(--accent-cyan); font-weight:bold;">0.35 V</span></label>
+                      <input type="range" id="comp-vin" min="0.0" max="1.0" step="0.05" value="0.35" oninput="updateComparatorSim()">
+                    </div>
+                    <div class="calc-input-group">
+                      <label>Reference $V_{ref}$:</label>
+                      <input type="text" value="0.50 V" readonly style="color:var(--text-muted);">
+                    </div>
+                    <div class="calc-input-group">
+                      <label>Supply Voltage ($V_{CC}$):</label>
+                      <input type="text" value="5.0 V" readonly style="color:var(--text-muted);">
+                    </div>
+                    <div class="calc-readout-grid">
+                      <div class="calc-readout-item">
+                        <span class="readout-label">Input Difference</span>
+                        <span class="readout-val" id="comp-diff">-0.15 V</span>
+                      </div>
+                      <div class="calc-readout-item">
+                        <span class="readout-label">Output State</span>
+                        <span class="readout-val" id="comp-state" style="color:var(--color-danger);">LOW</span>
+                      </div>
+                      <div class="calc-readout-item">
+                        <span class="readout-label">Output $V_{out}$</span>
+                        <span class="readout-val" id="comp-vout">0.05 V</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="prediction-box">
+                  <h4>🔮 Pre-Power Prediction Checkpoint</h4>
+                  <p style="font-size:0.9rem; color:var(--text-secondary);">What happens to $V_{out}$ when $V_{in}$ crosses above $0.50\text{ V}$?</p>
                   <div class="prediction-options">
-                    <button class="pred-btn" onclick="checkPrediction(this, false, 'The output cannot exceed the DC supply voltage rails!')">
-                      The output produces $2.0 \times 10 = 20.0\text{ V}$.
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Comparators switch suddenly to the supply rail, not gradually!')">
+                      The output voltage rises smoothly by 0.1 V.
                     </button>
-                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! The output hits the positive saturation limit (~+10.8V for a 12V supply) and the waveform clips flat.')">
-                      The output saturates (clips flat) at approximately $+10.8\text{ V}$, constrained by the power rails.
-                    </button>
-                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Op-amps do not generate free electrical energy beyond their supply.')">
-                      The op-amp automatically doubles the power supply voltage.
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Open-loop gain snaps the output directly to HIGH (~3.6V on 5V supply).')">
+                      The output switches suddenly from LOW to HIGH.
                     </button>
                   </div>
                   <div class="pred-feedback"></div>
@@ -1008,96 +962,640 @@
           </div>
         </section>
 
-        <!-- Slide 12: Multisim Virtual Simulation Verification Table -->
-        <section class="slide" id="slide-12">
+        <!-- Slide 7: Part 2 – Amplifier Circuits -->
+        <section class="slide" id="slide-7">
           <div class="slide-header">
-            <span class="badge-pill sim-pill">Multisim Lab</span>
-            <h2>Multisim Virtual Simulation &amp; Verification Table</h2>
+            <span class="badge-pill">Part 2</span>
+            <h2>Part 2 – Amplifier Circuits</h2>
           </div>
           <div class="slide-body">
-            <div class="card">
-              <div class="card-title">📊 Virtual Simulation Verification Table</div>
-              <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:14px; line-height:1.6;">
-                Build and simulate each circuit stage in <strong>Multisim</strong>. Record your simulated oscilloscope $V_{p-p}$ and DMM voltage readings below to verify whether the simulation matches theoretical predictions:
-              </p>
-              <table class="meas-table">
-                <thead>
-                  <tr>
-                    <th>Circuit Stage</th>
-                    <th>Input $V_{in}$</th>
-                    <th>Theoretical $V_{out}$</th>
-                    <th>Simulated $V_{out}$</th>
-                    <th>Simulated Gain ($A_v$)</th>
-                    <th>Inversion Verified</th>
-                    <th>Match Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="font-weight:600; text-align:left;">1. Comparator ($V_{ref} = 0.50\text{ V}$)</td>
-                    <td>0.35 V</td>
-                    <td>0.00 V (LOW)</td>
-                    <td><input type="text" id="m_comp_sim" class="meas-input" placeholder="0.05 V" oninput="saveWeek4TableData()"></td>
-                    <td>N/A</td>
-                    <td>No</td>
-                    <td><span style="color:var(--color-success); font-weight:700;">Verified</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600; text-align:left;">2. Non-Inverting ($R_f=9\text{k}, R_1=1\text{k}$)</td>
-                    <td>0.10 V</td>
-                    <td>1.00 V</td>
-                    <td><input type="text" id="m_noninv_sim" class="meas-input" placeholder="1.00 V" oninput="saveWeek4TableData()"></td>
-                    <td><input type="text" id="m_noninv_gain" class="meas-input" placeholder="10.0" oninput="saveWeek4TableData()"></td>
-                    <td>$0^\circ$ (In-phase)</td>
-                    <td><span style="color:var(--color-success); font-weight:700;">Verified</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600; text-align:left;">3. Inverting ($R_f=10\text{k}, R_{in}=1\text{k}$)</td>
-                    <td>0.10 V</td>
-                    <td>-1.00 V</td>
-                    <td><input type="text" id="m_inv_sim" class="meas-input" placeholder="-1.00 V" oninput="saveWeek4TableData()"></td>
-                    <td><input type="text" id="m_inv_gain" class="meas-input" placeholder="-10.0" oninput="saveWeek4TableData()"></td>
-                    <td>$180^\circ$ (Inverted)</td>
-                    <td><span style="color:var(--color-success); font-weight:700;">Verified</span></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="grid-2col">
+              <div class="card">
+                <p style="font-size: 1.05rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 8px;">
+                  The comparator solves one problem.
+                </p>
+                <p style="font-size: 1.05rem; line-height: 1.6; color: #ffffff; font-weight: 700; margin-bottom: 14px;">
+                  Now the requirement changes.
+                </p>
 
-              <div style="margin-top:20px; background:#020617; border-left:4px solid var(--accent-cyan); padding:14px; border-radius:8px; font-size:0.92rem; color:var(--text-secondary); line-height:1.6;">
-                <strong>Engineering Analysis Prompt:</strong><br>
-                Did your Multisim simulation results match your mathematical predictions? If there are minor variations (such as comparator low saturation voltage being 0.05V rather than pure 0.00V), explain why practical op-amp internal output transistors cause this behavior.
+                <div class="card-title">⚠️ New Engineering Challenge</div>
+                <div style="background:#020617; padding:12px 16px; border-radius:8px; border:1px solid #1e293b; margin-bottom:12px; font-family:var(--font-mono); font-size:0.98rem; line-height:1.6;">
+                  Sensor output = 0.1 V<br>
+                  Required control-system input = 1.0 V
+                </div>
+                <p style="font-size: 1.02rem; color: #f87171; font-weight: 600; margin-bottom: 8px;">
+                  The signal is too small.
+                </p>
+                <p style="font-size: 1.02rem; color: #ffffff; font-weight: 600; margin-bottom: 16px;">
+                  Instead of making a decision, we must increase the signal.
+                </p>
+
+                <div class="card-title">What Is an Amplifier?</div>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 8px;">
+                  An amplifier increases the size of a signal.
+                </p>
+                <div style="background:#020617; border:1px solid #1e293b; padding:10px 14px; border-radius:8px; margin-bottom:10px; font-family:var(--font-mono); font-size:0.92rem;">
+                  Example:<br>
+                  Input = 0.1 V<br>
+                  Output = 1.0 V
+                </div>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 6px;">
+                  The shape of the signal remains the same.
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                  Only its size changes.
+                </p>
+              </div>
+
+              <div class="card">
+                <div class="card-title">📢 Loudspeaker Analogy &amp; Voltage Gain</div>
+                <div style="background:rgba(6, 182, 212, 0.1); border-left:4px solid var(--accent-cyan); padding:12px 16px; border-radius:8px; font-size:0.95rem; color:#e0f2fe; line-height:1.6; margin-bottom:16px;">
+                  Think of an amplifier like a microphone and loudspeaker system.<br>
+                  The sound stays the same.<br>
+                  Only the volume increases.
+                </div>
+
+                <div class="card-title">What Is Gain?</div>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 10px;">
+                  Gain tells us how much the signal has increased.
+                </p>
+
+                <div style="background:#020617; border:1px solid #334155; padding:14px; border-radius:8px; margin-bottom:12px; text-align:center;">
+                  <strong style="color:var(--accent-cyan); font-size:0.95rem;">Formula</strong>
+                  <div style="font-size:1.4rem; margin:8px 0;">
+                    $$\text{Gain} = \frac{\text{Output}}{\text{Input}}$$
+                  </div>
+                </div>
+
+                <div style="background:#020617; border:1px solid #1e293b; padding:12px 16px; border-radius:8px; font-family:var(--font-mono); font-size:0.95rem; line-height:1.7;">
+                  <strong style="color:#fbbf24;">Example:</strong><br>
+                  $$\text{Gain} = \frac{1.0}{0.1} = 10$$
+                  <p style="margin-top:6px; color:#ffffff; font-family:var(--font-main);">
+                    The output is ten times larger than the input.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Slide 13: Engineer Exit Ticket -->
-        <section class="slide" id="slide-13">
+        <!-- Slide 8: What Is Negative Feedback? -->
+        <section class="slide" id="slide-8">
           <div class="slide-header">
-            <span class="badge-pill">Mastery Check</span>
-            <h2>Engineer Exit Ticket: 5 Core Mastery Questions</h2>
+            <span class="badge-pill">Foundational Principle</span>
+            <h2>What Is Negative Feedback?</h2>
           </div>
           <div class="slide-body">
             <div class="grid-2col">
               <div class="card">
-                <div class="card-title">🎯 5-Question Technical Mastery Check</div>
-                <ol style="color:var(--text-secondary); line-height:1.8; padding-left:20px; font-size:0.92rem;">
-                  <li><strong>Question 1:</strong> What is the primary engineering purpose of a comparator?</li>
-                  <li><strong>Question 2:</strong> What does voltage gain ($A_v$) quantify in an amplifier stage?</li>
-                  <li><strong>Question 3:</strong> Why is negative feedback essential for predictable linear amplification?</li>
-                  <li><strong>Question 4:</strong> What is the operational difference between open-loop and closed-loop modes?</li>
-                  <li><strong>Question 5:</strong> What are two key differences between inverting and non-inverting op-amp circuits?</li>
-                </ol>
+                <div class="card-title">🔁 The Purpose of Negative Feedback</div>
+                <p style="font-size: 1.02rem; line-height: 1.6; color: #ffffff; font-weight: 600; margin-bottom: 10px;">
+                  Negative feedback is one of the most important ideas in electronics.
+                </p>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 8px;">
+                  A small part of the output signal is fed back to the input.
+                </p>
+                <p style="font-size: 0.98rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 16px;">
+                  This feedback controls the amplifier.
+                </p>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+                  <div style="background:rgba(239, 68, 68, 0.1); border:1px solid rgba(239, 68, 68, 0.3); padding:12px; border-radius:8px;">
+                    <strong style="color:#f87171;">Without Feedback</strong>
+                    <p style="font-size:0.9rem; color:var(--text-secondary); margin-top:6px; line-height:1.45;">
+                      The gain becomes extremely large and difficult to control.<br>
+                      The output quickly saturates.
+                    </p>
+                  </div>
+                  <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.3); padding:12px; border-radius:8px;">
+                    <strong style="color:#34d399;">With Feedback</strong>
+                    <p style="font-size:0.9rem; color:var(--text-secondary); margin-top:6px; line-height:1.45;">
+                      The gain becomes predictable and stable.<br>
+                      The circuit behaves as designed.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card-title">Closed-Loop Operation</div>
+                <p style="font-size: 0.95rem; line-height: 1.55; color: var(--text-secondary); margin-bottom: 8px;">
+                  When a feedback path exists between the output and input, the op-amp operates in closed-loop mode.
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.55; color: #ffffff; font-weight: 600; margin-bottom: 6px;">
+                  In simple terms:
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.55; color: var(--text-secondary); margin-bottom: 8px;">
+                  The op-amp is now controlling itself using feedback.
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.55; color: var(--text-secondary); margin-bottom: 8px;">
+                  This allows engineers to choose the exact gain they need.
+                </p>
+                <p style="font-size: 0.92rem; color: var(--accent-cyan);">
+                  Most practical amplifier circuits operate in closed-loop mode.
+                </p>
               </div>
 
-              <div class="card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-                <span style="font-size:2.5rem; margin-bottom:10px;">💾</span>
-                <h3>Virtual Simulation Complete</h3>
-                <p style="color:var(--text-secondary); margin:12px 0 16px; font-size:0.95rem; line-height:1.6;">
-                  Ensure your Multisim schematic files (<code>.ms14</code>) and exported virtual oscilloscope traces are saved to your engineering workspace directory.
+              <div class="card">
+                <div class="card-title">🚗 Simple Analogy: Driving a Car</div>
+                <div style="background:#020617; border:1px solid #1e293b; padding:16px; border-radius:10px; margin-bottom:14px; line-height:1.65; color:var(--text-secondary);">
+                  <p style="margin-bottom:10px;">
+                    Imagine driving a car.
+                  </p>
+                  <p style="margin-bottom:10px;">
+                    Without looking at the speedometer, your speed would constantly rise and fall.
+                  </p>
+                  <p style="margin-bottom:10px; color:#ffffff; font-weight:600;">
+                    The speedometer provides feedback.
+                  </p>
+                  <p style="margin-bottom:10px;">
+                    You use the information to maintain a steady speed.
+                  </p>
+                  <p style="margin-bottom:10px; color:var(--accent-cyan); font-weight:600;">
+                    Negative feedback works in a similar way.
+                  </p>
+                  <p>
+                    It constantly corrects the amplifier.
+                  </p>
+                </div>
+
+                <div class="prediction-box">
+                  <h4>🔮 Pre-Power Prediction Checkpoint</h4>
+                  <p style="font-size:0.9rem; color:var(--text-secondary);">What happens if we disconnect the feedback resistor $R_f$ completely?</p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'The circuit loses closed-loop control and gain shoots up to open-loop infinity!')">
+                      The amplifier gain drops to zero.
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! Without feedback, the op-amp reverts to open-loop mode and immediately saturates.')">
+                      The circuit reverts to open-loop mode and the output quickly saturates.
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 9: Non-Inverting Amplifier -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <span class="badge-pill">Circuit 1</span>
+            <h2>Non-Inverting Amplifier</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">What Does It Do?</div>
+                <ul style="color:var(--text-secondary); line-height:1.6; padding-left:20px; font-size:0.98rem; margin-bottom:14px;">
+                  <li>The output signal increases.</li>
+                  <li>The signal does not flip upside down.</li>
+                  <li>The output stays in phase with the input.</li>
+                </ul>
+
+                <div class="card-title">Gain Formula</div>
+                <div style="background:#020617; border:1px solid #1e293b; padding:12px; border-radius:8px; margin-bottom:12px; text-align:center;">
+                  <div style="font-size:1.4rem;">
+                    $$A_v = 1 + \frac{R_f}{R_1}$$
+                  </div>
+                  <div style="font-size:0.9rem; color:var(--text-secondary); margin-top:8px; text-align:left;">
+                    <strong>Where:</strong><br>
+                    $A_v$ = Voltage Gain<br>
+                    $R_f$ = Feedback resistor<br>
+                    $R_1$ = Input resistor
+                  </div>
+                </div>
+
+                <div class="card-title">Demonstration Circuit</div>
+                <div style="background:#020617; border:1px solid #1e293b; padding:12px; border-radius:8px; font-family:var(--font-mono); font-size:0.92rem; line-height:1.6;">
+                  <strong>Components:</strong><br>
+                  LM358<br>
+                  R1 = 1 kΩ<br>
+                  Rf = 9 kΩ<br>
+                  5 V supply<br><br>
+                  <strong style="color:var(--accent-cyan);">Calculation:</strong><br>
+                  $$A_v = 1 + \frac{9000}{1000} \implies A_v = 10$$
+                  <strong style="color:#fbbf24;">Prediction:</strong><br>
+                  Input: $V_{in} = 0.1\text{ V}$<br>
+                  Output: $V_{out} = 0.1 \times 10 \implies V_{out} = 1\text{ V}$
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="schematic-box">
+                  <img src="images/non-inverting-amplifier.png" alt="Non-Inverting Amplifier Schematic Diagram" class="schematic-img">
+                  <div class="schematic-caption">Non-Inverting Amplifier ($R_1 = 1\text{ k}\Omega, R_f = 9\text{ k}\Omega \implies A_v = 10$)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 10: Non-Inverting Investigation Activities -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <span class="badge-pill">Activities</span>
+            <h2>Non-Inverting Investigation: Activities 1 &amp; 2</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">Activity 1 – Predict Before Simulating</div>
+                <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:10px;">
+                  Complete the table.
                 </p>
-                <div style="background:rgba(16, 185, 129, 0.1); border:1px solid var(--color-success); border-radius:8px; padding:10px 16px; color:#6ee7b7; font-size:0.88rem;">
-                  ✅ Simulation milestone complete. No form submission required for this session.
+                <table class="meas-table">
+                  <thead>
+                    <tr>
+                      <th>$V_{in}$</th>
+                      <th>Gain</th>
+                      <th>Predicted $V_{out}$</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>0.1 V</td>
+                      <td>10</td>
+                      <td><input type="text" id="m_pred_v01" class="meas-input" placeholder="1.0 V" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td>0.2 V</td>
+                      <td>10</td>
+                      <td><input type="text" id="m_pred_v02" class="meas-input" placeholder="2.0 V" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td>0.3 V</td>
+                      <td>10</td>
+                      <td><input type="text" id="m_pred_v03" class="meas-input" placeholder="3.0 V" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td>0.4 V</td>
+                      <td>10</td>
+                      <td><input type="text" id="m_pred_v04" class="meas-input" placeholder="4.0 V" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="prediction-box">
+                  <h4>🔮 Pre-Power Prediction Checkpoint</h4>
+                  <p style="font-size:0.9rem; color:var(--text-secondary);">If $R_f$ is doubled to $18\text{ k}\Omega$ while $R_1$ remains $1\text{ k}\Omega$, what is the new gain?</p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Remember the +1 term: Av = 1 + (18/1) = 19!')">
+                      $$A_v = 18$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! Av = 1 + (18k / 1k) = 1 + 18 = 19.')">
+                      $$A_v = 1 + 18 = 19$$
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">Activity 2 – Multisim Investigation</div>
+                <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:10px;">
+                  Build the non-inverting amplifier.<br>
+                  Record your results.
+                </p>
+                <table class="meas-table">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Predicted</th>
+                      <th>Simulated</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight:600;">$V_{in}$</td>
+                      <td><input type="text" id="m_noninv_vin_pred" class="meas-input" placeholder="0.1 V" oninput="saveWeek4TableData()"></td>
+                      <td><input type="text" id="m_noninv_vin_sim" class="meas-input" placeholder="0.10 V" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600;">Gain</td>
+                      <td><input type="text" id="m_noninv_gain_pred" class="meas-input" placeholder="10" oninput="saveWeek4TableData()"></td>
+                      <td><input type="text" id="m_noninv_gain_sim" class="meas-input" placeholder="10.0" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600;">$V_{out}$</td>
+                      <td><input type="text" id="m_noninv_vout_pred" class="meas-input" placeholder="1.0 V" oninput="saveWeek4TableData()"></td>
+                      <td><input type="text" id="m_noninv_vout_sim" class="meas-input" placeholder="1.00 V" oninput="saveWeek4TableData()"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div style="margin-top:16px;">
+                  <div class="card-title">Questions</div>
+                  <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div>
+                      <label style="font-size:0.88rem; color:var(--accent-cyan); font-weight:600;">Did the simulation match the prediction?</label>
+                      <input type="text" id="q_noninv_match" class="text-response" placeholder="Record match observation..." oninput="saveWeek4TableData()">
+                    </div>
+                    <div>
+                      <label style="font-size:0.88rem; color:var(--accent-cyan); font-weight:600;">If not, why not?</label>
+                      <input type="text" id="q_noninv_whynot" class="text-response" placeholder="Explain possible reasons (tolerances, power rails, saturation)..." oninput="saveWeek4TableData()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 11: Inverting Amplifier -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <span class="badge-pill">Circuit 2</span>
+            <h2>Inverting Amplifier</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">What Does It Do?</div>
+                <ul style="color:var(--text-secondary); line-height:1.6; padding-left:20px; font-size:0.98rem; margin-bottom:12px;">
+                  <li>The signal is amplified.</li>
+                  <li>The signal is also flipped upside down.</li>
+                  <li>This is called inversion.</li>
+                </ul>
+
+                <div class="card-title">Gain Formula</div>
+                <div style="background:#020617; border:1px solid #1e293b; padding:12px; border-radius:8px; margin-bottom:10px; text-align:center;">
+                  <div style="font-size:1.4rem;">
+                    $$A_v = -\frac{R_f}{R_{in}}$$
+                  </div>
+                  <p style="font-size:0.88rem; color:var(--text-secondary); margin-top:6px;">
+                    The negative sign tells us the output is inverted.
+                  </p>
+                </div>
+
+                <div class="card-title">Demonstration Circuit</div>
+                <div style="background:#020617; border:1px solid #1e293b; padding:12px; border-radius:8px; font-family:var(--font-mono); font-size:0.92rem; line-height:1.6;">
+                  <strong>Components:</strong><br>
+                  LM358<br>
+                  Rin = 1 kΩ<br>
+                  Rf = 10 kΩ<br><br>
+                  <strong style="color:var(--accent-cyan);">Calculation:</strong><br>
+                  $$A_v = -10$$
+                  <strong style="color:#fbbf24;">Input / Output:</strong><br>
+                  Input: 0.1 V<br>
+                  Output: -1 V
+                </div>
+
+                <div class="schematic-box" style="margin-top:12px; min-height:180px;">
+                  <img src="images/inverting-amplifier.png" alt="Inverting Amplifier Schematic Diagram" class="schematic-img">
+                  <div class="schematic-caption">Inverting Amplifier ($R_{in} = 1\text{ k}\Omega, R_f = 10\text{ k}\Omega \implies A_v = -10$)</div>
+                </div>
+              </div>
+
+              <div>
+                <div class="calc-box">
+                  <div class="tab-pills">
+                    <button class="tab-pill active" id="tab-noninv" onclick="setOpAmpMode('non-inverting')">Non-Inverting Mode</button>
+                    <button class="tab-pill" id="tab-inv" onclick="setOpAmpMode('inverting')">Inverting Mode</button>
+                  </div>
+
+                  <div class="calc-grid">
+                    <div class="calc-input-group">
+                      <label for="op-rf">Feedback Resistor $R_f$ ($\text{k}\Omega$):</label>
+                      <input type="number" id="op-rf" value="10" min="1" max="100" step="1" oninput="runOpAmpCalculation()">
+                    </div>
+                    <div class="calc-input-group">
+                      <label for="op-r1" id="label-r1">Input Resistor $R_{in}$ ($\text{k}\Omega$):</label>
+                      <input type="number" id="op-r1" value="1" min="0.5" max="20" step="0.5" oninput="runOpAmpCalculation()">
+                    </div>
+                    <div class="calc-input-group">
+                      <label for="op-vin">Sensor Input $V_{in}$ (Volts):</label>
+                      <input type="number" id="op-vin" value="0.10" min="-2.0" max="2.0" step="0.05" oninput="runOpAmpCalculation()">
+                    </div>
+                    <div class="calc-input-group">
+                      <label for="op-vcc">Dual Supply Rail ($\pm V_{CC}$):</label>
+                      <select id="op-vcc" onchange="runOpAmpCalculation()">
+                        <option value="5">Single +5V / GND (LM358)</option>
+                        <option value="12" selected>Dual ±12V Supplies</option>
+                        <option value="15">Dual ±15V Standard Lab</option>
+                      </select>
+                    </div>
+
+                    <div class="calc-readout-grid">
+                      <div class="calc-readout-item">
+                        <span class="readout-label">Voltage Gain ($A_v$)</span>
+                        <span class="readout-val" id="op-out-gain">-10.0 V/V</span>
+                      </div>
+                      <div class="calc-readout-item">
+                        <span class="readout-label">Output $V_{out}$</span>
+                        <span class="readout-val" id="op-out-vout">-1.00 V</span>
+                      </div>
+                      <div class="calc-readout-item">
+                        <span class="readout-label">Operating State</span>
+                        <span class="readout-val" id="op-out-state" style="color:var(--color-success); font-size:1.05rem;">LINEAR</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="prediction-box">
+                  <h4>🔮 Pre-Power Prediction Checkpoint</h4>
+                  <p style="font-size:0.9rem; color:var(--text-secondary);">What is the key difference between inverting and non-inverting outputs?</p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! The inverting amplifier flips the waveform upside down (180° out of phase).')">
+                      Inverting flips the polarity upside down ($180^\circ$ phase shift); non-inverting stays in phase ($0^\circ$).
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Both circuits can amplify signals; phase inversion is the distinction.')">
+                      Non-inverting circuits cannot amplify signals greater than 1 V.
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 12: Comparing Amplifiers & Gain Investigation -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <span class="badge-pill">Comparison &amp; Investigation</span>
+            <h2>Comparing Amplifiers &amp; Gain Investigation</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">Comparing Amplifiers</div>
+                <table class="meas-table" style="margin-top:10px;">
+                  <thead>
+                    <tr>
+                      <th>Feature</th>
+                      <th>Non-Inverting</th>
+                      <th>Inverting</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight:600; text-align:left;">Amplifies signal</td>
+                      <td style="color:var(--color-success); font-weight:bold;">✓</td>
+                      <td style="color:var(--color-success); font-weight:bold;">✓</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600; text-align:left;">Uses feedback</td>
+                      <td style="color:var(--color-success); font-weight:bold;">✓</td>
+                      <td style="color:var(--color-success); font-weight:bold;">✓</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600; text-align:left;">Output inverted</td>
+                      <td style="color:var(--color-danger); font-weight:bold;">No</td>
+                      <td style="color:var(--color-success); font-weight:bold;">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600; text-align:left;">Gain controlled by resistors</td>
+                      <td style="color:var(--color-success); font-weight:bold;">Yes</td>
+                      <td style="color:var(--color-success); font-weight:bold;">Yes</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card">
+                <div class="card-title">Gain Investigation</div>
+                <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:10px;">
+                  Change resistor values and observe the effect.
+                </p>
+                <table class="meas-table">
+                  <thead>
+                    <tr>
+                      <th>$R_f$</th>
+                      <th>$R_1$</th>
+                      <th>Gain</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>4.7 kΩ</td>
+                      <td>1 kΩ</td>
+                      <td style="font-weight:700; color:var(--accent-cyan);">5.7</td>
+                    </tr>
+                    <tr>
+                      <td>9 kΩ</td>
+                      <td>1 kΩ</td>
+                      <td style="font-weight:700; color:var(--accent-cyan);">10</td>
+                    </tr>
+                    <tr>
+                      <td>22 kΩ</td>
+                      <td>1 kΩ</td>
+                      <td style="font-weight:700; color:var(--accent-cyan);">23</td>
+                    </tr>
+                    <tr>
+                      <td>47 kΩ</td>
+                      <td>1 kΩ</td>
+                      <td style="font-weight:700; color:var(--accent-cyan);">48</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div style="margin-top:16px;">
+                  <div class="card-title">Investigation Question</div>
+                  <label style="font-size:0.92rem; color:var(--accent-cyan); font-weight:600;">
+                    What happens to gain as the resistor ratio increases?
+                  </label>
+                  <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">
+                    Write your observation below:
+                  </p>
+                  <textarea id="q_gain_ratio_obs" rows="3" class="text-response" placeholder="Enter your observation here..." oninput="saveWeek4TableData()"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 13: Engineering Reflection -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <span class="badge-pill">Synthesis</span>
+            <h2>Engineering Reflection</h2>
+          </div>
+          <div class="slide-body">
+            <div class="card" style="width: 100%; max-width: 900px; margin: 0 auto;">
+              <div class="card-title">Complete the statement:</div>
+              <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:16px;">
+                Synthesise your theoretical predictions and Multisim simulation findings by completing the three engineering statements below:
+              </p>
+
+              <div style="display:flex; flex-direction:column; gap:16px;">
+                <div style="background:#020617; border:1px solid #1e293b; padding:14px; border-radius:8px;">
+                  <label style="display:block; font-size:1.02rem; font-weight:700; color:var(--accent-cyan); margin-bottom:6px;">
+                    1. What should happen?
+                  </label>
+                  <textarea id="ref_should_happen" rows="2" class="text-response" placeholder="State your theoretical calculation and expected circuit behaviour..." oninput="saveWeek4TableData()"></textarea>
+                </div>
+
+                <div style="background:#020617; border:1px solid #1e293b; padding:14px; border-radius:8px;">
+                  <label style="display:block; font-size:1.02rem; font-weight:700; color:var(--color-warning); margin-bottom:6px;">
+                    2. What actually happened?
+                  </label>
+                  <textarea id="ref_actually_happened" rows="2" class="text-response" placeholder="State the simulated Multisim results and observations..." oninput="saveWeek4TableData()"></textarea>
+                </div>
+
+                <div style="background:#020617; border:1px solid #1e293b; padding:14px; border-radius:8px;">
+                  <label style="display:block; font-size:1.02rem; font-weight:700; color:var(--color-success); margin-bottom:6px;">
+                    3. What evidence supports your conclusion?
+                  </label>
+                  <textarea id="ref_evidence" rows="2" class="text-response" placeholder="Cite specific voltage measurements, gains, waveforms, or threshold switches..." oninput="saveWeek4TableData()"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 14: Exit Ticket & Remember -->
+        <section class="slide" id="slide-14">
+          <div class="slide-header">
+            <span class="badge-pill">Mastery Check</span>
+            <h2>Exit Ticket</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div class="card">
+                <div class="card-title">📝 Exit Ticket Questions</div>
+                <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+                  <div>
+                    <label style="font-size:0.9rem; font-weight:700; color:var(--accent-cyan);">Question 1: What is the purpose of a comparator?</label>
+                    <input type="text" id="exit_q1" class="text-response" placeholder="Your answer..." oninput="saveWeek4TableData()">
+                  </div>
+                  <div>
+                    <label style="font-size:0.9rem; font-weight:700; color:var(--accent-cyan);">Question 2: What is voltage gain?</label>
+                    <input type="text" id="exit_q2" class="text-response" placeholder="Your answer..." oninput="saveWeek4TableData()">
+                  </div>
+                  <div>
+                    <label style="font-size:0.9rem; font-weight:700; color:var(--accent-cyan);">Question 3: What is the purpose of negative feedback?</label>
+                    <input type="text" id="exit_q3" class="text-response" placeholder="Your answer..." oninput="saveWeek4TableData()">
+                  </div>
+                  <div>
+                    <label style="font-size:0.9rem; font-weight:700; color:var(--accent-cyan);">Question 4: What is the difference between open-loop and closed-loop operation?</label>
+                    <input type="text" id="exit_q4" class="text-response" placeholder="Your answer..." oninput="saveWeek4TableData()">
+                  </div>
+                  <div>
+                    <label style="font-size:0.9rem; font-weight:700; color:var(--accent-cyan);">Question 5: What is the difference between an inverting and non-inverting amplifier?</label>
+                    <input type="text" id="exit_q5" class="text-response" placeholder="Your answer..." oninput="saveWeek4TableData()">
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="remember-card">
+                  <h3>🧠 Remember</h3>
+                  <p>Engineers do not simply build circuits.</p>
+                  <p style="color:var(--accent-cyan); font-weight:700;">They ask:</p>
+                  <p style="font-style:italic;">What should happen?</p>
+                  <p style="font-style:italic;">What actually happened?</p>
+                  <p style="font-style:italic;">What evidence explains the difference?</p>
+                  <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15); font-weight:600; color:#38bdf8;">
+                    This is the mindset that turns a circuit builder into an engineer.
+                  </div>
+                </div>
+
+                <div class="card" style="margin-top:14px; text-align:center;">
+                  <span style="font-size:2rem;">💾</span>
+                  <h4 style="margin:6px 0;">Workplace Session Complete</h4>
+                  <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.5;">
+                    Your answers and simulation table records have been saved locally. Export your Multisim schematics and virtual oscilloscope waveforms to your project portfolio.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1111,7 +1609,7 @@
         <div class="nav-controls">
           <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
           <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
-          <span class="slide-counter" id="slide-counter">1 / 13</span>
+          <span class="slide-counter" id="slide-counter">1 / 14</span>
         </div>
 
         <div class="progress-bar-container">
@@ -1298,14 +1796,22 @@
       }
     }
 
+    const week4InputFields = [
+      'm_comp_v02', 'm_comp_v04', 'm_comp_v05', 'm_comp_v07', 'm_comp_v10',
+      'q_comp_state', 'q_comp_speed', 'q_comp_ctrl',
+      'm_pred_v01', 'm_pred_v02', 'm_pred_v03', 'm_pred_v04',
+      'm_noninv_vin_pred', 'm_noninv_vin_sim',
+      'm_noninv_gain_pred', 'm_noninv_gain_sim',
+      'm_noninv_vout_pred', 'm_noninv_vout_sim',
+      'q_noninv_match', 'q_noninv_whynot',
+      'q_gain_ratio_obs',
+      'ref_should_happen', 'ref_actually_happened', 'ref_evidence',
+      'exit_q1', 'exit_q2', 'exit_q3', 'exit_q4', 'exit_q5'
+    ];
+
     function saveWeek4TableData() {
-      const fields = [
-        'm_comp_sim',
-        'm_noninv_sim', 'm_noninv_gain',
-        'm_inv_sim', 'm_inv_gain'
-      ];
       const data = {};
-      fields.forEach(f => {
+      week4InputFields.forEach(f => {
         const el = document.getElementById(f);
         if (el) data[f] = el.value;
       });
@@ -1319,7 +1825,7 @@
           const data = JSON.parse(saved);
           Object.keys(data).forEach(k => {
             const el = document.getElementById(k);
-            if (el) el.value = data[k];
+            if (el && data[k] !== undefined) el.value = data[k];
           });
         } catch (e) {}
       }
