@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices &amp; Circuits — Week {{WEEK_NUM}} {{WEEK_TITLE}}</title>
+  <meta name="description" content="Unit 19 Learning Aim A Week {{WEEK_NUM}}: {{WEEK_DESCRIPTION}}">
+
+  <!-- Shared CSS Tokens & Component Styling -->
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+  <link rel="stylesheet" href="../shared/css/form-drawer.css">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX Mathematical Typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Week-Specific Accents & Component Overrides */
+    .hero-title {
+      font-size: 3.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pill.role-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .badge-pill.poe-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .ksb-card.k { border-top: 5px solid var(--accent-cyan); }
+    .ksb-card.s { border-top: 5px solid var(--color-success); }
+    .ksb-card.b { border-top: 5px solid var(--color-warning); }
+
+    .ksb-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ksb-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .ksb-card ul li::before {
+      content: "•";
+      color: var(--accent-cyan);
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    /* Interactive Calculator Card */
+    .calc-box {
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .calc-input-group label {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .calc-input-group input {
+      width: 100%;
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+    }
+
+    .calc-input-group input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 151, 157, 0.4);
+    }
+
+    .calc-readout {
+      grid-column: span 2;
+      background: #030712;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .calc-readout .readout-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .calc-readout .readout-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+    }
+
+    /* Prediction Checkpoint Styling */
+    .prediction-box {
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+
+    .prediction-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pred-btn {
+      text-align: left;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .pred-btn:hover {
+      border-color: var(--accent-cyan);
+      background: #182234;
+    }
+
+    .pred-btn.correct {
+      border-color: var(--color-success);
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    .pred-btn.incorrect {
+      border-color: var(--color-danger);
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .pred-feedback {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .pred-feedback.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--color-success);
+      color: #6ee7b7;
+    }
+
+    .pred-feedback.hint {
+      display: block;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--color-warning);
+      color: #fde68a;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="presentation-wrapper">
+    <!-- Top Presentation Bar -->
+    <header class="presentation-header" role="banner">
+      <div class="header-left">
+        <a href="../index.html" class="portal-back-link" title="Return to Portal Hub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Unit 19 Hub
+        </a>
+        <div class="session-divider"></div>
+        <div class="session-meta">
+          <span class="session-title">Week {{WEEK_NUM}}: {{WEEK_SHORT_TITLE}}</span>
+          <span class="session-badge">Active Lab</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="slide-navigation-controls" aria-label="Slide Navigation">
+          <button class="nav-arrow-btn" id="prev-slide-btn" title="Previous Slide (Left Arrow)">◀</button>
+          <span class="slide-counter" id="slide-counter-display">Slide 1 / 8</span>
+          <button class="nav-arrow-btn" id="next-slide-btn" title="Next Slide (Right Arrow / Space)">▶</button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Countdown Timer -->
+        <div class="timer-widget" id="lesson-timer" title="Active Lesson Timer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span id="timer-display">160:00</span>
+        </div>
+
+        <!-- PoE Drawer Trigger -->
+        <button class="btn-poe-drawer open-forms-trigger" data-form-section="Section 1" title="Open Microsoft Forms PoE Drawer">
+          📝 Submit PoE {{POE_ID}}
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Presentation Slides -->
+    <main id="slides-wrapper">
+
+      <!-- SLIDE 1: Welcome & Mission Launch -->
+      <section class="slide active" id="slide-1">
+        <div class="slide-body" style="justify-content: center; align-items: flex-start;">
+          <div class="badge-bar">
+            <span class="badge-pill">Session: Week {{WEEK_NUM}}</span>
+            <span class="badge-pill">Date: {{DATE}}</span>
+            <span class="badge-pill">Duration: 3 Hours (160 Mins Active)</span>
+            <span class="badge-pill role-pill">Role: {{ENGINEERING_ROLE}}</span>
+            <span class="badge-pill poe-pill">PoE: {{POE_ID}}</span>
+          </div>
+          <h1 class="hero-title">{{WEEK_TITLE}}</h1>
+          <p class="hero-subtitle">{{HERO_SUBTITLE}}</p>
+
+          <div class="ksb-grid" style="margin-top: 24px; width: 100%;">
+            <div class="ksb-card k">
+              <h4>🧠 Knowledge (K)</h4>
+              <ul>
+                <li>{{KNOWLEDGE_POINT_1}}</li>
+                <li>{{KNOWLEDGE_POINT_2}}</li>
+                <li>{{KNOWLEDGE_POINT_3}}</li>
+              </ul>
+            </div>
+            <div class="ksb-card s">
+              <h4>🛠️ Skills (S)</h4>
+              <ul>
+                <li>{{SKILL_POINT_1}}</li>
+                <li>{{SKILL_POINT_2}}</li>
+                <li>{{SKILL_POINT_3}}</li>
+              </ul>
+            </div>
+            <div class="ksb-card b">
+              <h4>💼 Behaviours (B)</h4>
+              <ul>
+                <li>Mandatory pre-power safety &amp; current limiting</li>
+                <li>Predict $\rightarrow$ Simulate $\rightarrow$ Build $\rightarrow$ Test $\rightarrow$ Explain</li>
+                <li>Systematic evidence-backed documentation for PoE {{POE_ID}}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; display: flex; gap: 14px;">
+            <button class="btn btn-primary" onclick="window.PresentationEngine.nextSlide()">
+              Begin Engineering Mission →
+            </button>
+            <button class="btn btn-secondary open-forms-trigger" data-form-section="Section 1">
+              Open PoE {{POE_ID}} Drawer
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Workplace Scenario & Industrial Problem -->
+      <section class="slide" id="slide-2">
+        <div class="slide-header">
+          <span class="badge-pill role-pill">Workplace Engineering Scenario</span>
+          <h2>The Industrial Engineering Challenge</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">🏭 Industrial Context: {{SCENARIO_TITLE}}</div>
+              <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary);">
+                <strong style="color: #ffffff;">The Scenario:</strong> You are operating as a
+                <strong style="color: var(--accent-cyan);">{{ENGINEERING_ROLE}}</strong>. {{SCENARIO_DESCRIPTION}}
+              </p>
+              <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 14px 0;">
+                <strong style="color: #f87171;">⚠️ Engineering Constraint:</strong><br>
+                {{ENGINEERING_CONSTRAINT}}
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">🎯 Deliverables for Assignment PoE {{POE_ID}}</div>
+              <p style="color: var(--text-secondary); line-height: 1.6;">
+                By the conclusion of today's 160-minute active lab session, you must compile and submit:
+              </p>
+              <ul style="margin-top: 10px; color: var(--text-secondary); display:flex; flex-direction:column; gap:8px;">
+                <li>Annotated circuit schematic and component selection justification</li>
+                <li>SPICE virtual simulation waveforms &amp; predicted operation</li>
+                <li>Physical bench test measurements &amp; comparison tables</li>
+                <li>Fault diagnosis and engineering resolution record</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Engineering Toolbox (Cumulative Retrieval) -->
+      <section class="slide" id="slide-3">
+        <div class="slide-header">
+          <span class="badge-pill">5–10 Min Retrieval</span>
+          <h2>Engineering Toolbox: Prior Learning Check</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">
+            Cumulative recall: Activate core principles from preceding weeks before touching bench equipment.
+          </p>
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">⚡ Quick Knowledge Check</div>
+              <div class="prediction-box" style="margin-top: 0;">
+                <h4>Question 1: {{RETRIEVAL_Q1}}</h4>
+                <div class="prediction-options" id="retrieval-q1-options">
+                  <!-- Injected via self-check pattern -->
+                  <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. Review prior week formulas.')">
+                    {{RETRIEVAL_OPT_A}}
+                  </button>
+                  <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Excellent recall of foundational principles.')">
+                    {{RETRIEVAL_OPT_B}}
+                  </button>
+                </div>
+                <div class="pred-feedback" id="retrieval-q1-fb"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">📐 Required Formula Reference</div>
+              <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+                <div style="background:#020617; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                  <strong style="color:var(--accent-cyan);">{{FORMULA_NAME_1}}:</strong>
+                  <div style="font-size:1.15rem; margin-top:4px;">$${{FORMULA_LATEX_1}}$$</div>
+                </div>
+                <div style="background:#020617; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                  <strong style="color:var(--accent-cyan);">{{FORMULA_NAME_2}}:</strong>
+                  <div style="font-size:1.15rem; margin-top:4px;">$${{FORMULA_LATEX_2}}$$</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Interactive Circuit Calculator Widget -->
+      <section class="slide" id="slide-4">
+        <div class="slide-header">
+          <span class="badge-pill">Interactive Tool</span>
+          <h2>Theoretical Circuit Calculator &amp; Modeler</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="calc-box">
+              <div class="card-title">⚡ Live Circuit Parameter Modeler</div>
+              <p style="font-size:0.92rem; color:var(--text-secondary);">
+                Adjust circuit variables below to dynamically compute expected operating parameters:
+              </p>
+              <div class="calc-grid">
+                <div class="calc-input-group">
+                  <label for="param-a">Component Parameter A ($R_1$ in $\text{k}\Omega$):</label>
+                  <input type="number" id="param-a" value="10" min="1" max="100" step="1" oninput="runLiveCalculation()">
+                </div>
+                <div class="calc-input-group">
+                  <label for="param-b">Component Parameter B ($R_2$ in $\text{k}\Omega$):</label>
+                  <input type="number" id="param-b" value="1" min="0.1" max="20" step="0.1" oninput="runLiveCalculation()">
+                </div>
+                <div class="calc-readout">
+                  <span class="readout-label">Calculated Output:</span>
+                  <span class="readout-val" id="calc-readout-val">-10.0 V/V</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">🔮 Pre-Power Prediction Checkpoint</div>
+              <p style="color:var(--text-secondary); line-height:1.6;">
+                Before building the physical hardware, record your prediction based on the calculator output:
+              </p>
+              <div class="prediction-box">
+                <h4>Checkpoint: {{CHECKPOINT_QUESTION}}</h4>
+                <div class="prediction-options">
+                  <button class="pred-btn" onclick="checkPrediction(this, false, 'Check the governing formula again.')">
+                    {{CHECKPOINT_OPT_1}}
+                  </button>
+                  <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! This matches theoretical predictions.')">
+                    {{CHECKPOINT_OPT_2}}
+                  </button>
+                </div>
+                <div class="pred-feedback"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Practical Bench Investigation -->
+      <section class="slide" id="slide-5">
+        <div class="slide-header">
+          <span class="badge-pill">Practical Lab</span>
+          <h2>Physical Build &amp; Test Investigation</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">🛠️ Pre-Power Safety Checklist</div>
+              <ul style="display:flex; flex-direction:column; gap:8px; margin-top:8px; list-style:none; padding:0;">
+                <li><label><input type="checkbox" onchange="saveChecklistState()"> Power supply verified isolated before wiring</label></li>
+                <li><label><input type="checkbox" onchange="saveChecklistState()"> Current limit set to safe threshold on bench PSU</label></li>
+                <li><label><input type="checkbox" onchange="saveChecklistState()"> Component polarities and pinouts double-checked</label></li>
+                <li><label><input type="checkbox" onchange="saveChecklistState()"> Common ground established across all test instruments</label></li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-title">📊 Measured Data Logger</div>
+              <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom:10px;">
+                Enter bench measurements. Results are stored locally and formatted for Microsoft Forms PoE export:
+              </p>
+              <table style="width:100%; border-collapse:collapse; font-size:0.92rem;">
+                <thead>
+                  <tr style="border-bottom:1px solid #334155; color:var(--accent-cyan);">
+                    <th style="padding:6px; text-align:left;">Test Point</th>
+                    <th style="padding:6px; text-align:center;">Predicted</th>
+                    <th style="padding:6px; text-align:center;">Measured</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:6px;">Node Voltage $V_1$</td>
+                    <td style="padding:6px; text-align:center;">{{PRED_VAL_1}}</td>
+                    <td style="padding:6px; text-align:center;"><input type="text" id="m_tp1" class="meas-input" placeholder="0.00 V" oninput="saveTableData()"></td>
+                  </tr>
+                  <tr>
+                    <td style="padding:6px;">Output Quantity $V_{out}$</td>
+                    <td style="padding:6px; text-align:center;">{{PRED_VAL_2}}</td>
+                    <td style="padding:6px; text-align:center;"><input type="text" id="m_tp2" class="meas-input" placeholder="0.00 V" oninput="saveTableData()"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn btn-secondary" style="margin-top:14px; width:100%;" onclick="copyPoESummary()">
+                📋 Copy Formatted Summary for MS Forms
+              </button>
+              <div id="copy-status" style="font-size:0.85rem; color:var(--color-success); margin-top:6px; text-align:center;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Fault Finding Challenge -->
+      <section class="slide" id="slide-6">
+        <div class="slide-header">
+          <span class="badge-pill" style="background:rgba(239,68,68,0.2); border-color:#ef4444; color:#f87171;">Troubleshooting</span>
+          <h2>Production Fault-Finding Challenge</h2>
+        </div>
+        <div class="slide-body">
+          <div class="card">
+            <div class="card-title">🔍 Symptom Diagnosis (Observe → Predict → Test → Fix)</div>
+            <p style="color:var(--text-secondary); line-height:1.6;">
+              A supervisor hands you a board that has failed production test. Follow the systematic troubleshooting sequence to identify the root cause without guessing:
+            </p>
+            <div style="background:#020617; border-left:4px solid var(--accent-cyan); padding:14px; border-radius:8px; margin:14px 0;">
+              <strong>Reported Symptom:</strong> {{FAULT_SYMPTOM_DESCRIPTION}}
+            </div>
+            <p style="font-size:0.95rem; color:var(--text-secondary);">
+              Log your diagnostic steps, measured node voltages, and replacement component in Section 3 of your PoE Form Drawer.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Engineer Exit Ticket -->
+      <section class="slide" id="slide-7">
+        <div class="slide-header">
+          <span class="badge-pill">Exit Check</span>
+          <h2>Engineer Exit Ticket: Mastery Check</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">🎯 3-Question Mastery Verification</div>
+              <ol style="color:var(--text-secondary); line-height:1.8; padding-left:20px;">
+                <li><strong>Today's Core Concept:</strong> {{EXIT_Q1}}</li>
+                <li><strong>Recent Practical Link:</strong> {{EXIT_Q2}}</li>
+                <li><strong>Cumulative Application:</strong> {{EXIT_Q3}}</li>
+              </ol>
+            </div>
+            <div class="card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+              <h3>Ready to Submit Evidence?</h3>
+              <p style="color:var(--text-secondary); margin:12px 0 20px;">
+                Ensure all oscilloscope captures, breadboard photos, and measurement records are uploaded to your college Microsoft Form.
+              </p>
+              <button class="btn btn-primary open-forms-trigger" data-form-section="Final Submission">
+                Open Week {{WEEK_NUM}} PoE Form Drawer →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Microsoft Forms PoE Drawer Container -->
+  <aside class="form-drawer" id="poe-form-drawer" aria-hidden="true" role="dialog" aria-labelledby="drawer-title">
+    <div class="form-drawer-header">
+      <div>
+        <h3 id="drawer-title">Week {{WEEK_NUM}} Portfolio of Evidence (PoE {{POE_ID}})</h3>
+        <span class="drawer-subtitle">Microsoft 365 Authenticated Submission</span>
+      </div>
+      <button class="btn-close-drawer" id="close-drawer-btn" aria-label="Close PoE Drawer">✕</button>
+    </div>
+    <div class="form-drawer-body">
+      <div class="alert-box" style="margin-bottom:16px;">
+        🔒 Responses are saved directly to your college Microsoft 365 engineering portfolio.
+      </div>
+      <!-- Microsoft Form Embed / Link Placeholder -->
+      <div class="forms-embed-placeholder" style="text-align:center; padding:40px 20px;">
+        <p style="color:var(--text-secondary); margin-bottom:16px;">
+          [INSERT COLLEGE MICROSOFT FORMS EMBED OR LINK FOR POE {{POE_ID}}]
+        </p>
+        <a href="#" target="_blank" class="btn btn-primary" rel="noopener">
+          Open Microsoft Form in New Tab ↗
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Presentation & Accessibility Engines -->
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/timer.js"></script>
+  <script src="../shared/js/form-drawer.js"></script>
+
+  <script>
+    /* Week-Specific Interactive Logic */
+    function runLiveCalculation() {
+      const ra = parseFloat(document.getElementById('param-a')?.value) || 1;
+      const rb = parseFloat(document.getElementById('param-b')?.value) || 1;
+      const res = -(ra / rb);
+      const display = document.getElementById('calc-readout-val');
+      if (display) {
+        display.textContent = `${res.toFixed(1)} V/V`;
+      }
+    }
+
+    function checkPrediction(button, isCorrect, feedbackText) {
+      const container = button.closest('.prediction-box');
+      if (!container) return;
+      const buttons = container.querySelectorAll('.pred-btn');
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+      button.classList.add(isCorrect ? 'correct' : 'incorrect');
+      const fb = container.querySelector('.pred-feedback');
+      if (fb) {
+        fb.textContent = feedbackText;
+        fb.className = `pred-feedback ${isCorrect ? 'success' : 'hint'}`;
+      }
+    }
+
+    function saveChecklistState() {
+      const checked = Array.from(document.querySelectorAll('#slide-5 input[type="checkbox"]')).map(c => c.checked);
+      localStorage.setItem('unit19_week{{WEEK_NUM}}_checklist', JSON.stringify(checked));
+    }
+
+    function saveTableData() {
+      const tp1 = document.getElementById('m_tp1')?.value || '';
+      const tp2 = document.getElementById('m_tp2')?.value || '';
+      localStorage.setItem('unit19_week{{WEEK_NUM}}_data', JSON.stringify({ tp1, tp2 }));
+    }
+
+    function copyPoESummary() {
+      const tp1 = document.getElementById('m_tp1')?.value || 'N/A';
+      const tp2 = document.getElementById('m_tp2')?.value || 'N/A';
+      const summary = `--- UNIT 19 WEEK {{WEEK_NUM}} PoE {{POE_ID}} MEASUREMENT SUMMARY ---
+• Node Voltage V1: ${tp1}
+• Output Voltage Vout: ${tp2}
+------------------------------------------------------`;
+      navigator.clipboard.writeText(summary).then(() => {
+        const el = document.getElementById('copy-status');
+        if (el) {
+          el.textContent = '✅ Copied to clipboard! Ready to paste into Microsoft Form.';
+          setTimeout(() => { el.textContent = ''; }, 4000);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      runLiveCalculation();
+    });
+  </script>
+</body>
+
+</html>
