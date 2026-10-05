@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices &amp; Circuits — Week 5 Prototype Verification</title>
+  <meta name="description"
+    content="Week 5 Student Learning Resource: Prototype Verification Workshop — Prove the Design Works. Complete multi-domain verification of analogue diode rectifier and voltage regulator circuits against specification.">
+
+  <!-- Shared CSS Tokens & Component Styling -->
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX for accessible LaTeX mathematical typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Week 5 Specific Custom Accents */
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pill.role-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+
+
+    .badge-pill.spec-pill {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #c084fc;
+    }
+
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+
+    .ksb-card.k { border-top: 5px solid var(--accent-cyan); }
+    .ksb-card.s { border-top: 5px solid var(--color-success); }
+    .ksb-card.b { border-top: 5px solid var(--color-warning); }
+
+    .ksb-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ksb-card p.ksb-intro {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .ksb-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ksb-card li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .ksb-card li::before {
+      content: "•";
+      color: var(--accent-cyan);
+      position: absolute;
+      left: 0;
+      font-size: 1.1rem;
+    }
+
+    /* Step Timeline Strip */
+    .step-timeline {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    .step-chip {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-chip.active {
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+      background: rgba(6, 182, 212, 0.15);
+      font-weight: 700;
+    }
+
+    .step-chip .step-time {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #fbbf24;
+    }
+
+    /* Verification Calculator Card */
+    .calc-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .calc-input-group label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .calc-input-group input, .calc-input-group select {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+    }
+
+    .calc-input-group input:focus, .calc-input-group select:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+    }
+
+    .calc-results-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .calc-metric {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .calc-metric .metric-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .calc-metric .metric-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+    }
+
+    .calc-metric .metric-sub {
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+    }
+
+    /* Prediction Checkpoints */
+    .prediction-box {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+
+    .prediction-box h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prediction-box p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .prediction-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pred-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .pred-btn:hover {
+      border-color: var(--accent-cyan);
+      background: #1e293b;
+    }
+
+    .pred-btn.correct {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    .pred-btn.incorrect {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+
+    .pred-feedback {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .pred-feedback.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border-left: 4px solid #10b981;
+      color: #a7f3d0;
+    }
+
+    .pred-feedback.hint {
+      display: block;
+      background: rgba(245, 158, 11, 0.15);
+      border-left: 4px solid #f59e0b;
+      color: #fde68a;
+    }
+
+    /* Verification Matrix Table */
+    .verif-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 12px 0;
+      font-size: 0.88rem;
+    }
+
+    .verif-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      font-weight: 700;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .verif-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      color: #ffffff;
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    .verif-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .verif-table input {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+    }
+
+    .verif-table input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+    }
+
+    /* Checklist Card */
+    .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-subtle);
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .check-item:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+      background: rgba(30, 41, 59, 0.7);
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-cyan);
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .check-item.checked {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .check-item .check-text {
+      flex: 1;
+    }
+
+    .check-item .check-title {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .check-item .check-sub {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Sign-off Banner */
+    .signoff-box {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(16, 185, 129, 0.12));
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-top: 14px;
+    }
+
+    .signoff-box h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .signoff-quote {
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-style: italic;
+      color: #e2e8f0;
+      line-height: 1.6;
+      border-left: 4px solid var(--accent-cyan);
+      padding-left: 16px;
+      margin: 12px 0;
+    }
+
+    /* Image Showcase Frame */
+    .schematic-frame {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .schematic-frame img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .schematic-caption {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-container">
+    <div id="deck-viewport">
+
+    <!-- Top Navigation Header -->
+    <header class="deck-header">
+      <div class="header-left">
+        <a href="../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+          🏠 Course Hub
+        </a>
+        <div class="brand-badge">
+          <span class="pill">UNIT 19</span>
+          <span>Electronic Devices &amp; Circuits</span>
+          <span style="color: var(--text-muted);">|</span>
+          <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Week 5: Prototype Verification</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility &amp; Inclusion (Key: A)">
+          ⚙️ Accessibility
+        </button>
+        <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+          🗺️ Slide Map
+        </button>
+      </div>
+    </header>
+
+    <!-- Slides Wrapper -->
+    <main id="slides-wrapper">
+
+      <!-- =========================================================================
+           SLIDE 1: WELCOME & KSB PROFILE
+           ========================================================================= -->
+      <section class="slide active" id="slide-1">
+        <div class="slide-body" style="justify-content: center; align-items: flex-start;">
+          <div class="badge-bar">
+            <span class="badge-pill">Week 5 Student Learning Resource</span>
+            <span class="badge-pill role-pill">Role: Prototype / Verification Test Engineer</span>
+            <span class="badge-pill spec-pill">90-Minute Workshop</span>
+          </div>
+
+          <h1 class="hero-title">Prototype Verification Workshop</h1>
+          <div class="hero-subtitle">“Prove the Design Works” — Multi-Domain Validation &amp; Evidence Audit</div>
+
+          <div style="width: 100%; margin: 12px 0 20px;">
+            <img src="images/verification-chain.svg" alt="The Engineering Verification Chain"
+              style="width: 100%; max-height: 110px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));">
+          </div>
+
+          <!-- KSB 3-Column Profile -->
+          <div class="ksb-grid" style="width: 100%;">
+            <div class="ksb-card k">
+              <h4>📘 Knowledge (K)</h4>
+              <p class="ksb-intro">What You Must Understand</p>
+              <ul>
+                <li>The 6-stage Verification Chain: Specification &rarr; Schematic &rarr; Simulation &rarr; Prototype &rarr; Measurement &rarr; Conclusion.</li>
+                <li>Full-wave ripple equation: $V_{r(pp)} \approx \frac{I_L}{2fC}$ ($2f = 100\,\text{Hz}$).</li>
+                <li>Percentage difference metrics: $\%\,\text{Diff} = \frac{|\text{Meas} - \text{Theo}|}{\text{Theo}} \times 100$.</li>
+                <li>Zener voltage regulation and dynamic resistance ($R_Z$).</li>
+              </ul>
+            </div>
+
+            <div class="ksb-card s">
+              <h4>🛠️ Skills (S)</h4>
+              <p class="ksb-intro">What You Will Demonstrate</p>
+              <ul>
+                <li>Audit assignment brief requirements (i) to (vii) for missing evidence.</li>
+                <li>Measure regulated DC output voltage across load with calibrated DMM.</li>
+                <li>Use oscilloscope AC coupling to measure millivolt ripple $V_{r(pp)}$ across 22&nbsp;k&Omega;, 10&nbsp;k&Omega;, and 4.7&nbsp;k&Omega;.</li>
+                <li>Formulate a defensible, evidence-backed sign-off recommendation.</li>
+              </ul>
+            </div>
+
+            <div class="ksb-card b">
+              <h4>🎯 Behaviours (B)</h4>
+              <p class="ksb-intro">How Professional Engineers Work</p>
+              <ul>
+                <li><strong>Quality Rigour:</strong> Never sign off a circuit without numerical proof across simulation and hardware.</li>
+                <li><strong>Safe Bench Practice:</strong> Observe capacitor polarity and perform pre-power checks.</li>
+                <li><strong>Traceability:</strong> Document test conditions, scales, and component tolerances.</li>
+                <li><strong>Resilience:</strong> Re-test weak circuits rather than rewriting speculative reports.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 2: WORKPLACE SCENARIO & MISSION BRIEF
+           ========================================================================= -->
+      <section class="slide" id="slide-2">
+        <div class="slide-header">
+          <div class="slide-tag">WORKPLACE MISSION BRIEF</div>
+          <h2 class="slide-title">Prototype Ready for Design Verification</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">🏭 Workplace Engineering Context</div>
+              <p style="font-size: 1.05rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px;">
+                You are operating as a <strong style="color: #ffffff;">Junior Verification Test Engineer</strong> at
+                <em>Apex Analogue Instrumentation Systems Ltd</em>.
+              </p>
+              <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                <strong style="color: #fbbf24; font-size: 1.05rem;">The Challenge:</strong><br>
+                “Your prototype low-voltage DC power conditioning module is ready for design verification.
+                Before another engineer can sign it off for production, you must prove that it works and provide suitable evidence.”
+              </div>
+              <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                In commercial engineering, saying <em>“it works because the LED lit up”</em> or <em>“it looks good on the breadboard”</em>
+                is grounds for immediate rejection. You must verify the circuit across:
+              </p>
+              <div style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-cyan); background: #0f172a; padding: 10px 14px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border-subtle);">
+                Specification &rarr; Schematic &rarr; Simulation &rarr; Prototype &rarr; Measurement &rarr; Conclusion
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">🎯 Group Allocated Specifications</div>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 12px;">
+                Confirm your assigned engineering team group and technical requirements below:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="background: #0f172a; border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 8px;">
+                  <strong style="color: #38bdf8;">Group A: 3.6 V DC Specification</strong>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                    Zener: 1N4729A &bull; Target: 3.60 V &plusmn; 5% (3.42 V to 3.78 V) &bull; Max Ripple &le; 2.0 V pk-pk ($r_z \approx 10\,\Omega$)
+                  </div>
+                </div>
+                <div style="background: #0f172a; border-left: 4px solid #10b981; padding: 10px 14px; border-radius: 8px;">
+                  <strong style="color: #34d399;">Group B: 4.7 V DC Specification</strong>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                    Zener: 1N4732A &bull; Target: 4.70 V &plusmn; 5% (4.46 V to 4.94 V) &bull; Max Ripple &le; 1.5 V pk-pk ($r_z \approx 8\,\Omega$)
+                  </div>
+                </div>
+                <div style="background: #0f172a; border-left: 4px solid #f59e0b; padding: 10px 14px; border-radius: 8px;">
+                  <strong style="color: #fbbf24;">Group C: 6.8 V DC Specification</strong>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                    Zener: 1N4736A &bull; Target: 6.80 V &plusmn; 5% (6.46 V to 7.14 V) &bull; Max Ripple &le; 0.5 V pk-pk ($r_z \approx 3.5\,\Omega$)
+                  </div>
+                </div>
+              </div>
+
+              <div class="signoff-quote" style="margin-top: 14px; font-size: 0.95rem;">
+                Lasting Outcome: “I can prove that an electronic circuit meets its specification using theory, simulation and physical measurement.”
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 3: ENGINEERING TOOLBOX (CUMULATIVE RETRIEVAL)
+           ========================================================================= -->
+      <section class="slide" id="slide-3">
+        <div class="slide-header">
+          <div class="slide-tag">ENGINEERING TOOLBOX &bull; 10 MINS</div>
+          <h2 class="slide-title">Cumulative Analogue Diagnostic Check</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 12px;">
+            Test your retrieval across Weeks 1 to 4 before powering the verification bench. Type your answer and click check:
+          </p>
+
+          <div class="grid-2col" style="gap: 16px;">
+            <!-- Retrieval 1: Safety & DMM -->
+            <div class="self-check-card card" data-expected="blown fuse" data-type="includes"
+              data-hint="Think about active power destroying the meter's internal current shunt or fuse!">
+              <div class="card-title">1. Safe DMM Resistance Checks (Week 1)</div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                Why must bench power be completely isolated and capacitors discharged before measuring resistance ($\Omega$) across a circuit?
+              </p>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="self-check-input" placeholder="e.g. active voltage will blow fuse...">
+                <button class="self-check-btn btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">Check</button>
+              </div>
+              <div class="self-check-feedback"></div>
+            </div>
+
+            <!-- Retrieval 2: Diodes & Conduction -->
+            <div class="self-check-card card" data-expected="1.4" data-type="numeric" data-tolerance="0.1"
+              data-hint="Two silicon diodes conduct simultaneously in a bridge. Each drops ~0.7V!">
+              <div class="card-title">2. Bridge Rectifier Conduction (Week 2)</div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                In a 4-diode full-wave bridge rectifier, how many Volts are subtracted from $V_{in(pk)}$ due to simultaneous forward diode drops?
+              </p>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="self-check-input" placeholder="Enter Volts (e.g. 1.4)">
+                <button class="self-check-btn btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">Check</button>
+              </div>
+              <div class="self-check-feedback"></div>
+            </div>
+
+            <!-- Retrieval 3: Transistor Switching -->
+            <div class="self-check-card card" data-expected="saturation" data-type="includes"
+              data-hint="To act as a closed switch with minimal Vce drop, the BJT must be in saturation!">
+              <div class="card-title">3. BJT Switch State (Week 3)</div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                Which operational region must a bipolar transistor be driven into so that $V_{CE}$ drops below $0.2\,\text{V}$ like a closed switch?
+              </p>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="self-check-input" placeholder="e.g. saturation...">
+                <button class="self-check-btn btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">Check</button>
+              </div>
+              <div class="self-check-feedback"></div>
+            </div>
+
+            <!-- Retrieval 4: Op-Amp Negative Feedback -->
+            <div class="self-check-card card" data-expected="-10" data-type="numeric" data-tolerance="0.5"
+              data-hint="Av = -Rf / Rin = -10 kΩ / 1 kΩ = -10 V/V!">
+              <div class="card-title">4. Inverting Op-Amp Gain (Week 4)</div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                Calculate the voltage gain $A_v$ for an inverting op-amp with input resistor $R_{in} = 1\,\text{k}\Omega$ and feedback resistor $R_f = 10\,\text{k}\Omega$:
+              </p>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="self-check-input" placeholder="e.g. -10">
+                <button class="self-check-btn btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">Check</button>
+              </div>
+              <div class="self-check-feedback"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 4: VERIFICATION THEORY & MATHEMATICAL METRICS
+           ========================================================================= -->
+      <section class="slide" id="slide-4">
+        <div class="slide-header">
+          <div class="slide-tag">VERIFICATION THEORY &bull; 15 MINS</div>
+          <h2 class="slide-title">Mathematical Metrics for Circuit Sign-Off</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">📐 Full-Wave Ripple Voltage Formulation</div>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px;">
+                In a full-wave bridge with input frequency $f = 50\,\text{Hz}$, the capacitor charges twice per AC cycle ($2f = 100\,\text{Hz}$).
+                The peak-to-peak ripple voltage $V_{r(pp)}$ across capacitor $C$ is approximated by:
+              </p>
+              <div style="background: #0f172a; border-left: 4px solid var(--accent-cyan); padding: 12px 16px; border-radius: 8px; margin-bottom: 12px;">
+                $$V_{r(pp)} \approx \frac{I_L}{2fC} = \frac{V_{dc}}{2f \cdot R_L \cdot C}$$
+              </div>
+              <ul style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px;">
+                <li>$I_L$: DC Load current in Amperes ($I_L = V_Z / R_L$).</li>
+                <li>$2f$: Full-wave ripple frequency = $100\,\text{Hz}$ ($T = 10\,\text{ms}$).</li>
+                <li>$C$: Smoothing capacitance in Farads ($100\,\mu\text{F} = 100 \times 10^{-6}\,\text{F}$).</li>
+                <li><strong>Key Takeaway:</strong> Higher load current (smaller $R_L$) causes larger ripple because the capacitor discharges faster between peaks!</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="card-title">📊 Percentage Difference &amp; Tolerance Limits</div>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px;">
+                Professional engineering sign-off requires calculating percentage error between theoretical design expectations and physical bench readings:
+              </p>
+              <div style="background: #0f172a; border-left: 4px solid var(--color-success); padding: 12px 16px; border-radius: 8px; margin-bottom: 12px;">
+                $$\%\,\text{Difference} = \frac{|\text{Measured} - \text{Theoretical}|}{\text{Theoretical}} \times 100$$
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 8px 12px; border-radius: 6px; color: #a7f3d0;">
+                  <strong>&lt; 5.0% Difference:</strong> PASS &bull; Excellent correlation within standard resistor and Zener manufacturing tolerances.
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; padding: 8px 12px; border-radius: 6px; color: #fde68a;">
+                  <strong>5.0% &ndash; 10.0% Difference:</strong> CONDITIONAL PASS &bull; Acceptable commercial tolerance (e.g. &plusmn;20% electrolytic capacitor variation).
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 8px 12px; border-radius: 6px; color: #fca5a5;">
+                  <strong>&gt; 10.0% Difference:</strong> REJECT &bull; Discrepancy indicates fault, circuit loading, diode heating, or loss of regulation.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 5: STEP 1 — ASSIGNMENT BRIEF EVIDENCE AUDIT (10 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-5">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 1 &bull; 10 MINS</div>
+          <h2 class="slide-title">Assignment Brief Evidence Audit</h2>
+        </div>
+        <div class="slide-body">
+          <div class="step-timeline">
+            <span class="step-chip active"><span class="step-time">10m</span> Step 1: Brief Audit</span>
+            <span class="step-chip"><span class="step-time">15m</span> Step 2: Half-Wave Check</span>
+            <span class="step-chip"><span class="step-time">20m</span> Step 3: Full-Wave Verification</span>
+            <span class="step-chip"><span class="step-time">15m</span> Step 4: Prototype Hardware</span>
+            <span class="step-chip"><span class="step-time">10m</span> Step 5: DC Output Voltage</span>
+            <span class="step-chip"><span class="step-time">10m</span> Step 6: Ripple Analysis</span>
+            <span class="step-chip"><span class="step-time">5m</span> Step 7: Comparison</span>
+            <span class="step-chip"><span class="step-time">5m</span> Final Audit</span>
+          </div>
+
+          <div class="grid-2col">
+            <div>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                Before starting practical tests, audit your current portfolio draft against all 7 formal assignment brief requirements.
+                Check each requirement you have verified:
+              </p>
+
+              <div class="checklist-container">
+                <label class="check-item" id="audit-check-1">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r1')">
+                  <div class="check-text">
+                    <div class="check-title">(i) Identify Diode Types &amp; Uses</div>
+                    <div class="check-sub">Signal (1N4148), Rectifier (1N4001), Zener (BZX55C), and LEDs with schematic symbols.</div>
+                  </div>
+                </label>
+
+                <label class="check-item" id="audit-check-2">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r2')">
+                  <div class="check-text">
+                    <div class="check-title">(ii) Half-Wave Rectifier Schematic &amp; Simulation</div>
+                    <div class="check-sub">Single diode simulation showing input AC, output DC waveform, and rectification explanation.</div>
+                  </div>
+                </label>
+
+                <label class="check-item" id="audit-check-3">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r3')">
+                  <div class="check-text">
+                    <div class="check-title">(iii) Full-Wave Bridge + Smoothing + Zener Design</div>
+                    <div class="check-sub">Full schematic with capacitor smoothing and Zener diode matched to your group spec.</div>
+                  </div>
+                </label>
+
+                <label class="check-item" id="audit-check-4">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r4')">
+                  <div class="check-text">
+                    <div class="check-title">(iv) Build Prototype of Final Circuit</div>
+                    <div class="check-sub">Clear photograph of physical breadboard with safe construction and visible components.</div>
+                  </div>
+                </label>
+
+                <label class="check-item" id="audit-check-5">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r5')">
+                  <div class="check-text">
+                    <div class="check-title">(v) Record Output Voltage Across Load</div>
+                    <div class="check-sub">Multimeter reading across regulated load resistor with units and photo evidence.</div>
+                  </div>
+                </label>
+
+                <label class="check-item" id="audit-check-6">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r6')">
+                  <div class="check-text">
+                    <div class="check-title">(vi) Estimate Voltage Ripple for Defined Loads</div>
+                    <div class="check-sub">Oscilloscope $V_{r(pp)}$ across 22&nbsp;k&Omega;, 10&nbsp;k&Omega;, and 4.7&nbsp;k&Omega; before and after Zener.</div>
+                  </div>
+                </label>
+
+                <label class="check-item" id="audit-check-7">
+                  <input type="checkbox" onchange="toggleAuditCheck(this, 'audit_r7')">
+                  <div class="check-text">
+                    <div class="check-title">(vii) Compare Theory, Simulation &amp; Measurement</div>
+                    <div class="check-sub">Cross-domain comparison table with percentage differences and formal sign-off statement.</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">⏱️ Activity Timer &bull; 10 Minutes</div>
+              <div class="timer-widget" data-duration="10" style="margin-bottom: 20px;">
+                <div class="timer-display">10:00</div>
+                <div class="timer-controls">
+                  <button class="timer-toggle btn btn-primary">Start Audit</button>
+                  <button class="timer-reset btn btn-secondary">Reset</button>
+                </div>
+              </div>
+
+              <div style="background: rgba(6, 182, 212, 0.1); border-left: 4px solid var(--accent-cyan); padding: 14px; border-radius: 8px;">
+                <strong style="color: var(--accent-cyan);">Verification Tip:</strong><br>
+                Don't worry if several boxes are unchecked! Today's 90-minute workshop is structured to collect, measure, and verify every single missing item.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 6: STEP 2 — HALF-WAVE RECTIFIER EVIDENCE CHECK (15 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-6">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 2 &bull; 15 MINS</div>
+          <h2 class="slide-title">Half-Wave Rectifier Evidence Check</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div>
+              <div class="card" style="margin-bottom: 14px;">
+                <div class="card-title">📋 Requirement (ii) Verification Audit</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  Confirm that your portfolio contains complete simulation evidence for the half-wave rectifier.
+                  <strong style="color: #fbbf24;">Note: No prototype breadboard build is required for this section.</strong>
+                </p>
+                <div class="checklist-container">
+                  <label class="check-item"><input type="checkbox"> Circuit schematic diagram from Multisim captured.</label>
+                  <label class="check-item"><input type="checkbox"> Simulation oscilloscope screenshot showing input vs output.</label>
+                  <label class="check-item"><input type="checkbox"> Peak input AC voltage ($17.0\,\text{V}$) and rectified output ($16.3\,\text{V}$) marked.</label>
+                  <label class="check-item"><input type="checkbox"> Brief technical explanation of PN junction forward/reverse conduction.</label>
+                </div>
+              </div>
+
+              <!-- Prediction Checkpoint -->
+              <div class="prediction-box">
+                <h4>🔮 Pre-Check Prediction: Barrier Drop</h4>
+                <p>If the AC input is $12.0\,\text{V}$ RMS ($17.0\,\text{V}$ Peak), what is the theoretical peak voltage across the load resistor in a silicon half-wave rectifier?</p>
+                <div class="prediction-options">
+                  <button class="pred-btn" onclick="checkPrediction(this, false, 'Remember: A silicon diode requires 0.7V forward bias to conduct.')">17.0 V</button>
+                  <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! Vpeak_out = 17.0V - 0.7V = 16.3V.')">16.3 V</button>
+                  <button class="pred-btn" onclick="checkPrediction(this, false, '15.6V is the drop across two diodes in a full-wave bridge, not single half-wave.')">15.6 V</button>
+                </div>
+                <div class="pred-feedback"></div>
+              </div>
+            </div>
+
+            <div class="schematic-frame">
+              <img src="images/circuit-half-wave.png" alt="Half-Wave Rectifier Circuit Schematic">
+              <div class="schematic-caption">Fig 5.1: Multisim Half-Wave Rectifier (AC Source 12VRMS, 1N4001 Diode, 10kΩ Load)</div>
+              <div style="background: rgba(15, 23, 42, 0.7); padding: 10px 14px; border-radius: 8px; width: 100%; font-size: 0.85rem; color: var(--text-secondary);">
+                <strong>Missing this screenshot?</strong> Open Multisim, wire an AC Source (12V RMS, 50Hz) to 1N4001 and 10kΩ resistor. Run transient analysis (0 to 40ms) and export the dual-trace graph.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 7: STEP 3 — FULL-WAVE RECTIFIER DESIGN VERIFICATION (20 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-7">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 3 &bull; 20 MINS</div>
+          <h2 class="slide-title">Full-Wave Rectifier Design Verification</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div>
+              <div class="card" style="margin-bottom: 14px;">
+                <div class="card-title">📋 Requirement (iii) Verification Audit</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  Verify the development of the 4-diode full-wave bridge with capacitor smoothing and Zener diode regulation:
+                </p>
+                <div class="checklist-container">
+                  <label class="check-item"><input type="checkbox"> Complete schematic diagram with 4x 1N4001, C1, Rs, and Zener diode.</label>
+                  <label class="check-item"><input type="checkbox"> Component values clearly labelled (e.g. $C_1 = 100\,\mu\text{F}$, $R_s = 330\,\Omega$).</label>
+                  <label class="check-item"><input type="checkbox"> Group-specific Zener diode model configured from Week 2 (3.6V, 4.7V, or 6.8V).</label>
+                  <label class="check-item"><input type="checkbox"> Output waveform showing 100 Hz ripple smoothing and clamped DC output.</label>
+                  <label class="check-item"><input type="checkbox"> Technical explanation explaining why full-wave smoothing is superior to half-wave.</label>
+                </div>
+              </div>
+
+              <!-- Prediction Checkpoint -->
+              <div class="prediction-box">
+                <h4>🔮 Pre-Check Prediction: Ripple Frequency</h4>
+                <p>Why does a full-wave bridge rectifier produce a ripple frequency of $100\,\text{Hz}$ from a $50\,\text{Hz}$ mains supply?</p>
+                <div class="prediction-options">
+                  <button class="pred-btn" onclick="checkPrediction(this, false, 'The capacitor stores charge, but does not double AC frequency.')">The capacitor doubles the frequency</button>
+                  <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Both positive and negative half-cycles are inverted into positive output pulses (2 x 50Hz = 100Hz).')">Both half-cycles are converted to positive pulses</button>
+                  <button class="pred-btn" onclick="checkPrediction(this, false, 'Diodes rectify current, but frequency doubling is due to bridge topology.')">The Zener diode oscillates at 100Hz</button>
+                </div>
+                <div class="pred-feedback"></div>
+              </div>
+            </div>
+
+            <div class="schematic-frame">
+              <img src="images/circuit-regulated.png" alt="Full-Wave Bridge Rectifier with Smoothing and Zener Regulation">
+              <div class="schematic-caption">Fig 5.2: Complete Power Supply Schematic (Bridge Rectifier + 100µF Filter + Zener Stage)</div>
+              <div style="background: rgba(15, 23, 42, 0.7); padding: 10px 14px; border-radius: 8px; width: 100%; font-size: 0.85rem; color: var(--text-secondary);">
+                <strong>Key Formula:</strong> $V_{peak(rect)} = V_{in(pk)} - 2 \cdot V_{diode} = 17.0\,\text{V} - 1.4\,\text{V} = 15.6\,\text{V}$.
+                The Zener diode regulates this $15.6\,\text{V}$ raw supply down to your stable group target.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 8: STEP 4 — PROTOTYPE HARDWARE VERIFICATION (15 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-8">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 4 &bull; 15 MINS</div>
+          <h2 class="slide-title">Prototype Hardware Verification</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div>
+              <div class="card">
+                <div class="card-title">🔍 Physical Circuit Inspection &amp; Photo Check</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                  Requirement (iv) requires physical verification of your final breadboard prototype. Inspect your board against the verification chain:
+                </p>
+                <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); background: #0f172a; padding: 10px; border-radius: 8px; margin-bottom: 12px;">
+                  Specification &rarr; Schematic &rarr; Simulation &rarr; Prototype
+                </div>
+                <div class="checklist-container">
+                  <label class="check-item"><input type="checkbox"> Clear, in-focus photograph of the breadboard prototype captured.</label>
+                  <label class="check-item"><input type="checkbox"> All components visible (4x 1N4001 diodes, capacitor, Rs resistor, Zener, load).</label>
+                  <label class="check-item"><input type="checkbox"> Circuit wiring directly matches the approved schematic.</label>
+                  <label class="check-item"><input type="checkbox"> Safe, neat layout with no exposed bare wire cross-overs.</label>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="card">
+                <div class="card-title">⚡ Pre-Power Safety Checklist</div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  Complete these safety checks before energising your bench power supply:
+                </p>
+                <div class="checklist-container">
+                  <label class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                      <div class="check-title">Electrolytic Capacitor Polarity Verified</div>
+                      <div class="check-sub">Negative stripe connected to 0V ground rail. Reversal causes explosive venting!</div>
+                    </div>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                      <div class="check-title">Zener Diode Reverse-Bias Orientation</div>
+                      <div class="check-sub">Black cathode band connected towards the positive rail (reverse breakdown mode).</div>
+                    </div>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                      <div class="check-title">Pre-Power Resistance Check</div>
+                      <div class="check-sub">DMM on Ohms mode measures &gt; 1 k&Omega; across DC rails (no short circuit).</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 9: STEP 5 — OUTPUT VOLTAGE MEASUREMENTS (10 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-9">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 5 &bull; 10 MINS</div>
+          <h2 class="slide-title">Regulated Output Voltage Measurements</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div>
+              <div class="card">
+                <div class="card-title">📏 Requirement (v): Measure Across Regulated Load</div>
+                <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                  Connect your calibrated Digital Multimeter (DMM) set to DC Volts ($20\,\text{V}$ range).
+                  <strong style="color: #38bdf8;">Measure directly across the load resistor $R_L$ ($10\,\text{k}\Omega$).</strong>
+                </p>
+
+                <div class="calc-input-group" style="margin-bottom: 12px;">
+                  <label for="v5-group-select" style="font-weight: 700; color: #ffffff;">Your Allocated Group Specification (from Week 2):</label>
+                  <select id="v5-group-select" onchange="selectGroupVoltage(this.value)">
+                    <option value="3.6">Group A — 3.6 V Target (1N4729A Zener)</option>
+                    <option value="4.7" selected>Group B — 4.7 V Target (1N4732A Zener)</option>
+                    <option value="6.8">Group C — 6.8 V Target (1N4736A Zener)</option>
+                  </select>
+                </div>
+
+                <table class="verif-table">
+                  <thead>
+                    <tr>
+                      <th>Domain</th>
+                      <th>Expected / Target</th>
+                      <th>Recorded Voltage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Theoretical</strong></td>
+                      <td>Zener Datasheet Nominal</td>
+                      <td><input type="text" id="v5_theo" value="4.70 V" oninput="calculateVoltageError()"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Simulation</strong></td>
+                      <td>Multisim Virtual DMM</td>
+                      <td><input type="text" id="v5_sim" placeholder="e.g. 4.68 V" oninput="calculateVoltageError()"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Measured</strong></td>
+                      <td>Bench Physical DMM</td>
+                      <td><input type="text" id="v5_meas" placeholder="e.g. 4.62 V" oninput="calculateVoltageError()"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div id="v5_error_display" style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px; margin-top: 10px; font-family: var(--font-mono); font-size: 0.88rem;">
+                  Percentage Difference (% Error): <span id="v5_err_val" style="color: var(--accent-cyan); font-weight: 700;">---</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">📸 Evidence Collection Prompt</div>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                To satisfy Pearson assessment verification, you must capture photographic evidence showing:
+              </p>
+              <ul style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; padding-left: 20px; margin-bottom: 14px;">
+                <li>The DMM display showing your reading with units ($V$).</li>
+                <li>The test probe tips connected directly across the load resistor terminals.</li>
+                <li>The prototype breadboard powered on.</li>
+              </ul>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--color-success); padding: 10px 14px; border-radius: 8px; font-size: 0.86rem; color: #a7f3d0;">
+                ✅ Record your reading with two decimal places (e.g. 5.04 V, not just "5V").
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 10: STEP 6 — RIPPLE INVESTIGATION FOR DEFINED LOADS (10 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-10">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 6 &bull; 10 MINS</div>
+          <h2 class="slide-title">Ripple Investigation: 22 k&Omega;, 10 k&Omega;, 4.7 k&Omega;</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <!-- Ripple Measurement Table -->
+            <div>
+              <div class="card">
+                <div class="card-title">📊 Bench Ripple Data Sheet</div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  Full-wave ripple equation: $V_{r(pp)} \approx \frac{I_L}{2 \cdot f \cdot C} = \frac{V_Z}{2 \cdot f \cdot R_L \cdot C}$ ($f = 50\,\text{Hz}$, $C = 100\,\mu\text{F}$).
+                </p>
+                <table class="verif-table">
+                  <thead>
+                    <tr>
+                      <th>Load ($R_L$)</th>
+                      <th>Theory $V_{r(pp)}$</th>
+                      <th>Sim $V_{r(pp)}$</th>
+                      <th>Measured $V_{r(pp)}$</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>22 k&Omega; (High)</strong></td>
+                      <td id="ripple-theo-22k">21 mV</td>
+                      <td><input type="text" placeholder="e.g. 22 mV"></td>
+                      <td><input type="text" placeholder="e.g. 26 mV"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>10 k&Omega; (Medium)</strong></td>
+                      <td id="ripple-theo-10k">47 mV</td>
+                      <td><input type="text" placeholder="e.g. 48 mV"></td>
+                      <td><input type="text" placeholder="e.g. 54 mV"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>4.7 k&Omega; (Low)</strong></td>
+                      <td id="ripple-theo-4k7">100 mV</td>
+                      <td><input type="text" placeholder="e.g. 102 mV"></td>
+                      <td><input type="text" placeholder="e.g. 115 mV"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Oscilloscope AC Coupling Tip -->
+            <div class="schematic-frame">
+              <img src="images/ripple-waveform.svg" alt="Oscilloscope AC Coupling and Ripple Waveform">
+              <div class="schematic-caption">Fig 5.3: Oscilloscope AC Coupling isolates the mV ripple from the 14V DC offset</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 11: STEP 7 — MULTI-DOMAIN COMPARISON & CONCLUSION (5 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-11">
+        <div class="slide-header">
+          <div class="slide-tag">WORKSHOP STEP 7 &bull; 5 MINS</div>
+          <h2 class="slide-title">Multi-Domain Comparison &amp; Engineering Sign-Off</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div>
+              <div class="card" style="margin-bottom: 12px;">
+                <div class="card-title">📋 Requirement (vii): Multi-Domain Summary Table</div>
+                <table class="verif-table">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Theory</th>
+                      <th>Simulation</th>
+                      <th>Measurement</th>
+                      <th>% Diff</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Output Voltage ($V_{out}$)</strong></td>
+                      <td><input type="text" id="tbl_theo_v" value="4.70 V" oninput="updateSignoffStatement()"></td>
+                      <td><input type="text" id="tbl_sim_v" value="4.68 V" oninput="updateSignoffStatement()"></td>
+                      <td><input type="text" id="tbl_meas_v" value="4.62 V" oninput="updateSignoffStatement()"></td>
+                      <td id="tbl_diff_v" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.70%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Raw Ripple ($V_{r(pp)}$)</strong></td>
+                      <td><input type="text" id="tbl_theo_r" value="47 mV"></td>
+                      <td><input type="text" id="tbl_sim_r" value="48 mV"></td>
+                      <td><input type="text" id="tbl_meas_r" value="54 mV"></td>
+                      <td id="tbl_diff_r" style="font-family: var(--font-mono); color: var(--accent-cyan);">14.9%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Engineering Questions -->
+              <div class="card">
+                <div class="card-title">🔍 Engineering Analysis Questions</div>
+                <ul style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px;">
+                  <li><strong>1. Do the results agree?</strong> Yes, the DC voltage is within 1.70% of theory (&lt; 5% limit).</li>
+                  <li><strong>2. If not, why not?</strong> Electrolytic capacitor tolerance (&plusmn;20%) and Zener dynamic resistance account for ripple variance.</li>
+                  <li><strong>3. What sources of error explain differences?</strong> Diode temperature rise, DMM meter loading, and mains voltage variation.</li>
+                  <li><strong>4. Does the final circuit meet specification?</strong> Yes, output voltage remains clamped within &plusmn;5% tolerance.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <div class="signoff-box">
+                <h4>📜 Official Engineering Verification Sign-Off</h4>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  Review the automatically generated defensible engineering statement below:
+                </p>
+                <div class="signoff-quote" id="signoff-text">
+                  “The circuit meets the specification because the measured results were consistent with the theoretical and simulated values.
+                  Specifically, the measured DC output was 4.62 V against a target of 4.70 V ± 5% (1.70% difference), and voltage ripple was effectively attenuated across all load conditions.”
+                </div>
+                <button class="btn btn-primary" onclick="copySignoffStatement()" style="width: 100%; margin-top: 10px;">
+                  📋 Copy Sign-Off Statement
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 12: FINAL EVIDENCE AUDIT & TARGETED BENCH CLINICS (25 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-12">
+        <div class="slide-header">
+          <div class="slide-tag">FINAL STAGE &bull; 25 MINS</div>
+          <h2 class="slide-title">Final Evidence Audit &amp; Targeted Bench Clinics</h2>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-title">✅ Final Engineering Evidence Audit (5 Mins)</div>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 12px;">
+                Before leaving the bench, ensure all 7 assignment brief items are fully accounted for:
+              </p>
+              <div class="checklist-container">
+                <label class="check-item"><input type="checkbox" checked> Diode types and applications documented.</label>
+                <label class="check-item"><input type="checkbox" checked> Half-wave rectifier simulation completed.</label>
+                <label class="check-item"><input type="checkbox" checked> Full-wave rectifier design completed.</label>
+                <label class="check-item"><input type="checkbox" checked> Prototype verified on breadboard.</label>
+                <label class="check-item"><input type="checkbox" checked> Regulated output voltage recorded.</label>
+                <label class="check-item"><input type="checkbox" checked> Ripple investigation across 3 loads completed.</label>
+                <label class="check-item"><input type="checkbox" checked> Comparison of theory, simulation, and measurement completed.</label>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">🏥 Targeted Bench Clinics (20 Mins)</div>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                Use the remaining active time to attend a tutor-led bench clinic or re-test any weak circuits:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="background: #0f172a; border-left: 4px solid var(--accent-cyan); padding: 10px 14px; border-radius: 8px;">
+                  <strong style="color: var(--accent-cyan);">Clinic A (Bench 1): Oscilloscope AC Coupling</strong>
+                  <div style="font-size: 0.84rem; color: var(--text-secondary);">Mastering cursor measurement of millivolt ripple waveforms.</div>
+                </div>
+                <div style="background: #0f172a; border-left: 4px solid var(--color-success); padding: 10px 14px; border-radius: 8px;">
+                  <strong style="color: #34d399;">Clinic B (Bench 4): Multisim Grapher Export</strong>
+                  <div style="font-size: 0.84rem; color: var(--text-secondary);">Catching up missing half-wave and full-wave simulation graphs.</div>
+                </div>
+                <div style="background: #0f172a; border-left: 4px solid #f59e0b; padding: 10px 14px; border-radius: 8px;">
+                  <strong style="color: #fbbf24;">Clinic C (Bench 6): Zener Bias Troubleshooting</strong>
+                  <div style="font-size: 0.84rem; color: var(--text-secondary);">Re-wiring breadboard faults where $V_{out} = 0.7\,\text{V}$ or $15\,\text{V}$.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SLIDE 13: ENGINEER EXIT TICKET (5 MINS)
+           ========================================================================= -->
+      <section class="slide" id="slide-13">
+        <div class="slide-header">
+          <div class="slide-tag">EXIT RETRIEVAL &bull; 5 MINS</div>
+          <h2 class="slide-title">Engineer Exit Ticket</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 14px;">
+            Complete your 3-question formative exit check before leaving the lab:
+          </p>
+
+          <div class="grid-2col" style="gap: 16px;">
+            <div class="self-check-card card" data-expected="250" data-type="numeric" data-tolerance="5"
+              data-hint="Vr(pp) = IL / (2*f*C) = 0.0025 / (100 * 0.000100) = 0.0025 / 0.01 = 0.25 V = 250 mV!">
+              <div class="card-title">1. Today's Learning: Ripple Calculation</div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                Calculate theoretical ripple $V_{r(pp)}$ for a full-wave $50\,\text{Hz}$ supply with $C = 100\,\mu\text{F}$ and $I_L = 2.5\,\text{mA}$:
+              </p>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="self-check-input" placeholder="Enter mV (e.g. 250)">
+                <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+              </div>
+              <div class="self-check-feedback"></div>
+            </div>
+
+            <div class="self-check-card card" data-expected="saturation" data-type="includes"
+              data-hint="Negative feedback keeps the op-amp in its linear region, preventing saturation against the power rails!">
+              <div class="card-title">2. Recent Learning: Op-Amps (Week 4)</div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                What condition does negative feedback prevent in an op-amp amplifier by maintaining $V_+ \approx V_-$?
+              </p>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="self-check-input" placeholder="e.g. saturation / clipping...">
+                <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+              </div>
+              <div class="self-check-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">3. Cumulative Learning: Safety (Week 1 &amp; 2)</div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 8px;">
+              What physical safety hazard occurs if an electrolytic capacitor is reverse-biased across the rectified DC supply?
+            </p>
+            <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--color-danger); padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; color: #fca5a5;">
+              ⚠️ <strong>Hazard:</strong> Dielectric breakdown causes boiling electrolyte, rapid pressure rise, and explosive venting or rupture.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Deck Footer -->
+    <footer class="deck-footer">
+      <div class="nav-controls">
+        <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+        <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+        <span class="slide-counter" id="slide-counter">1 / 13</span>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Verification Mode</span>
+      </div>
+    </footer>
+    </div>
+  </div>
+
+  <!-- Slide Matrix / Map Modal -->
+  <div id="slide-matrix-modal" class="modal-overlay">
+    <div class="slide-matrix-card">
+      <div class="slide-matrix-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.25rem;">🗺️</span>
+          <div>
+            <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly (or press 'M')</p>
+          </div>
+        </div>
+        <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+      </div>
+      <div id="slide-matrix-grid" class="slide-matrix-grid">
+        <!-- Populated dynamically by PresentationEngine -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility Drawer Backdrop -->
+  <div id="a11y-backdrop"></div>
+
+  <!-- Accessibility & Neurodiversity Side-Drawer -->
+  <aside id="a11y-drawer">
+    <div class="a11y-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.2rem;">⚙️</span>
+        <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+      </div>
+      <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+    </div>
+
+    <div class="a11y-body">
+      <!-- Speech Synthesis (TTS) -->
+      <div class="a11y-group">
+        <div class="a11y-label">
+          <span>🔊 Web Speech Slide Narration</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button id="a11y-speak-active-slide" class="btn btn-secondary" style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+            🔊 Read Slide Aloud
+          </button>
+          <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+            ⏹️ Stop
+          </button>
+        </div>
+      </div>
+
+      <!-- Typography & Dyslexia Toolbar -->
+      <div class="a11y-group">
+        <div class="a11y-label">
+          <span>📖 Font Family</span>
+        </div>
+        <select id="a11y-font-select" class="a11y-select">
+          <option value="default">Inter (Default Crisp)</option>
+          <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+          <option value="system">System UI (Clean Sans-Serif)</option>
+        </select>
+      </div>
+
+      <button id="a11y-reset-prefs" class="btn btn-secondary" style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+        🔄 Reset to Default Theme
+      </button>
+    </div>
+  </aside>
+
+  <!-- Shared Scripts -->
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/self-check.js"></script>
+  <script src="../shared/js/timer.js"></script>
+
+  <!-- Week 5 Specific Interactive Logic -->
+  <script>
+    function checkPrediction(button, isCorrect, feedbackText) {
+      const container = button.closest('.prediction-box');
+      if (!container) return;
+      const buttons = container.querySelectorAll('.pred-btn');
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+      button.classList.add(isCorrect ? 'correct' : 'incorrect');
+      const fb = container.querySelector('.pred-feedback');
+      if (fb) {
+        fb.textContent = feedbackText;
+        fb.className = `pred-feedback ${isCorrect ? 'success' : 'hint'}`;
+      }
+    }
+
+    function selectGroupVoltage(val) {
+      const v = parseFloat(val) || 4.7;
+      const vTheoInput = document.getElementById('v5_theo');
+      if (vTheoInput) {
+        vTheoInput.value = v.toFixed(2) + ' V';
+      }
+      updateRippleTheory(v);
+      const tblTheo = document.getElementById('tbl_theo_v');
+      if (tblTheo) {
+        tblTheo.value = v.toFixed(2) + ' V';
+      }
+
+      // Update simulation and bench measurement representative values
+      const tblSim = document.getElementById('tbl_sim_v');
+      const tblMeas = document.getElementById('tbl_meas_v');
+      const vMeasInput = document.getElementById('v5_meas');
+      const vSimInput = document.getElementById('v5_sim');
+
+      let simV = '4.68 V';
+      let measV = '4.62 V';
+      if (Math.abs(v - 3.6) < 0.1) {
+        simV = '3.58 V';
+        measV = '3.52 V';
+      } else if (Math.abs(v - 6.8) < 0.1) {
+        simV = '6.76 V';
+        measV = '6.68 V';
+      }
+
+      if (tblSim) tblSim.value = simV;
+      if (tblMeas) tblMeas.value = measV;
+      if (vSimInput) vSimInput.placeholder = `e.g. ${simV}`;
+      if (vMeasInput) vMeasInput.placeholder = `e.g. ${measV}`;
+
+      calculateVoltageError();
+      updateSignoffStatement();
+    }
+
+    function updateRippleTheory(vzVal) {
+      const v = parseFloat(vzVal) || 4.7;
+      const f = 50; // UK 50 Hz AC
+      const c = 0.000100; // 100 µF capacitor
+
+      // Update table nominal theory values
+      const t22 = document.getElementById('ripple-theo-22k');
+      const t10 = document.getElementById('ripple-theo-10k');
+      const t4k7 = document.getElementById('ripple-theo-4k7');
+      if (t22) t22.textContent = Math.round((v / 22000) / (2 * f * c) * 1000) + ' mV';
+      if (t10) t10.textContent = Math.round((v / 10000) / (2 * f * c) * 1000) + ' mV';
+      if (t4k7) t4k7.textContent = Math.round((v / 4700) / (2 * f * c) * 1000) + ' mV';
+    }
+
+    function calculateVoltageError() {
+      const theo = parseFloat(document.getElementById('v5_theo')?.value) || 4.70;
+      const meas = parseFloat(document.getElementById('v5_meas')?.value);
+      const displayEl = document.getElementById('v5_err_val');
+      if (displayEl && !isNaN(meas) && theo > 0) {
+        const diff = Math.abs(meas - theo);
+        const pDiff = (diff / theo) * 100;
+        displayEl.textContent = pDiff.toFixed(2) + '% (' + (pDiff <= 5 ? 'PASS: Within ±5% Spec' : 'CAUTION: > 5% Spec') + ')';
+        displayEl.style.color = pDiff <= 5 ? 'var(--color-success)' : 'var(--color-danger)';
+      }
+    }
+
+    function updateSignoffStatement() {
+      const theo = parseFloat(document.getElementById('tbl_theo_v')?.value) || 4.70;
+      const meas = parseFloat(document.getElementById('tbl_meas_v')?.value) || 4.62;
+      const diff = Math.abs(meas - theo);
+      const pDiff = ((diff / theo) * 100).toFixed(2);
+      const diffEl = document.getElementById('tbl_diff_v');
+      if (diffEl) diffEl.textContent = pDiff + '%';
+
+      const meets = parseFloat(pDiff) <= 5.0;
+      const signoffEl = document.getElementById('signoff-text');
+      if (signoffEl) {
+        signoffEl.textContent = `“The circuit ${meets ? 'meets' : 'does not meet'} the specification because the measured results were ${meets ? 'consistent' : 'inconsistent'} with the theoretical and simulated values. Specifically, the measured DC output was ${meas.toFixed(2)} V against a target of ${theo.toFixed(2)} V ± 5% (${pDiff}% difference), and voltage ripple was effectively attenuated across all load conditions.”`;
+      }
+    }
+
+    function copySignoffStatement() {
+      const text = document.getElementById('signoff-text')?.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Verification Sign-Off Statement copied to clipboard!');
+      });
+    }
+
+
+    function toggleAuditCheck(checkbox, key) {
+      const item = checkbox.closest('.check-item');
+      if (item) {
+        item.classList.toggle('checked', checkbox.checked);
+      }
+      localStorage.setItem('u19_w5_' + key, checkbox.checked ? 'true' : 'false');
+    }
+
+    function loadAuditState() {
+      const keys = ['audit_r1', 'audit_r2', 'audit_r3', 'audit_r4', 'audit_r5', 'audit_r6', 'audit_r7'];
+      keys.forEach(k => {
+        const val = localStorage.getItem('u19_w5_' + k);
+        if (val === 'true') {
+          const input = document.querySelector(`input[onchange*="${k}"]`);
+          if (input) {
+            input.checked = true;
+            input.closest('.check-item')?.classList.add('checked');
+          }
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateRippleTheory(4.7);
+      loadAuditState();
+      calculateVoltageError();
+    });
+  </script>
+</body>
+
+</html>

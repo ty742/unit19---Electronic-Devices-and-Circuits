@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 160" width="100%" height="auto">
+  <defs>
+    <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Step 1: Specification -->
+  <g transform="translate(10, 20)">
+    <rect width="130" height="90" rx="10" fill="url(#boxGrad)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="65" y="32" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#38bdf8" text-anchor="middle">STAGE 1</text>
+    <text x="65" y="55" font-family="'Inter', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">Specification</text>
+    <text x="65" y="75" font-family="'Inter', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Vout, Imax, Ripple</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <path d="M 145 65 L 165 65" stroke="#06b6d4" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="165,60 175,65 165,70" fill="#06b6d4"/>
+
+  <!-- Step 2: Schematic -->
+  <g transform="translate(180, 20)">
+    <rect width="130" height="90" rx="10" fill="url(#boxGrad)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="65" y="32" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#38bdf8" text-anchor="middle">STAGE 2</text>
+    <text x="65" y="55" font-family="'Inter', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">Schematic</text>
+    <text x="65" y="75" font-family="'Inter', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Topology &amp; Ratings</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <path d="M 315 65 L 335 65" stroke="#06b6d4" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="335,60 345,65 335,70" fill="#06b6d4"/>
+
+  <!-- Step 3: Simulation -->
+  <g transform="translate(350, 20)">
+    <rect width="130" height="90" rx="10" fill="url(#boxGrad)" stroke="#10b981" stroke-width="2"/>
+    <text x="65" y="32" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#10b981" text-anchor="middle">STAGE 3</text>
+    <text x="65" y="55" font-family="'Inter', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">Simulation</text>
+    <text x="65" y="75" font-family="'Inter', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Multisim Waveforms</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <path d="M 485 65 L 505 65" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="505,60 515,65 505,70" fill="#10b981"/>
+
+  <!-- Step 4: Prototype -->
+  <g transform="translate(520, 20)">
+    <rect width="130" height="90" rx="10" fill="url(#boxGrad)" stroke="#f59e0b" stroke-width="2"/>
+    <text x="65" y="32" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#f59e0b" text-anchor="middle">STAGE 4</text>
+    <text x="65" y="55" font-family="'Inter', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">Prototype</text>
+    <text x="65" y="75" font-family="'Inter', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Breadboard Build</text>
+  </g>
+
+  <!-- Arrow 4 -->
+  <path d="M 655 65 L 675 65" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="675,60 685,65 675,70" fill="#f59e0b"/>
+
+  <!-- Step 5: Measurement -->
+  <g transform="translate(690, 20)">
+    <rect width="130" height="90" rx="10" fill="url(#boxGrad)" stroke="#a855f7" stroke-width="2"/>
+    <text x="65" y="32" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#a855f7" text-anchor="middle">STAGE 5</text>
+    <text x="65" y="55" font-family="'Inter', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">Measurement</text>
+    <text x="65" y="75" font-family="'Inter', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">DMM &amp; Scope Vr(pp)</text>
+  </g>
+
+  <!-- Arrow 5 -->
+  <path d="M 825 65 L 835 65" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="835,60 845,65 835,70" fill="#a855f7"/>
+
+  <!-- Step 6: Conclusion / Sign-Off -->
+  <g transform="translate(850, 20)">
+    <rect width="90" height="90" rx="10" fill="url(#cyanGrad)" filter="url(#glow)"/>
+    <text x="45" y="32" font-family="'Inter', sans-serif" font-size="11" font-weight="800" fill="#0f172a" text-anchor="middle">STAGE 6</text>
+    <text x="45" y="55" font-family="'Inter', sans-serif" font-size="13" font-weight="800" fill="#0f172a" text-anchor="middle">Sign-Off</text>
+    <text x="45" y="75" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#0f172a" text-anchor="middle">Decision</text>
+  </g>
+
+  <!-- Bottom workflow subtitle -->
+  <text x="475" y="145" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#64748b" text-anchor="middle">THE ENGINEERING VERIFICATION CHAIN: Traceability from Requirements to Bench Validation</text>
+</svg>

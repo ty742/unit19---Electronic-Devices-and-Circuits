@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="100%" height="auto">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(56, 189, 248, 0.05)" />
+      <stop offset="100%" stop-color="rgba(56, 189, 248, 0.15)" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Screen -->
+  <rect width="900" height="320" rx="14" fill="url(#bgGrad)" stroke="#334155" stroke-width="2"/>
+
+  <!-- Oscilloscope Graticule Grid -->
+  <g stroke="rgba(51, 65, 85, 0.4)" stroke-width="1" stroke-dasharray="2,4">
+    <!-- Horizontal divisions -->
+    <line x1="60" y1="40" x2="840" y2="40"/>
+    <line x1="60" y1="80" x2="840" y2="80"/>
+    <line x1="60" y1="120" x2="840" y2="120"/>
+    <line x1="60" y1="160" x2="840" y2="160"/>
+    <line x1="60" y1="200" x2="840" y2="200"/>
+    <line x1="60" y1="240" x2="840" y2="240"/>
+    <!-- Vertical divisions -->
+    <line x1="140" y1="30" x2="140" y2="270"/>
+    <line x1="240" y1="30" x2="240" y2="270"/>
+    <line x1="340" y1="30" x2="340" y2="270"/>
+    <line x1="440" y1="30" x2="440" y2="270"/>
+    <line x1="540" y1="30" x2="540" y2="270"/>
+    <line x1="640" y1="30" x2="640" y2="270"/>
+    <line x1="740" y1="30" x2="740" y2="270"/>
+  </g>
+
+  <!-- Ground Reference (0V) -->
+  <line x1="60" y1="240" x2="840" y2="240" stroke="#64748b" stroke-width="2"/>
+  <text x="45" y="245" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94a3b8" text-anchor="end">0V GND</text>
+
+  <!-- Full-Wave Unsmoothed Ghost Pulses -->
+  <path d="M 100 240 Q 150 70 200 240 Q 250 70 300 240 Q 350 70 400 240 Q 450 70 500 240 Q 550 70 600 240 Q 650 70 700 240 Q 750 70 800 240" 
+        fill="none" stroke="rgba(148, 163, 184, 0.25)" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="170" y="225" font-family="'Inter', sans-serif" font-size="10" fill="#64748b">Raw 100Hz Rectified Pulses</text>
+
+  <!-- Smoothed Capacitor Ripple Waveform -->
+  <!-- Charge to peak (y=80), exponential discharge to valley (y=120) -->
+  <path d="M 80 115 
+           L 150 80 
+           Q 220 105 250 120 
+           L 260 80 
+           Q 330 105 360 120 
+           L 370 80 
+           Q 440 105 470 120 
+           L 480 80 
+           Q 550 105 580 120 
+           L 590 80 
+           Q 660 105 690 120 
+           L 700 80 
+           Q 770 105 800 120" 
+        fill="none" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Peak Reference Line -->
+  <line x1="140" y1="80" x2="840" y2="80" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <text x="845" y="84" font-family="'JetBrains Mono', monospace" font-size="11" fill="#f59e0b">V_peak = 11.2V</text>
+
+  <!-- Valley Reference Line -->
+  <line x1="240" y1="120" x2="840" y2="120" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <text x="845" y="124" font-family="'JetBrains Mono', monospace" font-size="11" fill="#38bdf8">V_min = 10.4V</text>
+
+  <!-- Average DC Level -->
+  <line x1="60" y1="100" x2="840" y2="100" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="845" y="104" font-family="'JetBrains Mono', monospace" font-size="11" fill="#10b981">V_dc ≈ 10.8V</text>
+
+  <!-- Ripple Dimension Arrow -->
+  <g transform="translate(500, 0)">
+    <line x1="0" y1="80" x2="0" y2="120" stroke="#ef4444" stroke-width="2"/>
+    <polygon points="-4,88 0,80 4,88" fill="#ef4444"/>
+    <polygon points="-4,112 0,120 4,112" fill="#ef4444"/>
+    <rect x="8" y="90" width="165" height="24" rx="4" fill="#1e293b" stroke="#ef4444" stroke-width="1"/>
+    <text x="14" y="106" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#f87171">V_r(pp) = Peak-to-Peak</text>
+  </g>
+
+  <!-- Zener Regulated Output (Flat DC) -->
+  <line x1="80" y1="180" x2="800" y2="180" stroke="#a855f7" stroke-width="3"/>
+  <text x="810" y="184" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#c084fc">V_z (Regulated) = 5.1V DC</text>
+  <text x="120" y="173" font-family="'Inter', sans-serif" font-size="10" fill="#c084fc">Zener Regulated Output (Residual ripple &lt; 50mV)</text>
+
+  <!-- Annotations at bottom -->
+  <g transform="translate(60, 275)">
+    <rect width="780" height="32" rx="6" fill="rgba(15, 23, 42, 0.8)" stroke="#334155"/>
+    <text x="20" y="21" font-family="'Inter', sans-serif" font-size="11" fill="#cbd5e1">
+      <tspan font-weight="700" fill="#38bdf8">Oscilloscope Tip:</tspan> Select <tspan font-weight="700" fill="#fbbf24">AC Coupling</tspan> to block DC offset (10.8V) and magnify mV ripple $V_{r(pp)}$ across Volts/Div!
+    </text>
+  </g>
+</svg>
