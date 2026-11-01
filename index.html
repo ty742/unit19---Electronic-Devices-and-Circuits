@@ -343,6 +343,111 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
+    /* Major Electronics Domain Container Cards (Analogue & Digital) */
+    .electronics-domain-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .electronics-domain-card {
+      background: rgba(17, 24, 39, 0.82);
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .electronics-domain-card.analogue-domain {
+      border-top: 5px solid var(--accent-cyan);
+      background: radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.1) 0%, transparent 55%), rgba(17, 24, 39, 0.85);
+    }
+
+    .electronics-domain-card.digital-domain {
+      border-top: 5px solid var(--color-warning);
+      background: radial-gradient(circle at 90% 10%, rgba(245, 158, 11, 0.1) 0%, transparent 55%), rgba(17, 24, 39, 0.85);
+    }
+
+    .domain-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .domain-card-header.expanded {
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .domain-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .domain-pill {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .domain-pill.cyan {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+
+    .domain-pill.amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--color-warning);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .domain-card-header h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .domain-card-header p {
+      color: var(--text-secondary);
+      font-size: 0.94rem;
+      max-width: 780px;
+      line-height: 1.5;
+    }
+
+    .domain-toggle-btn {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(71, 85, 105, 0.8);
+      color: #e2e8f0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .domain-toggle-btn:hover {
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+
     /* Weekly Modules Grid */
     .module-grid {
       display: grid;
@@ -509,7 +614,7 @@
       <nav class="top-nav-links" aria-label="Main Navigation">
         <a href="#aims" class="nav-btn-link">🎯 Learning Aims</a>
         <a href="#modules" class="nav-btn-link">📚 Weekly Modules</a>
-        <a href="week5/index.html" class="nav-btn-link active-link">🚀 Week 5 Live Lab</a>
+        <a href="digital-week1/index.html" class="nav-btn-link active-link">🚀 Digital Week 1 Live</a>
       </nav>
     </header>
 
@@ -549,11 +654,11 @@
       </div>
     </section>
 
-    <!-- Learning Aims & Assessment Journey -->
+    <!-- Learning Aims & Assessment Journey (Original Unchanged) -->
     <section id="aims" aria-labelledby="aims-title">
       <div class="section-header">
         <div>
-          <h2 id="aims-title">🎯 Assessment Journey & Milestones</h2>
+          <h2 id="aims-title">🎯 Assessment Journey &amp; Milestones</h2>
           <p>Key delivery phases and official Pearson summative assignment deadlines.</p>
         </div>
       </div>
@@ -569,7 +674,7 @@
                 <span class="dt-value">23 Oct 2026</span>
               </div>
             </div>
-            <h3>Analogue Devices & Commercial Circuits</h3>
+            <h3>Analogue Devices &amp; Commercial Circuits</h3>
             <p>
               Investigate safe electronic practices, diodes (signal, rectifier, Zener), BJT/FET transistors, and
               operational amplifier circuits (comparators, filters, inverting/non-inverting amps).
@@ -590,7 +695,7 @@
                 <span class="dt-value">15 Jan 2027</span>
               </div>
             </div>
-            <h3>Digital Logic Devices & Circuits</h3>
+            <h3>Digital Logic Devices &amp; Circuits</h3>
             <p>
               Design, simulate and construct combinational logic (Boolean algebra, Karnaugh maps, De Morgan's) and
               sequential circuits (R-S, D-type, JK flip-flops, counters, shift registers).
@@ -611,7 +716,7 @@
                 <span class="dt-value">29 Jan 2027</span>
               </div>
             </div>
-            <h3>Engineering Review & Reflection</h3>
+            <h3>Engineering Review &amp; Reflection</h3>
             <p>
               Evaluate personal engineering performance, compare theoretical vs simulated vs measured values, and review
               professional laboratory behaviours and lessons learned.
@@ -624,127 +729,287 @@
       </div>
     </section>
 
-    <!-- Weekly Modules Grid (Scheme of Learning) -->
+    <!-- Weekly Modules Grouped by Analogue & Digital Electronics Cards -->
     <section id="modules" aria-labelledby="modules-title">
       <div class="section-header">
         <div>
-          <h2 id="modules-title">📚 Learning Aim A: Weekly Lab Modules</h2>
+          <h2 id="modules-title">📚 Weekly Lab Modules</h2>
           <p>Progressive 160-minute workplace-modeled engineering investigations.</p>
         </div>
       </div>
 
-      <div class="module-grid">
-        <!-- Week 1 (Active) -->
-        <div class="module-card active-module">
-          <div class="module-card-status">
-            <span class="status-tag active">Week 1 • Live</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">7 Sep 2026</span>
-          </div>
-          <h3>Unit 19 Launch: “Can You Make It Work?”</h3>
-          <div class="module-scenario">Role: Junior Electronics Technician</div>
-          <p>
-            Build baseline LED circuit, confirm operation, then diagnose a production test failure using the
-            <strong>Observe → Predict → Test → Locate → Fix → Verify</strong> troubleshooting cycle.
-          </p>
-          <div class="module-footer">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A01 Evidence</span>
-            <a href="week1/index.html" class="btn-launch">Launch Module →</a>
-          </div>
-        </div>
+      <div class="electronics-domain-stack">
 
-        <!-- Week 2 (Active) -->
-        <div class="module-card active-module">
-          <div class="module-card-status">
-            <span class="status-tag active">Week 2 • Live</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">14 Sep
-              2026</span>
+        <!-- =======================================================================
+             ANALOGUE ELECTRONICS CARD (WEEKS 1–5 — AUTO-HIDDEN BY DEFAULT)
+             ======================================================================= -->
+        <article class="electronics-domain-card analogue-domain" id="analogue-card" aria-labelledby="analogue-domain-title">
+          <div class="domain-card-header" id="analogue-header">
+            <div>
+              <div class="domain-badge-row">
+                <span class="domain-pill cyan">Learning Aim A &bull; Weeks 1–5</span>
+              </div>
+              <h3 id="analogue-domain-title">Analogue Electronics</h3>
+              <p>
+                Safe electronic working practices, diode rectification &amp; Zener regulation, transistor switching &amp; amplification, operational amplifiers, and prototype verification.
+              </p>
+            </div>
+            <button class="domain-toggle-btn" onclick="toggleDomainSection('analogue-modules-body', 'analogue-header', this, 'Weeks 1–5')" aria-expanded="false">
+              <span>▶ Show Weeks 1–5</span>
+            </button>
           </div>
-          <h3>Diode Investigation: “Protect & Control Power”</h3>
-          <div class="module-scenario">Role: Junior Power Electronics Engineer</div>
-          <p>
-            Explore forward/reverse bias, PN-junction characteristics, half/full-wave rectification, capacitor
-            smoothing, and Zener voltage
-            regulation under real load conditions.
-          </p>
-          <div class="module-footer">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A02 Evidence</span>
-            <a href="week2/index.html" class="btn-launch">Launch Module →</a>
-          </div>
-        </div>
 
-        <!-- Week 3 (Active) -->
-        <div class="module-card active-module">
-          <div class="module-card-status">
-            <span class="status-tag active">Week 3 • Live</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">21 Sep
-              2026</span>
-          </div>
-          <h3>Transistor Control: “Switching & Amplification”</h3>
-          <div class="module-scenario">Role: Junior Control Engineer</div>
-          <p>
-            Investigate BJT/FET devices, cut-off, active, and saturation states. Build a transistor load switch and
-            measure small-signal common-emitter gain and AC frequency sweep.
-          </p>
-          <div class="module-footer">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A03 Evidence</span>
-            <a href="week3/index.html" class="btn-launch">Launch Module →</a>
-          </div>
-        </div>
+          <div id="analogue-modules-body" class="module-grid" style="display: none;">
+            <!-- Week 1 (Active) -->
+            <div class="module-card active-module">
+              <div class="module-card-status">
+                <span class="status-tag active">Week 1 • Live</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">7 Sep 2026</span>
+              </div>
+              <h3>Unit 19 Launch: “Can You Make It Work?”</h3>
+              <div class="module-scenario">Role: Junior Electronics Technician</div>
+              <p>
+                Build baseline LED circuit, confirm operation, then diagnose a production test failure using the
+                <strong>Observe → Predict → Test → Locate → Fix → Verify</strong> troubleshooting cycle.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A01 Evidence</span>
+                <a href="week1/index.html" class="btn-launch">Launch Module →</a>
+              </div>
+            </div>
 
-        <!-- Week 4 (Active) -->
-        <div class="module-card active-module">
-          <div class="module-card-status">
-            <span class="status-tag active">Week 4 • Live</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">28 Sep 2026</span>
-          </div>
-          <h3>Op-Amp Conditioning: “Condition Sensor Signals”</h3>
-          <div class="module-scenario">Role: Junior Instrumentation Engineer</div>
-          <p>
-            Simulate open-loop comparator and closed-loop inverting/non-inverting amplifier stages in Multisim.
-            Compare theoretical gain calculations with virtual oscilloscope waveforms and phase inversion.
-          </p>
-          <div class="module-footer">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Multisim Simulation Lab</span>
-            <a href="week4/index.html" class="btn-launch">Launch Module →</a>
-          </div>
-        </div>
+            <!-- Week 2 (Active) -->
+            <div class="module-card active-module">
+              <div class="module-card-status">
+                <span class="status-tag active">Week 2 • Live</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">14 Sep 2026</span>
+              </div>
+              <h3>Diode Investigation: “Protect &amp; Control Power”</h3>
+              <div class="module-scenario">Role: Junior Power Electronics Engineer</div>
+              <p>
+                Explore forward/reverse bias, PN-junction characteristics, half/full-wave rectification, capacitor
+                smoothing, and Zener voltage regulation under real load conditions.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A02 Evidence</span>
+                <a href="week2/index.html" class="btn-launch">Launch Module →</a>
+              </div>
+            </div>
 
-        <!-- Week 5 (Active) -->
-        <div class="module-card active-module">
-          <div class="module-card-status">
-            <span class="status-tag active">Week 5 • Live</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">5 Oct 2026</span>
-          </div>
-          <h3>Prototype Verification: “Prove the Design Works”</h3>
-          <div class="module-scenario">Role: Prototype / Verification Test Engineer</div>
-          <p>
-            Audit and verify analogue diode rectifier and Zener voltage regulator circuits against assignment requirements.
-            Measure regulated DC voltage, quantify ripple across defined loads (22 kΩ, 10 kΩ, 4.7 kΩ), and perform multi-domain error analysis.
-          </p>
-          <div class="module-footer">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Hardware &amp; Simulation Verification Lab</span>
-            <a href="week5/index.html" class="btn-launch">Launch Module →</a>
-          </div>
-        </div>
+            <!-- Week 3 (Active) -->
+            <div class="module-card active-module">
+              <div class="module-card-status">
+                <span class="status-tag active">Week 3 • Live</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">21 Sep 2026</span>
+              </div>
+              <h3>Transistor Control: “Switching &amp; Amplification”</h3>
+              <div class="module-scenario">Role: Junior Control Engineer</div>
+              <p>
+                Investigate BJT/FET devices, cut-off, active, and saturation states. Build a transistor load switch and
+                measure small-signal common-emitter gain and AC frequency sweep.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A03 Evidence</span>
+                <a href="week3/index.html" class="btn-launch">Launch Module →</a>
+              </div>
+            </div>
 
-        <!-- Week 6 & 7 -->
-        <div class="module-card">
-          <div class="module-card-status">
-            <span class="status-tag upcoming">Weeks 6–7</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">12–19 Oct
-              2026</span>
+            <!-- Week 4 (Active) -->
+            <div class="module-card active-module">
+              <div class="module-card-status">
+                <span class="status-tag active">Week 4 • Live</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">28 Sep 2026</span>
+              </div>
+              <h3>Op-Amp Conditioning: “Condition Sensor Signals”</h3>
+              <div class="module-scenario">Role: Junior Instrumentation Engineer</div>
+              <p>
+                Simulate open-loop comparator and closed-loop inverting/non-inverting amplifier stages in Multisim.
+                Compare theoretical gain calculations with virtual oscilloscope waveforms and phase inversion.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Multisim Simulation Lab</span>
+                <a href="week4/index.html" class="btn-launch">Launch Module →</a>
+              </div>
+            </div>
+
+            <!-- Week 5 (Active) -->
+            <div class="module-card active-module">
+              <div class="module-card-status">
+                <span class="status-tag active">Week 5 • Live</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">5 Oct 2026</span>
+              </div>
+              <h3>Prototype Verification: “Prove the Design Works”</h3>
+              <div class="module-scenario">Role: Prototype / Verification Test Engineer</div>
+              <p>
+                Audit and verify analogue diode rectifier and Zener voltage regulator circuits against assignment requirements.
+                Measure regulated DC voltage, quantify ripple across defined loads (22 kΩ, 10 kΩ, 4.7 kΩ), and perform multi-domain error analysis.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Hardware &amp; Simulation Verification Lab</span>
+                <a href="week5/index.html" class="btn-launch">Launch Module →</a>
+              </div>
+            </div>
           </div>
-          <h3>Verification Analysis & Design Review</h3>
-          <div class="module-scenario">Role: Junior Electronics Engineer</div>
-          <p>
-            Synthesise simulation, test data, and tolerance variations to deliver the technical evaluation report for
-            Learning Aim A.
-          </p>
-          <div class="module-footer">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: A06 & A07</span>
-            <span class="btn-disabled">Available Week 6</span>
+        </article>
+
+        <!-- =======================================================================
+             DIGITAL ELECTRONICS CARD (WEEK 1 ACTIVE + TENTATIVE FOLLOWING WEEKS)
+             ======================================================================= -->
+        <article class="electronics-domain-card digital-domain" id="digital-card" aria-labelledby="digital-domain-title">
+          <div class="domain-card-header expanded" id="digital-header">
+            <div>
+              <div class="domain-badge-row">
+                <span class="domain-pill amber">Learning Aim B &bull; Starting 2 Nov 2026</span>
+              </div>
+              <h3 id="digital-domain-title">Digital Electronics</h3>
+              <p>
+                Combinational logic gates, truth tables, Boolean algebra, Karnaugh maps, sequential flip-flop circuits, counters, shift registers, and digital control system integration.
+              </p>
+            </div>
+            <button class="domain-toggle-btn" onclick="toggleDomainSection('digital-modules-body', 'digital-header', this, 'Digital Weeks')" aria-expanded="true">
+              <span>▼ Hide Digital Weeks</span>
+            </button>
           </div>
-        </div>
+
+          <div id="digital-modules-body" class="module-grid">
+            <!-- Digital Week 1 (Active) -->
+            <div class="module-card active-module">
+              <div class="module-card-status">
+                <span class="status-tag active">Week 1 • Live</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">2 Nov 2026</span>
+              </div>
+              <h3>Digital Launch: “Can You Build the Decision?”</h3>
+              <div class="module-scenario">Role: Junior Control &amp; Digital Systems Engineer</div>
+              <p>
+                Investigate AND, OR, NOT, NAND, NOR and XOR logic gates, simulate truth tables in Multisim, attend the Careers &amp; Employability talk, and assemble a 5V SPDT LED stripboard circuit.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B01 Evidence</span>
+                <a href="digital-week1/index.html" class="btn-launch">Launch Module →</a>
+              </div>
+            </div>
+
+            <!-- Digital Week 2 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Week 2</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">9 Nov 2026</span>
+              </div>
+              <h3>Combinational Logic: “Design the Control System”</h3>
+              <div class="module-scenario">Role: Junior Control Systems Engineer</div>
+              <p>
+                Translate a three-sensor industrial control requirement into a truth table, derive the Boolean expression, and simulate and test the combinational circuit.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B02 Evidence</span>
+                <span class="btn-disabled">Available Week 2</span>
+              </div>
+            </div>
+
+            <!-- Digital Week 3 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Week 3</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">16 Nov 2026</span>
+              </div>
+              <h3>Boolean Algebra: “Can You Make It Simpler?”</h3>
+              <div class="module-scenario">Role: Production Optimisation Engineer</div>
+              <p>
+                Apply Boolean laws and De Morgan's theorem to simplify an inefficient logic circuit, reducing IC gate count while verifying identical functional behaviour.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B03 Evidence</span>
+                <span class="btn-disabled">Available Week 3</span>
+              </div>
+            </div>
+
+            <!-- Digital Week 4 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Week 4</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">23 Nov 2026</span>
+              </div>
+              <h3>Karnaugh Maps: “Find the Shortest Route”</h3>
+              <div class="module-scenario">Role: Digital Design Engineer</div>
+              <p>
+                Construct and group Karnaugh maps (K-maps) from control truth tables to derive minimal Boolean expressions and build the lowest gate-count implementation.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B04 Evidence</span>
+                <span class="btn-disabled">Available Week 4</span>
+              </div>
+            </div>
+
+            <!-- Digital Week 5 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Week 5</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">30 Nov 2026</span>
+              </div>
+              <h3>Sequential Logic: “Give the System a Memory”</h3>
+              <div class="module-scenario">Role: Automation Systems Engineer</div>
+              <p>
+                Distinguish combinational and sequential logic, and investigate RS, D-type, and JK flip-flops to retain digital state information across clock pulses.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B05 Evidence</span>
+                <span class="btn-disabled">Available Week 5</span>
+              </div>
+            </div>
+
+            <!-- Digital Week 6 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Week 6</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">7 Dec 2026</span>
+              </div>
+              <h3>Counters: “Make It Count”</h3>
+              <div class="module-scenario">Role: Production Line Test Engineer</div>
+              <p>
+                Explain clock pulses and binary counting, construct a three-stage counter, predict output state sequences, and diagnose faults in a sequential circuit.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B06 Evidence</span>
+                <span class="btn-disabled">Available Week 6</span>
+              </div>
+            </div>
+
+            <!-- Digital Week 7 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Week 7</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">14 Dec 2026</span>
+              </div>
+              <h3>Shift Registers: “Move the Data”</h3>
+              <div class="module-scenario">Role: Embedded Data Engineer</div>
+              <p>
+                Investigate serial and parallel data transfer using shift registers, predicting and verifying stored bit patterns after successive clock pulses.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B07 Evidence</span>
+                <span class="btn-disabled">Available Week 7</span>
+              </div>
+            </div>
+
+            <!-- Digital Weeks 8–9 (Tentative) -->
+            <div class="module-card">
+              <div class="module-card-status">
+                <span class="status-tag upcoming">Weeks 8–9</span>
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">4–11 Jan 2027</span>
+              </div>
+              <h3>Digital Prototype Integration &amp; Design Review</h3>
+              <div class="module-scenario">Role: Verification &amp; Systems Engineer</div>
+              <p>
+                Combine combinational and sequential building blocks into a complete digital controller prototype and evaluate test evidence for Learning Aim B sign-off.
+              </p>
+              <div class="module-footer">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">PoE: B08 &amp; B09</span>
+                <span class="btn-disabled">Available Week 8</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
       </div>
     </section>
 
@@ -841,6 +1106,20 @@
   </aside>
 
   <script src="shared/js/accessibility-engine.js"></script>
+  <script>
+    function toggleDomainSection(targetId, headerId, btn, label) {
+      const el = document.getElementById(targetId);
+      const headerEl = document.getElementById(headerId);
+      if (!el) return;
+      const isHidden = el.style.display === 'none';
+      el.style.display = isHidden ? 'grid' : 'none';
+      if (headerEl) {
+        headerEl.classList.toggle('expanded', isHidden);
+      }
+      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      btn.innerHTML = isHidden ? `<span>▼ Hide ${label}</span>` : `<span>▶ Show ${label}</span>`;
+    }
+  </script>
 </body>
 
 </html>

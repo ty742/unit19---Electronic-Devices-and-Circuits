@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices &amp; Circuits — Digital Week 1: Can You Build the Decision?</title>
+  <meta name="description"
+    content="Unit 19 Learning Aim B Week 1: Digital Launch — Can You Build the Decision? (+ Careers Talk). Logic gates, truth tables, TTL/CMOS ICs, Multisim simulation, stripboard soldering, and blended learning.">
+
+  <!-- Shared CSS Tokens & Component Styling -->
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+  <link rel="stylesheet" href="../shared/css/form-drawer.css">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX for accessible LaTeX mathematical typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Digital Week 1 Custom Styling */
+    .hero-title {
+      font-size: 2.65rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 35%, #f59e0b 80%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.86rem;
+      font-weight: 700;
+      padding: 5px 13px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+
+    .badge-pill.aim-b-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .badge-pill.careers-pill {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #c084fc;
+    }
+
+    .badge-pill.poe-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    /* Learning Outcomes Matrix UI */
+    .lo-panel {
+      width: 100%;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border: 1px solid rgba(71, 85, 105, 0.65);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .lo-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.45);
+    }
+
+    .lo-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+
+    .lo-panel-subtitle {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    .lo-panel-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lo-legend-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .lo-legend-pill.theory {
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.45);
+      color: #38bdf8;
+    }
+
+    .lo-legend-pill.sim {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+    }
+
+    .lo-legend-pill.practical {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+
+    .lo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .lo-item {
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      border-left: 3px solid var(--accent-cyan);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .lo-item:hover {
+      transform: translateY(-2px);
+      background: rgba(30, 41, 59, 0.85);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .lo-item.sim {
+      border-left-color: #f59e0b;
+    }
+
+    .lo-item.sim:hover {
+      border-color: rgba(245, 158, 11, 0.6);
+    }
+
+    .lo-item.practical {
+      border-left-color: #10b981;
+    }
+
+    .lo-item.practical:hover {
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+
+    .lo-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .lo-num {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: rgba(6, 182, 212, 0.18);
+      color: #38bdf8;
+      letter-spacing: 0.4px;
+    }
+
+    .lo-item.sim .lo-num {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+    }
+
+    .lo-item.practical .lo-num {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+    }
+
+    .lo-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+    }
+
+    .lo-text {
+      font-size: 0.83rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .lo-text strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Slide 2 Aligned 2x2 Card Grid */
+    .slide2-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .slide2-grid > .card,
+    .slide2-grid > .prediction-box,
+    .slide2-grid > .self-check-card {
+      margin: 0 !important;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* LaTeX Boolean Reference Cards (Slide 5) */
+    .gate-ref-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      width: 100%;
+    }
+
+    .gate-ref-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .gate-ref-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .gate-ref-name {
+      font-weight: 800;
+      font-size: 0.88rem;
+      color: #38bdf8;
+    }
+
+    .gate-ref-ic {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    .gate-ref-mid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 6px 10px;
+    }
+
+    .gate-ref-eq {
+      font-size: 0.95rem;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .gate-ref-desc {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      line-height: 1.35;
+    }
+
+    /* Guided Notebook & Self-Check Accordions (Zero PII / Static Learning) */
+    .study-accordion {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      transition: border-color 0.18s ease;
+    }
+
+    .study-accordion:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+    }
+
+    .study-accordion summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text-primary);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .study-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .study-accordion summary::after {
+      content: "Reveal Check ▾";
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.14);
+      padding: 2px 7px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .study-accordion[open] summary::after {
+      content: "Hide ▴";
+    }
+
+    .study-accordion-ans {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(71, 85, 105, 0.4);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    /* Accessibility Theme Overrides for Custom Components */
+    body.theme-high-contrast-gold .lo-panel,
+    body.theme-high-contrast-gold .lo-item,
+    body.theme-high-contrast-gold .gate-ref-card,
+    body.theme-high-contrast-gold .sim-workbench,
+    body.theme-high-contrast-gold .study-accordion {
+      border: 2px solid #ffd700 !important;
+      background: #0a0a0a !important;
+    }
+
+    body.theme-clean-light .lo-panel,
+    body.theme-clean-light .sim-workbench {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+    }
+
+    body.theme-clean-light .lo-item,
+    body.theme-clean-light .gate-ref-card,
+    body.theme-clean-light .study-accordion,
+    body.theme-clean-light .check-item,
+    body.theme-clean-light .verif-table td {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+
+    body.theme-clean-light .lo-text,
+    body.theme-clean-light .lo-text strong,
+    body.theme-clean-light .lo-panel-title,
+    body.theme-clean-light .gate-ref-eq {
+      color: #0f172a !important;
+    }
+
+    body.theme-clean-light .gate-ref-mid {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px 18px;
+    }
+
+    .ksb-card.k { border-top: 5px solid var(--accent-cyan); }
+    .ksb-card.s { border-top: 5px solid var(--color-success); }
+    .ksb-card.b { border-top: 5px solid var(--color-warning); }
+
+    .ksb-card h4 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .ksb-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ksb-card li {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .ksb-card li::before {
+      content: "•";
+      color: var(--accent-cyan);
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+
+    /* Step Timeline Strip */
+    .step-timeline {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .step-chip {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-chip .step-time {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    /* Interactive Animated Gate Simulator */
+    .sim-workbench {
+      background: #090d16;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .gate-selector-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .gate-tab-btn {
+      flex: 1;
+      min-width: 85px;
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #cbd5e1;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .gate-tab-btn:hover {
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+
+    .gate-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-arduino), #0891b2);
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+    }
+
+    .input-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid #475569;
+      background: #0f172a;
+      color: #94a3b8;
+      transition: all 0.2s ease;
+    }
+
+    .input-toggle-btn.high {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Animated Wire Pulse */
+    @keyframes wireFlow {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+
+    .sim-wire-high {
+      stroke: #10b981 !important;
+      stroke-dasharray: 8 4;
+      animation: wireFlow 0.6s linear infinite;
+      filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.7));
+    }
+
+    .sim-wire-low {
+      stroke: #475569 !important;
+    }
+
+    .tt-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .tt-table th {
+      background: #1e293b;
+      color: var(--accent-cyan);
+      padding: 8px 10px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+    }
+
+    .tt-table td {
+      padding: 7px 10px;
+      text-align: center;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      color: #cbd5e1;
+      transition: all 0.2s ease;
+    }
+
+    .tt-table tr.active-row td {
+      background: rgba(6, 182, 212, 0.22);
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    .tt-table tr.active-row.out-high td {
+      background: rgba(16, 185, 129, 0.25);
+      color: #6ee7b7;
+    }
+
+    /* Prediction Checkpoints */
+    .prediction-box {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 12px 0;
+    }
+
+    .prediction-box h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prediction-box p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    .prediction-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pred-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .pred-btn:hover {
+      border-color: var(--accent-cyan);
+      background: #1e293b;
+    }
+
+    .pred-btn.correct {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    .pred-btn.incorrect {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+
+    .pred-feedback {
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      display: none;
+    }
+
+    .pred-feedback.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border-left: 4px solid #10b981;
+      color: #a7f3d0;
+    }
+
+    .pred-feedback.hint {
+      display: block;
+      background: rgba(245, 158, 11, 0.15);
+      border-left: 4px solid #f59e0b;
+      color: #fde68a;
+    }
+
+    /* Interactive Note-Taking & Tables */
+    .verif-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 8px 0;
+      font-size: 0.86rem;
+    }
+
+    .verif-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--accent-cyan);
+      font-weight: 700;
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .verif-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      color: #ffffff;
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    .verif-table input, .verif-table select, .notes-textarea {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+    }
+
+    .verif-table input:focus, .verif-table select:focus, .notes-textarea:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+    }
+
+    .resource-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(6, 182, 212, 0.14);
+      border: 1px solid rgba(6, 182, 212, 0.45);
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.86rem;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .resource-link-pill:hover {
+      background: rgba(6, 182, 212, 0.28);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .resource-link-pill.yt {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+    }
+
+    .resource-link-pill.yt:hover {
+      background: rgba(239, 68, 68, 0.3);
+      color: #ffffff;
+    }
+
+    .resource-link-pill.forms {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #6ee7b7;
+    }
+
+    .resource-link-pill.forms:hover {
+      background: rgba(16, 185, 129, 0.32);
+      color: #ffffff;
+    }
+
+    .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-subtle);
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      transition: var(--transition-smooth);
+    }
+
+    .check-item:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+      color: #ffffff;
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent-cyan);
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .schematic-frame {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .schematic-frame img {
+      max-width: 100%;
+      max-height: 300px;
+      height: auto;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .schematic-caption {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 1200px) {
+      .lo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .ksb-grid,
+      .slide2-grid,
+      .gate-ref-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .lo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Navigation Header -->
+      <header class="deck-header">
+        <div class="header-left">
+          <a href="../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b;">AIM B • WEEK 1</span>
+            <span>Digital Electronics</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Digital Launch: Can You Build the Decision?</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary open-forms-trigger" data-form-section="Digital Electronics Quiz"
+            style="padding: 6px 14px; font-size: 0.85rem;">
+            📝 MS Forms Quiz
+          </button>
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility &amp; Inclusion (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- =========================================================================
+             SLIDE 1: WELCOME, LEARNING OUTCOMES, KSB PROFILE & SESSION SCHEDULE
+             ========================================================================= -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: flex-start; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill aim-b-pill">Learning Aim B: Digital Electronics • Week 1 (2 Nov 2026)</span>
+              <span class="badge-pill">Role: Junior Control &amp; Digital Systems Engineer</span>
+              <span class="badge-pill careers-pill">Includes 60-Min Careers &amp; Employability Talk</span>
+              <span class="badge-pill poe-pill">PoE: B01 + Post-Session Assignment</span>
+            </div>
+
+            <h1 class="hero-title">Week 1: Digital Launch – “Can You Build the Decision?”</h1>
+            <div class="hero-subtitle">
+              Workplace Workflow: Research &rarr; Design &rarr; Simulate &rarr; Build &rarr; Test
+            </div>
+
+            <!-- Stated Learning Outcomes Matrix (4x2 Balanced Grid) -->
+            <div class="lo-panel" role="region" aria-label="Session Learning Outcomes">
+              <div class="lo-panel-header">
+                <div class="lo-panel-title">
+                  <span>🎯 Learning Outcomes</span>
+                  <span class="lo-panel-subtitle">— By the end of this session &amp; blended assignment you will be able to:</span>
+                </div>
+                <div class="lo-panel-meta">
+                  <span class="lo-legend-pill theory">01–04 Logic &amp; Theory</span>
+                  <span class="lo-legend-pill sim">05–06 IC Tech &amp; Sim</span>
+                  <span class="lo-legend-pill practical">07–08 Workshop Build</span>
+                </div>
+              </div>
+
+              <div class="lo-grid">
+                <div class="lo-item">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 01</span>
+                    <span class="lo-tag">Gate Types</span>
+                  </div>
+                  <div class="lo-text"><strong>Identify</strong> AND, OR, NOT, NAND, NOR and XOR logic gates.</div>
+                </div>
+
+                <div class="lo-item">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 02</span>
+                    <span class="lo-tag">Symbols &amp; Boolean</span>
+                  </div>
+                  <div class="lo-text"><strong>Interpret</strong> standard logic gate symbols &amp; write simple Boolean expressions.</div>
+                </div>
+
+                <div class="lo-item">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 03</span>
+                    <span class="lo-tag">Binary Logic</span>
+                  </div>
+                  <div class="lo-text"><strong>Explain</strong> binary logic states ($0$ = LOW and $1$ = HIGH) in digital systems.</div>
+                </div>
+
+                <div class="lo-item">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 04</span>
+                    <span class="lo-tag">Truth Tables</span>
+                  </div>
+                  <div class="lo-text"><strong>Construct &amp; interpret</strong> multi-input truth tables for combinational gates.</div>
+                </div>
+
+                <div class="lo-item sim">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 05</span>
+                    <span class="lo-tag">TTL &amp; CMOS ICs</span>
+                  </div>
+                  <div class="lo-text"><strong>Recognise</strong> TTL &amp; CMOS characteristics and select common 74-series TTL logic ICs.</div>
+                </div>
+
+                <div class="lo-item sim">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 06</span>
+                    <span class="lo-tag">Multisim &amp; Test</span>
+                  </div>
+                  <div class="lo-text"><strong>Simulate</strong> basic logic circuits in Multisim &amp; safely test simple digital circuits.</div>
+                </div>
+
+                <div class="lo-item practical">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 07</span>
+                    <span class="lo-tag">Workshop Safety</span>
+                  </div>
+                  <div class="lo-text"><strong>Follow</strong> safe soldering procedures, PPE rules &amp; fume extraction in the workshop.</div>
+                </div>
+
+                <div class="lo-item practical">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 08</span>
+                    <span class="lo-tag">DIYLC &amp; Stripboard</span>
+                  </div>
+                  <div class="lo-text"><strong>Design</strong> (DIYLC) and assemble a working digital circuit on stripboard.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KSB 3-Column Profile -->
+            <div class="ksb-grid" style="width: 100%;">
+              <div class="ksb-card k">
+                <h4>📘 Knowledge (K)</h4>
+                <ul>
+                  <li>Digital electronics fundamentals &amp; binary number systems ($0$ and $1$)</li>
+                  <li>Logic gate functions, truth tables &amp; Boolean expressions</li>
+                  <li>TTL and CMOS technologies &amp; logic voltage thresholds</li>
+                  <li>Common TTL 74-series logic ICs &amp; basic soldering principles</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card s">
+                <h4>🛠️ Skills (S)</h4>
+                <ul>
+                  <li>Technical research &amp; reading 74-series IC datasheets</li>
+                  <li>Circuit simulation (Multisim) &amp; stripboard layout planning (DIYLC)</li>
+                  <li>Breadboard &amp; stripboard assembly, soldering &amp; electrical measurement</li>
+                  <li>Visual inspection, fault finding, testing, verification &amp; documentation</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card b">
+                <h4>🎯 Behaviours (B)</h4>
+                <ul>
+                  <li>Safe working practices &amp; professional workshop conduct</li>
+                  <li>Attention to detail &amp; evidence-based decision making</li>
+                  <li>Team working &amp; collaborative problem solving</li>
+                  <li>Engineering documentation &amp; workplace professionalism</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Session Schedule Strip -->
+            <div class="step-timeline" aria-label="Session Timeline">
+              <span class="step-chip"><span class="step-time">10m</span> Part 1: Digital Intro</span>
+              <span class="step-chip"><span class="step-time">20m</span> Part 2: Logic Gate Mind Map</span>
+              <span class="step-chip"><span class="step-time">10m</span> Part 3: Multisim Sim</span>
+              <span class="step-chip" style="border-color: #a855f7; color: #e9d5ff;"><span class="step-time" style="color: #c084fc;">60m</span> Intermission: Careers Talk</span>
+              <span class="step-chip"><span class="step-time">60m</span> Part 4: Stripboard Soldering</span>
+              <span class="step-chip" style="border-color: #10b981; color: #a7f3d0;"><span class="step-time" style="color: #34d399;">After</span> Assignment (Activities 1–5)</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 2: DURING THE SESSION — ENGINEERING TOOLBOX & WORKPLACE READINESS
+             ========================================================================= -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <div class="slide-tag">DURING THE SESSION &bull; RETRIEVAL &amp; WORKPLACE LINK</div>
+            <h2 class="slide-title">Engineering Toolbox: Bridging Analogue to Digital Control Systems</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide2-grid">
+              <!-- Top-Left: Workplace Readiness Link -->
+              <div class="card">
+                <div>
+                  <div class="card-title">🏭 Workplace Readiness Link</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                    Industrial control systems rely heavily on digital decision making. Modern control systems, industrial automation equipment, electronics manufacturing, and embedded systems all rely on digital logic and electronic assembly skills.
+                  </p>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Engineers must interpret logic diagrams, select components correctly, verify circuits, and document their work accurately when commissioning equipment, maintaining machinery, or developing embedded systems:
+                  </p>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 700; color: #fbbf24; background: #0f172a; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.4); text-align: center;">
+                  Research &rarr; Design &rarr; Simulate &rarr; Build &rarr; Test
+                </div>
+              </div>
+
+              <!-- Top-Right: Cumulative Retrieval 1 (LED Current Limiting) -->
+              <div class="self-check-card card" data-expected="150" data-type="numeric" data-tolerance="15"
+                data-hint="R = (Vs - Vf) / If = (5.0V - 2.0V) / 0.020A = 3.0 / 0.020 = 150 Ω (or standard 220 Ω / 330 Ω to limit current safely).">
+                <div>
+                  <div class="card-title">🔢 Cumulative Retrieval 1: LED Current Limiting (Week 1)</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                    In Part 4 today, you will solder an LED switching circuit powered by a $V_S = 5.0\,\text{V}$ supply. If the LED forward voltage is $V_F = 2.0\,\text{V}$ and target current is $I_F = 20\,\text{mA}$ ($0.02\,\text{A}$), calculate the minimum series resistance in Ohms ($\Omega$):
+                    $$R = \frac{V_S - V_F}{I_F}$$
+                  </p>
+                </div>
+                <div>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" class="self-check-input" placeholder="Enter Ohms (e.g. 150)">
+                    <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+                  </div>
+                  <div class="self-check-feedback"></div>
+                </div>
+              </div>
+
+              <!-- Bottom-Left: Cumulative Retrieval 2 (Transistor Switching) -->
+              <div class="prediction-box">
+                <div>
+                  <h4>🔮 Cumulative Retrieval 2: Transistor Switching (Week 3)</h4>
+                  <p style="margin-bottom: 10px;">In Week 3, you operated a BJT transistor as a switch. Which two operating regions correspond to binary <strong>OFF ($0$)</strong> and <strong>ON ($1$)</strong>?</p>
+                </div>
+                <div>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! Cut-off = OFF (open switch) and Saturation = ON (closed switch). Logic gates are built from networks of transistors switching between these two states!')">
+                      Cut-off (OFF) &amp; Saturation (ON)
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'The linear active region is used for analogue signal amplification, not binary switching.')">
+                      Linear Active &amp; Breakdown
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+
+              <!-- Bottom-Right: Cumulative Retrieval 3 (Op-Amp Comparator) -->
+              <div class="prediction-box">
+                <div>
+                  <h4>🔮 Cumulative Retrieval 3: Op-Amp Comparator (Week 4)</h4>
+                  <p style="margin-bottom: 10px;">In Week 4, an open-loop comparator compared a sensor voltage against a reference and swung its output to either $+V_{\text{sat}}$ or $0\,\text{V}$. What kind of signal is that output?</p>
+                </div>
+                <div>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'A continuous sine wave is an analogue signal.')">
+                      Continuous Analogue Signal
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! A comparator converts an analogue sensor level into a two-state binary digital decision (HIGH = 1 or LOW = 0).')">
+                      Two-State Binary Digital Signal (HIGH / LOW)
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 3: DURING THE SESSION — PART 1: INTRO TO DIGITAL ELECTRONICS (10 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <div class="slide-tag">DURING THE SESSION &bull; PART 1 (10 MINUTES)</div>
+            <h2 class="slide-title">Part 1: Introduction to Digital Electronics</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card" style="margin-bottom: 14px;">
+                  <div class="card-title">⚡ Why Are We Learning This?</div>
+                  <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px;">
+                    While analogue circuits process continuous signals, <strong style="color: #ffffff;">digital electronics allows machines to make decisions</strong> using two binary states:
+                  </p>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                    <div style="background: #0f172a; border: 1px solid #475569; padding: 10px 12px; border-radius: 8px;">
+                      <div style="font-family: var(--font-mono); font-weight: 800; color: #94a3b8; font-size: 0.95rem;">LOGIC 0 (LOW / FALSE)</div>
+                      <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Nominal $0\,\text{V}$ (Ground). Switch OFF / Condition NOT met.</div>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 10px 12px; border-radius: 8px;">
+                      <div style="font-family: var(--font-mono); font-weight: 800; color: #34d399; font-size: 0.95rem;">LOGIC 1 (HIGH / TRUE)</div>
+                      <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Nominal $+5\,\text{V}$ (TTL). Switch ON / Condition MET.</div>
+                    </div>
+                  </div>
+                  <div style="font-size: 0.86rem; color: var(--text-secondary);">
+                    <strong style="color: var(--accent-cyan);">Examples of Digital Decision Systems:</strong>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px;">
+                      <span style="background: #0f172a; padding: 5px 8px; border-radius: 6px;">🛡️ Safety systems</span>
+                      <span style="background: #0f172a; padding: 5px 8px; border-radius: 6px;">🚦 Traffic lights</span>
+                      <span style="background: #0f172a; padding: 5px 8px; border-radius: 6px;">🧺 Washing machines</span>
+                      <span style="background: #0f172a; padding: 5px 8px; border-radius: 6px;">🏭 Production lines</span>
+                      <span style="background: #0f172a; padding: 5px 8px; border-radius: 6px;">🤖 Robotics</span>
+                      <span style="background: #0f172a; padding: 5px 8px; border-radius: 6px;">💻 Microcontrollers</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card">
+                  <div class="card-title">🔬 TTL vs CMOS Logic Families &amp; Voltage Thresholds</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    Today we explore the building blocks of digital decision-making: <strong>logic gates</strong> packaged in TTL and CMOS Integrated Circuits (ICs):
+                  </p>
+                  <table class="verif-table">
+                    <thead>
+                      <tr>
+                        <th>Feature</th>
+                        <th>TTL (74LSxx Series)</th>
+                        <th>CMOS (4000 / 74HCxx)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Full Name</strong></td>
+                        <td>Transistor-Transistor Logic</td>
+                        <td>Complementary Metal-Oxide-Semiconductor</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Internal Tech</strong></td>
+                        <td>Bipolar Junction Transistors (BJTs)</td>
+                        <td>MOSFET Transistors (Field-Effect)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Supply ($V_{CC}$)</strong></td>
+                        <td>Fixed $+5.0\,\text{V} \pm 0.25\,\text{V}$</td>
+                        <td>Wide range: $+3\,\text{V}$ to $+15\,\text{V}$</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Logic Thresholds</strong></td>
+                        <td>LOW $\le 0.8\,\text{V}$ &bull; HIGH $\ge 2.0\,\text{V}$</td>
+                        <td>LOW $\le 30\%\,V_{DD}$ &bull; HIGH $\ge 70\%\,V_{DD}$</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Bench Handling</strong></td>
+                        <td>Robust; floating inputs read HIGH</td>
+                        <td>Very low power; <strong>ESD static sensitive!</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="margin-top: 8px;">
+                    <img src="images/74ls08-pinout.svg" alt="14-Pin TTL Logic IC Pinout Diagram" style="width: 100%; max-height: 155px; object-fit: contain; border-radius: 8px; border: 1px solid #334155;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 4: DURING THE SESSION — INTERACTIVE ANIMATED TRUTH TABLES & SIMULATOR
+             ========================================================================= -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <div class="slide-tag">DURING &amp; AFTER SESSION &bull; ANIMATED TRUTH TABLES</div>
+            <h2 class="slide-title">Interactive Animated Logic Gate &amp; Truth Table Explorer</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col" style="gap: 18px;">
+              <!-- Left: Interactive Animated Logic Gate Simulator -->
+              <div class="sim-workbench">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span style="font-weight: 800; color: #ffffff; font-size: 1rem;">⚡ Live Animated Gate Workbench</span>
+                  <span id="sim-ic-badge" class="badge-pill aim-b-pill" style="font-size: 0.78rem; padding: 3px 10px;">IC: 74LS08 (Quad AND)</span>
+                </div>
+
+                <!-- Gate Selector Buttons -->
+                <div class="gate-selector-bar" role="tablist" aria-label="Select Logic Gate">
+                  <button class="gate-tab-btn active" onclick="selectSimGate('AND')" id="gtab-AND">AND</button>
+                  <button class="gate-tab-btn" onclick="selectSimGate('OR')" id="gtab-OR">OR</button>
+                  <button class="gate-tab-btn" onclick="selectSimGate('NOT')" id="gtab-NOT">NOT</button>
+                  <button class="gate-tab-btn" onclick="selectSimGate('NAND')" id="gtab-NAND">NAND</button>
+                  <button class="gate-tab-btn" onclick="selectSimGate('NOR')" id="gtab-NOR">NOR</button>
+                  <button class="gate-tab-btn" onclick="selectSimGate('XOR')" id="gtab-XOR">XOR</button>
+                </div>
+
+                <!-- Input Toggles + Animated SVG Canvas -->
+                <div style="display: grid; grid-template-columns: 165px 1fr; gap: 12px; align-items: center;">
+                  <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="input-toggle-btn" id="btn-in-a" onclick="toggleSimInput('A')">
+                      <span>INPUT A</span>
+                      <span id="lbl-in-a">0 (0V)</span>
+                    </button>
+                    <button class="input-toggle-btn" id="btn-in-b" onclick="toggleSimInput('B')">
+                      <span>INPUT B</span>
+                      <span id="lbl-in-b">0 (0V)</span>
+                    </button>
+                  </div>
+
+                  <!-- Animated SVG Gate Diagram -->
+                  <div style="background: #050811; border: 1px solid #1e293b; border-radius: 10px; padding: 10px; text-align: center;">
+                    <svg id="sim-gate-svg" viewBox="0 0 320 135" width="100%" height="125">
+                      <!-- Wire A -->
+                      <line id="svg-wire-a" x1="20" y1="45" x2="105" y2="45" stroke="#475569" stroke-width="4" stroke-linecap="round" class="sim-wire-low"/>
+                      <text x="8" y="49" fill="#cbd5e1" font-family="JetBrains Mono" font-size="13" font-weight="700">A</text>
+                      <!-- Wire B -->
+                      <g id="svg-group-b">
+                        <line id="svg-wire-b" x1="20" y1="90" x2="105" y2="90" stroke="#475569" stroke-width="4" stroke-linecap="round" class="sim-wire-low"/>
+                        <text x="8" y="94" fill="#cbd5e1" font-family="JetBrains Mono" font-size="13" font-weight="700">B</text>
+                      </g>
+                      <!-- Dynamic Gate Shape Path -->
+                      <g id="svg-gate-shape">
+                        <path d="M105,30 L145,30 A37,37 0 0,1 145,105 L105,105 Z" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/>
+                      </g>
+                      <!-- Wire Y -->
+                      <line id="svg-wire-y" x1="188" y1="67" x2="255" y2="67" stroke="#475569" stroke-width="4" stroke-linecap="round" class="sim-wire-low"/>
+                      <!-- Virtual LED Indicator -->
+                      <circle id="svg-led-glow" cx="275" cy="67" r="18" fill="transparent"/>
+                      <circle id="svg-led-body" cx="275" cy="67" r="12" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+                      <text id="svg-led-txt" x="275" y="105" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono" font-size="12" font-weight="700">Y = 0</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Gate Metadata Readout -->
+                <div style="margin-top: 12px; background: #111827; border: 1px solid #334155; border-radius: 10px; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <span><strong style="color: var(--accent-cyan);">Boolean Equation:</strong> <span id="sim-bool-expr" style="color: #ffffff; font-weight: 700; font-size: 1.02rem; margin-left: 4px;">$Y = A \cdot B$</span></span>
+                    <span><strong style="color: #fbbf24;">Output State:</strong> <span id="sim-out-desc" style="font-family: var(--font-mono); color: #94a3b8;">LOW (0V)</span></span>
+                  </div>
+                  <div id="sim-gate-rule" style="color: var(--text-secondary);">
+                    <strong>Rule:</strong> Output Y is HIGH (1) only when ALL inputs are HIGH (1).
+                  </div>
+                  <div id="sim-gate-app" style="color: #34d399; font-size: 0.82rem;">
+                    <strong>🏭 Industrial Application:</strong> Machine safety interlock (Guard closed AND Start pressed).
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Live Highlighted Truth Table + 3-Input Packaging Machine Simulator -->
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="card" style="padding: 14px 18px;">
+                  <div class="card-title" style="margin-bottom: 6px; font-size: 0.98rem;">
+                    📊 Live Animated Truth Table (<span id="tt-gate-name">AND Gate</span>)
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    Toggle Inputs A and B on the left to observe changing inputs and outputs:
+                  </p>
+                  <table class="tt-table" id="live-truth-table">
+                    <thead>
+                      <tr id="tt-header-row">
+                        <th>Input A</th>
+                        <th>Input B</th>
+                        <th>Output Y</th>
+                        <th>Output State</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tt-body-rows">
+                      <!-- Populated dynamically by selectSimGate() -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Interactive Packaging Machine 3-Input Interlock Mini-Simulator -->
+                <div class="card" style="padding: 14px 18px; border-left: 4px solid var(--color-success);">
+                  <div class="card-title" style="margin-bottom: 6px; font-size: 0.96rem;">
+                    🏭 Workplace Scenario Simulator: Packaging Machine Start Interlock
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    A packaging machine should <strong>only start</strong> when all 3 conditions are satisfied ($Y = A \cdot B \cdot C$):
+                  </p>
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px;">
+                    <button class="input-toggle-btn" id="pkg-guard" onclick="togglePkgSensor('guard')" style="padding: 7px 10px; font-size: 0.78rem;">
+                      <span>🚪 Guard Closed</span>
+                      <span id="pkg-guard-val">0</span>
+                    </button>
+                    <button class="input-toggle-btn" id="pkg-estop" onclick="togglePkgSensor('estop')" style="padding: 7px 10px; font-size: 0.78rem;">
+                      <span>🛑 E-Stop Released</span>
+                      <span id="pkg-estop-val">0</span>
+                    </button>
+                    <button class="input-toggle-btn" id="pkg-air" onclick="togglePkgSensor('air')" style="padding: 7px 10px; font-size: 0.78rem;">
+                      <span>💨 Air Pressure OK</span>
+                      <span id="pkg-air-val">0</span>
+                    </button>
+                  </div>
+                  <div id="pkg-status-banner" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 8px 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.84rem; font-weight: 700; text-align: center;">
+                    ⛔ MACHINE INHIBITED (Y = 0) — Satisfy all 3 safety sensors to enable motor!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 5: DURING THE SESSION — PART 2: LOGIC GATE MIND MAP (20 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <div class="slide-tag">DURING THE SESSION &bull; PART 2 (20 MINUTES)</div>
+            <h2 class="slide-title">Part 2: Logic Gate Investigation Challenge (A3 Mind Map)</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div class="card-title" style="margin: 0;">🧠 Your Pair Challenge (20 Mins)</div>
+                    <div class="timer-widget" data-duration="20" style="display: inline-flex; align-items: center; gap: 6px; background: #0f172a; padding: 4px 10px; border-radius: 8px; border: 1px solid #334155;">
+                      <span class="timer-display" style="font-family: var(--font-mono); font-weight: 800; color: var(--accent-cyan);">20:00</span>
+                      <button class="timer-toggle btn btn-primary" style="padding: 3px 8px; font-size: 0.75rem;">Start</button>
+                      <button class="timer-reset btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;">Reset</button>
+                    </div>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Working in pairs, create an <strong style="color: #ffffff;">A3 Logic Gate Mind Map</strong> covering all 6 gates:
+                    <strong style="color: var(--accent-cyan);">AND, OR, NOT, NAND, NOR, and XOR</strong>.
+                  </p>
+                  <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <em>“Engineers do not memorise everything. Instead, they learn how to find and use technical information effectively.”</em> Use the technical reference below:
+                  </p>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <a href="https://www.futurlec.com/74/7474pr.shtml" target="_blank" rel="noopener noreferrer" class="resource-link-pill">
+                      🔗 Futurlec 74-Series Logic IC Reference ↗
+                    </a>
+                    <a href="https://en.wikipedia.org/wiki/Logic_gate" target="_blank" rel="noopener noreferrer" class="resource-link-pill">
+                      📖 Wikipedia: Logic Gates ↗
+                    </a>
+                  </div>
+
+                  <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; font-size: 0.84rem;">
+                    <strong style="color: #fbbf24;">Required Information for EVERY Gate (7 Items):</strong>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 6px; color: var(--text-secondary);">
+                      <div>1. Gate Name</div>
+                      <div>2. Symbol</div>
+                      <div>3. Boolean Formula</div>
+                      <div>4. Truth Table</div>
+                      <div>5. Typical IC Number</div>
+                      <div>6. Short Description</div>
+                      <div style="grid-column: span 2;">7. Industrial Application</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Worked Example + Stretch -->
+                <div class="card" style="padding: 12px 16px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.83rem;">
+                    <div style="background: rgba(6, 182, 212, 0.1); border-left: 3px solid var(--accent-cyan); padding: 8px 10px; border-radius: 6px;">
+                      <strong style="color: var(--accent-cyan);">Example: AND Gate</strong><br>
+                      &bull; <strong>Boolean Expression:</strong> $Y = A \cdot B$<br>
+                      &bull; <strong>IC:</strong> <code>74LS08</code><br>
+                      &bull; <strong>Description:</strong> Output is HIGH only when all inputs are HIGH.<br>
+                      &bull; <strong>Application:</strong> Machine safety interlock.
+                    </div>
+                    <div style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; padding: 8px 10px; border-radius: 6px;">
+                      <strong style="color: #fbbf24;">🚀 Extension / Stretch:</strong><br>
+                      As you research, identify:<br>
+                      &bull; Gates available in TTL logic families<br>
+                      &bull; <strong>Universal gates</strong> (NAND &amp; NOR)<br>
+                      &bull; Real industrial uses
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Visual Reference Sheet with Rendered LaTeX Boolean Equations -->
+              <div class="card" style="padding: 14px 16px;">
+                <div class="card-title" style="margin-bottom: 8px; font-size: 0.96rem;">
+                  📐 Visual Reference Scaffold — Symbols, 74LSxx ICs &amp; LaTeX Boolean Equations
+                </div>
+                <div class="gate-ref-grid">
+                  <!-- 1. AND -->
+                  <div class="gate-ref-card">
+                    <div class="gate-ref-top">
+                      <span class="gate-ref-name">1. AND Gate</span>
+                      <span class="gate-ref-ic">74LS08</span>
+                    </div>
+                    <div class="gate-ref-mid">
+                      <svg viewBox="0 0 120 44" width="92" height="36" aria-label="AND gate symbol">
+                        <line x1="6" y1="14" x2="36" y2="14" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <line x1="6" y1="30" x2="36" y2="30" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M36,6 L62,6 A16,16 0 0,1 62,38 L36,38 Z" fill="rgba(6, 182, 212, 0.16)" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="78" y1="22" x2="112" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="gate-ref-eq">$Y = A \cdot B$</span>
+                    </div>
+                    <div class="gate-ref-desc">HIGH ($1$) only when <strong>all</strong> inputs are HIGH ($1$).</div>
+                  </div>
+
+                  <!-- 2. OR -->
+                  <div class="gate-ref-card">
+                    <div class="gate-ref-top">
+                      <span class="gate-ref-name">2. OR Gate</span>
+                      <span class="gate-ref-ic">74LS32</span>
+                    </div>
+                    <div class="gate-ref-mid">
+                      <svg viewBox="0 0 120 44" width="92" height="36" aria-label="OR gate symbol">
+                        <line x1="6" y1="14" x2="38" y2="14" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <line x1="6" y1="30" x2="38" y2="30" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M32,6 Q44,22 32,38 Q64,38 80,22 Q64,6 32,6 Z" fill="rgba(6, 182, 212, 0.16)" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="80" y1="22" x2="112" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="gate-ref-eq">$Y = A + B$</span>
+                    </div>
+                    <div class="gate-ref-desc">HIGH ($1$) when <strong>any</strong> input ($A$ or $B$) is HIGH ($1$).</div>
+                  </div>
+
+                  <!-- 3. NOT -->
+                  <div class="gate-ref-card">
+                    <div class="gate-ref-top">
+                      <span class="gate-ref-name">3. NOT Gate</span>
+                      <span class="gate-ref-ic">74LS04</span>
+                    </div>
+                    <div class="gate-ref-mid">
+                      <svg viewBox="0 0 120 44" width="92" height="36" aria-label="NOT gate symbol">
+                        <line x1="6" y1="22" x2="36" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <polygon points="36,7 36,37 72,22" fill="rgba(6, 182, 212, 0.16)" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="77" cy="22" r="4.5" fill="#090d16" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="82" y1="22" x2="112" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="gate-ref-eq">$Y = \overline{A}$</span>
+                    </div>
+                    <div class="gate-ref-desc">Inverts single input: $0 \rightarrow 1$ and $1 \rightarrow 0$.</div>
+                  </div>
+
+                  <!-- 4. NAND -->
+                  <div class="gate-ref-card">
+                    <div class="gate-ref-top">
+                      <span class="gate-ref-name">4. NAND Gate</span>
+                      <span class="gate-ref-ic">74LS00</span>
+                    </div>
+                    <div class="gate-ref-mid">
+                      <svg viewBox="0 0 120 44" width="92" height="36" aria-label="NAND gate symbol">
+                        <line x1="6" y1="14" x2="34" y2="14" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <line x1="6" y1="30" x2="34" y2="30" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M34,6 L58,6 A16,16 0 0,1 58,38 L34,38 Z" fill="rgba(6, 182, 212, 0.16)" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="79" cy="22" r="4.5" fill="#090d16" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="84" y1="22" x2="112" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="gate-ref-eq">$Y = \overline{A \cdot B}$</span>
+                    </div>
+                    <div class="gate-ref-desc">Inverted AND: LOW ($0$) <strong>only</strong> if all inputs are HIGH ($1$).</div>
+                  </div>
+
+                  <!-- 5. NOR -->
+                  <div class="gate-ref-card">
+                    <div class="gate-ref-top">
+                      <span class="gate-ref-name">5. NOR Gate</span>
+                      <span class="gate-ref-ic">74LS02</span>
+                    </div>
+                    <div class="gate-ref-mid">
+                      <svg viewBox="0 0 120 44" width="92" height="36" aria-label="NOR gate symbol">
+                        <line x1="6" y1="14" x2="36" y2="14" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <line x1="6" y1="30" x2="36" y2="30" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M30,6 Q42,22 30,38 Q60,38 75,22 Q60,6 30,6 Z" fill="rgba(6, 182, 212, 0.16)" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="80" cy="22" r="4.5" fill="#090d16" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="85" y1="22" x2="112" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="gate-ref-eq">$Y = \overline{A + B}$</span>
+                    </div>
+                    <div class="gate-ref-desc">Inverted OR: HIGH ($1$) <strong>only</strong> when all inputs are LOW ($0$).</div>
+                  </div>
+
+                  <!-- 6. XOR -->
+                  <div class="gate-ref-card">
+                    <div class="gate-ref-top">
+                      <span class="gate-ref-name">6. XOR Gate</span>
+                      <span class="gate-ref-ic">74LS86</span>
+                    </div>
+                    <div class="gate-ref-mid">
+                      <svg viewBox="0 0 120 44" width="92" height="36" aria-label="XOR gate symbol">
+                        <line x1="6" y1="14" x2="36" y2="14" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <line x1="6" y1="30" x2="36" y2="30" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M26,6 Q38,22 26,38" fill="none" stroke="#22d3ee" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M33,6 Q45,22 33,38 Q65,38 81,22 Q65,6 33,6 Z" fill="rgba(6, 182, 212, 0.16)" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="81" y1="22" x2="112" y2="22" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="gate-ref-eq">$Y = A \oplus B$</span>
+                    </div>
+                    <div class="gate-ref-desc">HIGH ($1$) only when inputs $A$ and $B$ are <strong>different</strong>.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 6: DURING THE SESSION — PART 3: MULTISIM INVESTIGATION (10 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <div class="slide-tag">DURING THE SESSION &bull; PART 3 (10 MINUTES)</div>
+            <h2 class="slide-title">Part 3: Multisim Investigation (Simulate 1 Gate of Your Choice)</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card" style="margin-bottom: 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div class="card-title" style="margin: 0;">💻 Multisim Simulation Task — Choose 1 Gate (10 Mins)</div>
+                    <div class="timer-widget" data-duration="10" style="display: inline-flex; align-items: center; gap: 6px; background: #0f172a; padding: 4px 10px; border-radius: 8px; border: 1px solid #334155;">
+                      <span class="timer-display" style="font-family: var(--font-mono); font-weight: 800; color: var(--accent-cyan);">10:00</span>
+                      <button class="timer-toggle btn btn-primary" style="padding: 3px 8px; font-size: 0.75rem;">Start</button>
+                      <button class="timer-reset btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;">Reset</button>
+                    </div>
+                  </div>
+                  <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px;">
+                    Because we have a 10-minute window before the Careers Talk, <strong style="color: #ffffff;">choose ONE logic gate of your choice</strong> (for example, one from below) to build and test in <strong>Multisim</strong>:
+                  </p>
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px;">
+                    <div style="background: #0f172a; border: 1px solid var(--accent-cyan); padding: 10px; border-radius: 8px; text-align: center;">
+                      <div style="font-size: 0.7rem; font-family: var(--font-mono); color: #94a3b8; text-transform: uppercase;">Option A</div>
+                      <div style="font-weight: 800; color: #ffffff;">AND Gate</div>
+                      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">74LS08D ($Y = A \cdot B$)</div>
+                    </div>
+                    <div style="background: #0f172a; border: 1px solid #10b981; padding: 10px; border-radius: 8px; text-align: center;">
+                      <div style="font-size: 0.7rem; font-family: var(--font-mono); color: #94a3b8; text-transform: uppercase;">Option B</div>
+                      <div style="font-weight: 800; color: #ffffff;">OR Gate</div>
+                      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #34d399;">74LS32D ($Y = A + B$)</div>
+                    </div>
+                    <div style="background: #0f172a; border: 1px solid #f59e0b; padding: 10px; border-radius: 8px; text-align: center;">
+                      <div style="font-size: 0.7rem; font-family: var(--font-mono); color: #94a3b8; text-transform: uppercase;">Option C</div>
+                      <div style="font-weight: 800; color: #ffffff;">NOT Gate</div>
+                      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #fbbf24;">74LS04D ($Y = \overline{A}$)</div>
+                    </div>
+                  </div>
+                  <div style="background: rgba(15, 23, 42, 0.7); border-left: 4px solid var(--accent-cyan); padding: 10px 14px; border-radius: 8px; font-size: 0.86rem; color: var(--text-secondary);">
+                    <strong style="color: #ffffff;">For your chosen gate simulation:</strong>
+                    <ol style="padding-left: 18px; margin-top: 4px; line-height: 1.55;">
+                      <li>Place interactive switches on the gate input(s).</li>
+                      <li>Add an LED indicator on the output.</li>
+                      <li>Test all input combinations for your chosen gate.</li>
+                      <li>Verify that the output matches its truth table.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card" style="margin-bottom: 14px;">
+                  <div class="card-title">📸 Capture Evidence (Screenshot of Your Chosen Gate)</div>
+                  <div class="checklist-container">
+                    <label class="check-item"><input type="checkbox"> <strong>✅ Circuit:</strong> Complete Multisim schematic for your <strong>1 chosen logic gate</strong>.</label>
+                    <label class="check-item"><input type="checkbox"> <strong>✅ Inputs:</strong> Switch states clearly visible on the gate input(s).</label>
+                    <label class="check-item"><input type="checkbox"> <strong>✅ Output:</strong> LED output state (ON/OFF) clearly shown.</label>
+                    <label class="check-item"><input type="checkbox"> <strong>✅ Truth Table Verification:</strong> All input combinations tested and confirmed for your chosen gate.</label>
+                  </div>
+                </div>
+
+                <div class="prediction-box">
+                  <h4>🔮 Pre-Simulation Check: Unconnected TTL Inputs</h4>
+                  <p>In Multisim (and real breadboards), what happens if you leave a TTL input pin <em>floating</em> (disconnected from ground) when a switch is open?</p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Floating TTL inputs naturally drift HIGH (1). Always wire an SPDT switch between +5V and 0V GND!')">
+                      A floating TTL input acts as HIGH (1) — wire SPDT switches to both +5V and 0V!
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'TTL inputs internally source current, so an open pin floats HIGH rather than guaranteeing a clean 0V.')">
+                      It always guarantees a clean 0V LOW state
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 7: DURING THE SESSION — INTERMISSION: CAREERS TALK (60 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <div class="slide-tag" style="color: #c084fc;">DURING THE SESSION &bull; INTERMISSION (60 MINUTES)</div>
+            <h2 class="slide-title">Intermission: Careers &amp; Employability Talk</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div class="card-title" style="margin: 0; color: #c084fc;">🎓 During This Session Consider:</div>
+                    <div class="timer-widget" data-duration="60" style="display: inline-flex; align-items: center; gap: 6px; background: #0f172a; padding: 4px 10px; border-radius: 8px; border: 1px solid #334155;">
+                      <span class="timer-display" style="font-family: var(--font-mono); font-weight: 800; color: #c084fc;">60:00</span>
+                      <button class="timer-toggle btn btn-primary" style="padding: 3px 8px; font-size: 0.75rem;">Start</button>
+                      <button class="timer-reset btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;">Reset</button>
+                    </div>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 12px;">
+                    Explore how your electronics engineering training connects to real industry pathways:
+                  </p>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem;">
+                    <div style="background: #0f172a; border-left: 3px solid #38bdf8; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">🚀 Career Pathways</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Careers in electronics engineering</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #10b981; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">🛠️ Apprenticeships</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Higher &amp; Degree Apprenticeships</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #f59e0b; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">💻 Embedded Systems</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Microcontrollers &amp; digital hardware</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #a855f7; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">🤖 Automation</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Control systems &amp; industrial robotics</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #ec4899; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">🔌 PCB Assembly</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Electronic manufacture &amp; prototyping</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #22d3ee; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">🏭 Manufacturing Eng.</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Production systems &amp; test engineering</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #facc15; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">⚡ Electrical Maintenance</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">Plant diagnostics &amp; commissioning</div>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #60a5fa; padding: 8px 12px; border-radius: 6px;">
+                      <strong style="color: #ffffff;">🎓 University Routes</strong>
+                      <div style="color: var(--text-secondary); font-size: 0.78rem;">BEng / MEng Electronics &amp; Control</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card">
+                  <div class="card-title">📝 Make Notes in Your Engineering Logbook On:</div>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    In your own personal notebook or Portfolio of Evidence (no personal data is collected on this page), record:
+                  </p>
+                  <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid var(--border-subtle); border-left: 3px solid #38bdf8; border-radius: 8px; padding: 10px 14px;">
+                      <div style="font-size: 0.86rem; font-weight: 800; color: #ffffff; margin-bottom: 3px;">
+                        1. One career that interests you
+                      </div>
+                      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        <em>Example prompts:</em> Automation &amp; Control Engineering, Embedded Systems &amp; Microcontrollers, PCB Manufacturing, or Higher/Degree Apprenticeships.
+                      </div>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid var(--border-subtle); border-left: 3px solid #10b981; border-radius: 8px; padding: 10px 14px;">
+                      <div style="font-size: 0.86rem; font-weight: 800; color: #ffffff; margin-bottom: 3px;">
+                        2. One skill employers are looking for
+                      </div>
+                      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        <em>Example prompts:</em> Systematic fault-finding, safe soldering &amp; stripboard assembly, reading IC datasheets, and clear technical documentation.
+                      </div>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid var(--border-subtle); border-left: 3px solid #f59e0b; border-radius: 8px; padding: 10px 14px;">
+                      <div style="font-size: 0.86rem; font-weight: 800; color: #ffffff; margin-bottom: 3px;">
+                        3. One action you can take this year to improve employability
+                      </div>
+                      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        <em>Example prompts:</em> Build a thorough Portfolio of Evidence (PoE) with schematics, Multisim simulations, stripboard photographs, and engineering reflections.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 8: DURING THE SESSION — PART 4A: STRIPBOARD SOLDERING (STEPS 1–3)
+             ========================================================================= -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <div class="slide-tag">DURING THE SESSION &bull; PART 4 (STEPS 1–3)</div>
+            <h2 class="slide-title">Part 4: Practical Workshop – Stripboard Soldering Activity</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🛠️ Why Are We Doing This? &amp; Your Circuit</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                    Before engineers can build complex digital systems, they must be able to assemble circuits safely and accurately. Today you will build a simple LED switching circuit using stripboard where the switch controls whether the LED is ON or OFF:
+                  </p>
+                  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; font-size: 0.8rem; text-align: center; margin-bottom: 10px;">
+                    <span style="background: #0f172a; border: 1px solid #ef4444; padding: 6px; border-radius: 6px; color: #fca5a5; font-weight: 700;">5V Supply</span>
+                    <span style="background: #0f172a; border: 1px solid #38bdf8; padding: 6px; border-radius: 6px; color: #7dd3fc; font-weight: 700;">SPDT Switch</span>
+                    <span style="background: #0f172a; border: 1px solid #f59e0b; padding: 6px; border-radius: 6px; color: #fde68a; font-weight: 700;">Resistor R1</span>
+                    <span style="background: #0f172a; border: 1px solid #10b981; padding: 6px; border-radius: 6px; color: #6ee7b7; font-weight: 700;">LED D1</span>
+                  </div>
+
+                  <div style="background: rgba(6, 182, 212, 0.1); border-left: 4px solid var(--accent-cyan); padding: 10px 12px; border-radius: 8px; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <strong style="color: #ffffff;">Step 1: Circuit Design (Using DIYLC Software)</strong><br>
+                    Before touching the soldering iron, you must design the circuit. Create a stripboard layout showing: <strong>Power rails, SPDT switch, Resistor, and LED</strong>.<br>
+                    <em>Why? Professional engineers always design before building. A good design: Reduces mistakes, Saves materials, and Makes fault finding easier.</em>
+                  </div>
+
+                  <div style="background: rgba(245, 158, 11, 0.12); border-left: 4px solid #f59e0b; padding: 10px 12px; border-radius: 8px; font-size: 0.84rem; color: #fde68a;">
+                    <strong>🛑 Step 2: Teacher Design Check</strong><br>
+                    Before assembly: Show your DIYLC design to your lecturer. <strong>Approval must be received before construction begins.</strong>
+                  </div>
+                </div>
+
+                <!-- Step 3: Safety Briefing -->
+                <div class="card" style="padding: 12px 16px;">
+                  <div class="card-title" style="margin-bottom: 6px; font-size: 0.95rem;">⚠️ Step 3: Safety Briefing (Follow Workshop Rules at All Times)</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem;">
+                    <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 8px;">
+                      <strong style="color: #34d399;">You must (✅):</strong>
+                      <ul style="padding-left: 16px; margin-top: 4px; color: var(--text-secondary); line-height: 1.45;">
+                        <li>✅ Wear safety glasses</li>
+                        <li>✅ Handle hot soldering irons carefully</li>
+                        <li>✅ Return irons to their stands</li>
+                        <li>✅ Keep your work area tidy</li>
+                        <li>✅ Report any faulty equipment immediately</li>
+                        <li>✅ Follow lecturer instructions</li>
+                      </ul>
+                    </div>
+                    <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 10px; border-radius: 8px;">
+                      <strong style="color: #f87171;">Never (❌):</strong>
+                      <ul style="padding-left: 16px; margin-top: 4px; color: var(--text-secondary); line-height: 1.45;">
+                        <li>❌ Leave a hot iron unattended</li>
+                        <li>❌ Touch the soldering tip</li>
+                        <li>❌ Swing cables or tools</li>
+                        <li>❌ Solder without permission</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: DIYLC Stripboard Reference Image from Docx -->
+              <div class="schematic-frame" style="justify-content: center;">
+                <img src="images/diylc-stripboard-layout.png" alt="DIYLC Stripboard Layout showing +5V Red wire, 0V Black wire, SPDT Switch, R1 Resistor, and D1 Green LED" style="max-height: 330px; background: #ffffff; padding: 8px; border-radius: 10px;">
+                <div class="schematic-caption">
+                  Fig B1.2: DIYLC Stripboard Layout — Power Rails (+5V Red / 0V Black), SPDT Switch, Resistor R1, and LED D1
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; color: var(--text-secondary); width: 100%;">
+                  <strong style="color: var(--accent-cyan);">🔍 Stripboard Track Orientation Tip:</strong> Horizontal copper strips A through Q run across the rows (columns 1–6). Current flows from the Red $+5\,\text{V}$ wire on Row A into the switch, exits on Row B through resistor $R_1$ down to Row P, passes through LED $D_1$ (Anode on Row P, Cathode on Row Q), and returns via the Black $0\,\text{V}$ wire.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 9: DURING THE SESSION — PART 4B: ASSEMBLY, SOLDERING & TESTING (STEPS 4–6)
+             ========================================================================= -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <div class="slide-tag">DURING THE SESSION &bull; PART 4 (STEPS 4–6)</div>
+            <h2 class="slide-title">Part 4: Stripboard Assembly, Soldering &amp; Inspection/Testing</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <!-- Step 4 & Step 5 -->
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🔧 Step 4: Stripboard Assembly &amp; Step 5: Soldering</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    <strong>Step 4 — Identify and insert components according to your design:</strong>
+                  </p>
+                  <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; margin-bottom: 10px;">
+                    <li><strong>LED polarity:</strong> Long leg = Anode (+); Short leg / flat edge = Cathode (&minus;).</li>
+                    <li><strong>Resistor value:</strong> Check colour bands / DMM reading before inserting.</li>
+                    <li><strong>SPDT switch terminals:</strong> Align pins cleanly with stripboard rows.</li>
+                    <li><strong style="color: #fbbf24;">🛑 Ask for a visual inspection before soldering.</strong></li>
+                  </ul>
+
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 6px;">
+                    <strong>Step 5 — Solder all component connections:</strong>
+                  </p>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem;">
+                    <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 8px 10px; border-radius: 6px;">
+                      <strong style="color: #34d399;">Focus on producing (✅):</strong><br>
+                      &bull; ✅ Shiny joints<br>
+                      &bull; ✅ Clean joints<br>
+                      &bull; ✅ Correct component placement
+                    </div>
+                    <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 8px 10px; border-radius: 6px;">
+                      <strong style="color: #f87171;">Avoid (❌):</strong><br>
+                      &bull; ❌ Cold joints<br>
+                      &bull; ❌ Excess solder<br>
+                      &bull; ❌ Solder bridges
+                    </div>
+                  </div>
+                </div>
+
+                <div class="prediction-box">
+                  <h4>🔮 Pre-Power Troubleshooting Check: Solder Bridges</h4>
+                  <p>What happens if excess solder accidentally bridges across Track P and Track Q underneath LED $D_1$?</p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! A solder bridge between Track P and Track Q bypasses (short-circuits) the LED so current flows around it and the LED stays OFF.')">
+                      The LED is short-circuited (bypassed) and will not light up
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Current takes the path of least resistance through the solder bridge rather than through the LED.')">
+                      The LED shines twice as brightly
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+
+              <!-- Step 6: Inspection & Testing -->
+              <div>
+                <div class="card">
+                  <div class="card-title">🔍 Step 6: Inspection and Testing</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    Inspect your board before powering the circuit using $5\,\text{V}$:
+                  </p>
+                  <div class="checklist-container" style="margin-bottom: 12px;">
+                    <label class="check-item"><input type="checkbox"> <strong>Shorts:</strong> Checked adjacent copper tracks for unwanted solder bridges.</label>
+                    <label class="check-item"><input type="checkbox"> <strong>Missing joints:</strong> Every component lead and power wire is soldered.</label>
+                    <label class="check-item"><input type="checkbox"> <strong>Incorrect polarity:</strong> Verified LED cathode connects to the $0\,\text{V}$ rail.</label>
+                    <label class="check-item"><input type="checkbox"> <strong>Damaged tracks:</strong> Copper strips are intact and undamaged.</label>
+                  </div>
+
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">
+                    <strong>Power the circuit using 5V and verify:</strong>
+                  </p>
+                  <table class="verif-table">
+                    <thead>
+                      <tr>
+                        <th>Test Condition ($5\,\text{V}$ Supply)</th>
+                        <th>Expected LED State</th>
+                        <th>Observed Result</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Switch Position 1</strong></td>
+                        <td>LED OFF ($0\,\text{V}$)</td>
+                        <td>
+                          <select id="solder_pos1">
+                            <option value="">-- Select --</option>
+                            <option value="PASS: LED OFF">PASS: LED OFF</option>
+                            <option value="FAULT: Always ON">FAULT: Always ON</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Switch Position 2</strong></td>
+                        <td>Correct LED Operation (ON)</td>
+                        <td>
+                          <select id="solder_pos2">
+                            <option value="">-- Select --</option>
+                            <option value="PASS: LED ON">PASS: LED ON</option>
+                            <option value="FAULT: Stays OFF">FAULT: Stays OFF</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 10: AFTER THE SESSION — ASSIGNMENT ACTIVITIES 1 & 2 (READING & WATCH)
+             ========================================================================= -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <div class="slide-tag" style="color: #34d399;">AFTER THE SESSION &bull; ASSIGNMENT (ACTIVITIES 1 &amp; 2)</div>
+            <h2 class="slide-title">Assignment (Complete Before Next Lesson): Reading &amp; Watch</h2>
+          </div>
+          <div class="slide-body">
+            <div style="background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 10px; padding: 10px 16px; margin-bottom: 12px; font-size: 0.86rem; color: var(--text-secondary);">
+              <strong style="color: #ffffff;">📌 Assignment (Complete Before Next Lesson — Estimated Time: 30–45 mins):</strong> Since today's session has been shortened by the careers event, complete the following blended learning activities in your notebook before the next class.
+            </div>
+
+            <div class="grid-2col">
+              <!-- Activity 1: Reading Task -->
+              <div class="card">
+                <div class="card-title">📖 Activity 1: Reading Task</div>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  Read the sections covering <strong>Digital signals, Logic levels, Boolean logic, Logic gates, and Integrated circuits</strong>:
+                </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                  <a href="https://en.wikipedia.org/wiki/Digital_electronics" target="_blank" rel="noopener noreferrer" class="resource-link-pill">
+                    🌐 Wikipedia: Digital Electronics ↗
+                  </a>
+                  <a href="https://en.wikipedia.org/wiki/Logic_gate" target="_blank" rel="noopener noreferrer" class="resource-link-pill">
+                    🌐 Wikipedia: Logic Gates ↗
+                  </a>
+                </div>
+                <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 6px;">While Reading — Record Notes in Your Logbook &amp; Click to Check:</div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <details class="study-accordion">
+                    <summary>1. What is digital electronics?</summary>
+                    <div class="study-accordion-ans">A branch of electronics that handles discrete, two-state binary signals ($0$ and $1$) built from networks of electronic switches and logic gates.</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>2. What is the difference between analogue and digital signals?</summary>
+                    <div class="study-accordion-ans">Analogue signals vary continuously over time with infinite possible voltage values; digital signals switch between two distinct voltage bands (LOW $= 0$ and HIGH $= 1$).</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>3. What do logic 0 and logic 1 represent?</summary>
+                    <div class="study-accordion-ans">Logic $0$ represents LOW / FALSE / OFF (nominally $0\,\text{V}$ in TTL); Logic $1$ represents HIGH / TRUE / ON (nominally $+5\,\text{V}$ in TTL).</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>4. What is a logic gate?</summary>
+                    <div class="study-accordion-ans">A fundamental digital circuit building block that evaluates one or more binary inputs ($A, B$) and produces a single binary output ($Y$) according to a Boolean rule.</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>5. Give one industrial application of digital electronics.</summary>
+                    <div style="font-size: 0.8rem;" class="study-accordion-ans">Machine safety interlocks, automated traffic light controllers, PLC production line sequencing, or robotic sensor decision circuits.</div>
+                  </details>
+                </div>
+              </div>
+
+              <!-- Activity 2: Watch and Learn -->
+              <div class="card">
+                <div class="card-title">🎬 Activity 2: Watch and Learn (Visual + Audio)</div>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  Watch the Introduction to Logic Gates videos and make notes on <strong>Binary states (0 and 1), Logic gates, Real-world applications, and Decision making in control systems</strong>:
+                </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                  <a href="https://www.youtube.com/watch?v=lXWpWNKwYbo" target="_blank" rel="noopener noreferrer" class="resource-link-pill yt">
+                    ▶️ Watch Video 1 (Logic Gates) ↗
+                  </a>
+                  <a href="https://www.youtube.com/watch?v=9kNO9iKgT1I" target="_blank" rel="noopener noreferrer" class="resource-link-pill yt">
+                    ▶️ Watch Video 2 (Digital Logic) ↗
+                  </a>
+                </div>
+
+                <div style="font-size: 0.82rem; font-weight: 700; color: #fbbf24; margin-bottom: 6px;">Guided Note-Taking Questions (Jot in Logbook &amp; Click to Check):</div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <details class="study-accordion">
+                    <summary>What is binary?</summary>
+                    <div class="study-accordion-ans">A base-2 numbering system that represents all values and logical states using only two digits: $0$ and $1$.</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>What is a logic 0?</summary>
+                    <div class="study-accordion-ans">The LOW voltage state ($0\,\text{V}$ / Ground), representing FALSE, OFF, or an inactive sensor condition.</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>What is a logic 1?</summary>
+                    <div class="study-accordion-ans">The HIGH voltage state ($+5\,\text{V}$ in TTL), representing TRUE, ON, or an active/satisfied sensor condition.</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>What is an AND gate used for?</summary>
+                    <div class="study-accordion-ans">Used when <strong>all</strong> input conditions must be HIGH ($1$) simultaneously to enable an output ($Y = A \cdot B$), such as a safety interlock.</div>
+                  </details>
+                  <details class="study-accordion">
+                    <summary>What is a NOT gate used for?</summary>
+                    <div class="study-accordion-ans">Used to <strong>invert</strong> (complement) a single logic signal ($Y = \overline{A}$), turning $0 \rightarrow 1$ and $1 \rightarrow 0$.</div>
+                  </details>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 11: AFTER THE SESSION — ASSIGNMENT ACTIVITIES 3, 4 (QUIZ) & 5 (REFLECTION)
+             ========================================================================= -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <div class="slide-tag" style="color: #34d399;">AFTER THE SESSION &bull; ASSIGNMENT (ACTIVITIES 3, 4 &amp; 5)</div>
+            <h2 class="slide-title">Assignment: Truth Tables, Microsoft Forms Quiz &amp; Reflection</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <!-- Activity 3: Truth Table Investigation -->
+                <div class="card" style="margin-bottom: 12px; padding: 14px 16px;">
+                  <div class="card-title" style="margin-bottom: 6px; font-size: 0.96rem;">📊 Activity 3: Truth Table Investigation</div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    Use the course page animations (<a href="#slide-4" onclick="window.deckEngine.goToSlide(3); return false;" style="color: var(--accent-cyan);">Slide 4 Simulator</a>) and compare against the truth table in <a href="https://en.wikipedia.org/wiki/Logic_gate" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan);">Wikipedia: Logic Gates</a>:
+                  </p>
+                  <table class="verif-table" style="margin: 0;">
+                    <thead>
+                      <tr>
+                        <th style="width: 22%;">Gate</th>
+                        <th>Which Input Combinations Produce Logic 1?</th>
+                        <th style="width: 22%;">Check</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>AND</strong></td>
+                        <td>
+                          <select id="tt_inv_and" onchange="checkTruthTableInvestigation('AND', this.value)">
+                            <option value="">-- Select combinations for Logic 1 --</option>
+                            <option value="correct">Only when both A=1 and B=1 (11)</option>
+                            <option value="wrong1">When A=1, B=1, or both (01, 10, 11)</option>
+                            <option value="wrong2">When inputs are different (01, 10)</option>
+                          </select>
+                        </td>
+                        <td id="tt_fb_and" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);">Pending</td>
+                      </tr>
+                      <tr>
+                        <td><strong>OR</strong></td>
+                        <td>
+                          <select id="tt_inv_or" onchange="checkTruthTableInvestigation('OR', this.value)">
+                            <option value="">-- Select combinations for Logic 1 --</option>
+                            <option value="wrong1">Only when both A=1 and B=1 (11)</option>
+                            <option value="correct">When A=1, B=1, or both are 1 (01, 10, 11)</option>
+                            <option value="wrong2">Only when both are 0 (00)</option>
+                          </select>
+                        </td>
+                        <td id="tt_fb_or" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);">Pending</td>
+                      </tr>
+                      <tr>
+                        <td><strong>XOR</strong></td>
+                        <td>
+                          <select id="tt_inv_xor" onchange="checkTruthTableInvestigation('XOR', this.value)">
+                            <option value="">-- Select combinations for Logic 1 --</option>
+                            <option value="wrong1">When inputs are identical (00, 11)</option>
+                            <option value="correct">When inputs are different: A=0,B=1 or A=1,B=0 (01, 10)</option>
+                            <option value="wrong2">Only when both A=1 and B=1 (11)</option>
+                          </select>
+                        </td>
+                        <td id="tt_fb_xor" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);">Pending</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Activity 5: Engineering Reflection -->
+                <div class="card" style="padding: 14px 16px;">
+                  <div class="card-title" style="margin-bottom: 6px; font-size: 0.96rem;">🏭 Activity 5: Reflection (Prepare in Your Notebook)</div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 10px;">
+                    A packaging machine should only start when: <strong>Guard door is closed</strong> ($A = 1$), <strong>Emergency stop is released</strong> ($B = 1$), and <strong>Air pressure is available</strong> ($C = 1$).<br>
+                    In your notebook, write a short paragraph explaining: <em>How could digital electronics decide whether the machine should start, and which logic gate would be most suitable?</em> Be prepared to discuss your answer at the start of the next lesson.
+                  </p>
+                  <details class="study-accordion">
+                    <summary>💡 Check Key Engineering Points for Next Lesson's Discussion</summary>
+                    <div class="study-accordion-ans">
+                      Each sensor outputs a binary state ($0$ when unsafe, $1$ when safe). A <strong>3-input AND gate</strong> (or two cascaded 2-input AND gates from a <code>74LS08</code> IC) implements the Boolean equation $Y = A \cdot B \cdot C$, ensuring the motor enable output $Y$ is HIGH ($1$) <strong>only</strong> when all three safety conditions are simultaneously satisfied.
+                    </div>
+                  </details>
+                </div>
+              </div>
+
+              <!-- Right: Activity 4 Microsoft Forms Knowledge Check Quiz & Vocabulary Builder -->
+              <div>
+                <div class="card" style="border-top: 4px solid #10b981;">
+                  <div class="card-title" style="color: #34d399;">📝 Activity 4: Microsoft Forms Quiz</div>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Complete the Digital Electronics quiz and achieve at least <strong style="color: #34d399;">70%</strong>. Instant feedback is provided and you may attempt the quiz multiple times. Be prepared to explain your answers during class discussion.
+                  </p>
+
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <a href="https://forms.cloud.microsoft/e/XvQAMCFTfF" target="_blank" rel="noopener noreferrer" class="resource-link-pill forms" style="flex: 1; justify-content: center; padding: 10px 14px; font-size: 0.92rem;">
+                      🚀 Unit 19 Digital Electronics – Fill Out Form ↗
+                    </a>
+                    <button class="btn btn-secondary open-forms-trigger" data-form-section="Digital Electronics Quiz" style="padding: 10px 14px; font-size: 0.86rem;">
+                      Open in Side Drawer
+                    </button>
+                  </div>
+
+                  <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <strong style="color: var(--accent-cyan);">Quiz Topics Covered:</strong>
+                    <ul style="padding-left: 16px; margin-top: 4px; line-height: 1.45;">
+                      <li>What numerical values are used in binary?</li>
+                      <li>What output does an AND gate produce if both inputs are HIGH?</li>
+                      <li>Which gate inverts a signal?</li>
+                      <li>What is the purpose of a truth table?</li>
+                      <li>What does <strong>CMOS</strong> stand for?</li>
+                      <li>What does <strong>TTL</strong> stand for?</li>
+                      <li>Logic states, Gate symbols &amp; Basic truth tables</li>
+                    </ul>
+                  </div>
+
+                  <!-- Vocabulary Builder Reference Table -->
+                  <div style="font-size: 0.78rem; color: var(--text-secondary);">
+                    <strong style="color: #fbbf24;">📚 Vocabulary Builder (Match the Following Terms):</strong>
+                    <div style="display: grid; grid-template-columns: 110px 1fr; gap: 3px 10px; margin-top: 4px; background: rgba(15, 23, 42, 0.6); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(51, 65, 85, 0.6);">
+                      <strong style="color: #ffffff;">Binary:</strong> <span>Base-2 numbering system using only $0$ and $1$.</span>
+                      <strong style="color: #ffffff;">Logic Gate:</strong> <span>Electronic building block performing a Boolean logic operation.</span>
+                      <strong style="color: #ffffff;">Input / Output:</strong> <span>Signals entering ($A, B$) and leaving ($Y$) a logic decision stage.</span>
+                      <strong style="color: #ffffff;">Truth Table:</strong> <span>Table listing every input combination and resulting output.</span>
+                      <strong style="color: #ffffff;">CMOS / TTL:</strong> <span>MOSFET vs BJT ($5\,\text{V}$) integrated circuit logic families.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 12: ENGINEER EXIT TICKET (5 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <div class="slide-tag">ENGINEER EXIT TICKET &bull; 5 MINS</div>
+            <h2 class="slide-title">Engineer Exit Ticket: Digital Launch Verification</h2>
+          </div>
+          <div class="slide-body">
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 12px;">
+              Verify your understanding before leaving the workshop and completing your post-session Microsoft Forms Quiz:
+            </p>
+
+            <div class="grid-2col" style="gap: 16px;">
+              <div class="self-check-card card" data-expected="74ls08" data-type="includes"
+                data-hint="Check your Mind Map example on Slide 5: the standard TTL Quad 2-Input AND gate IC is the 74LS08!">
+                <div class="card-title">1. Today's Learning: TTL IC Selection</div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  Which 74-series TTL integrated circuit number contains four 2-input <strong>AND gates</strong> ($Y = A \cdot B$)?
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" class="self-check-input" placeholder="e.g. 74LS08">
+                  <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+                </div>
+                <div class="self-check-feedback"></div>
+              </div>
+
+              <div class="self-check-card card" data-expected="and" data-type="includes"
+                data-hint="Because ALL three safety conditions (Guard closed AND E-stop released AND Air pressure available) must be TRUE simultaneously, an AND gate is required!">
+                <div class="card-title">2. Industrial Control Application: Safety Interlock</div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  A packaging machine must only start when Guard Door is closed ($1$), E-Stop is released ($1$), AND Air Pressure is available ($1$). Which logic gate type is required?
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" class="self-check-input" placeholder="e.g. AND gate">
+                  <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+                </div>
+                <div class="self-check-feedback"></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <div class="card-title" style="margin-bottom: 4px;">3. Cumulative Practical Check &amp; Post-Lesson Assignment</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                  Ensure your stripboard soldering station is powered down, iron returned to its stand, and complete the <strong>Unit 19 Digital Electronics Microsoft Forms Quiz ($\ge 70\%$)</strong> before next week's Combinational Logic lab!
+                </p>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <a href="https://forms.cloud.microsoft/e/XvQAMCFTfF" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="text-decoration: none;">
+                  📝 Complete MS Forms Quiz ↗
+                </a>
+                <button class="btn btn-secondary open-forms-trigger" data-form-section="Digital Electronics Quiz">
+                  Open Quiz Drawer
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 12</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="https://forms.cloud.microsoft/e/XvQAMCFTfF" target="_blank" rel="noopener noreferrer"
+            style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; font-weight: 700;">
+            🔗 Forms Quiz (≥70%) ↗
+          </a>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Backdrop for Drawer -->
+    <div id="drawer-backdrop"></div>
+
+    <!-- Microsoft Forms Side-Drawer -->
+    <aside id="forms-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>📝</span>
+          <span>Unit 19 Digital Electronics — Knowledge Check Quiz</span>
+        </div>
+        <div class="drawer-actions">
+          <button class="drawer-popout-btn" id="drawer-popout-btn" title="Open in new tab">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            Pop out
+          </button>
+          <button class="drawer-close-btn" id="drawer-close-btn" title="Close drawer">✕</button>
+        </div>
+      </div>
+
+      <div class="drawer-body">
+        <iframe id="forms-iframe" class="drawer-iframe" src="about:blank"
+          data-src="https://forms.cloud.microsoft/e/XvQAMCFTfF" referrerpolicy="no-referrer" allowfullscreen webkitallowfullscreen mozallowfullscreen
+          msallowfullscreen>
+        </iframe>
+      </div>
+    </aside>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid"></div>
+      </div>
+    </div>
+
+    <!-- Accessibility Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Accessibility & Neurodiversity Side-Drawer (Full Feature Parity with Analogue Modules) -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary" style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Shared Scripts -->
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/self-check.js"></script>
+  <script src="../shared/js/timer.js"></script>
+  <script src="../shared/js/form-drawer.js"></script>
+
+  <!-- Digital Week 1 Interactive Logic Gate Simulator & Persistence -->
+  <script>
+    const GATE_SPECS = {
+      AND: {
+        name: 'AND Gate',
+        ic: 'IC: 74LS08 (Quad 2-Input AND)',
+        latex: 'Y = A \\cdot B',
+        rule: 'Output $Y$ is HIGH ($1$) only when ALL inputs are HIGH ($1$).',
+        app: 'Machine safety interlock (Guard door closed AND Start button pressed).',
+        singleInput: false,
+        eval: (a, b) => (a === 1 && b === 1) ? 1 : 0,
+        svg: `<path d="M105,30 L148,30 A37,37 0 0,1 148,105 L105,105 Z" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/>`
+      },
+      OR: {
+        name: 'OR Gate',
+        ic: 'IC: 74LS32 (Quad 2-Input OR)',
+        latex: 'Y = A + B',
+        rule: 'Output $Y$ is HIGH ($1$) when ANY input ($A$ or $B$ or both) is HIGH ($1$).',
+        app: 'Multi-point alarm trigger (Front door sensor OR Window sensor triggers siren).',
+        singleInput: false,
+        eval: (a, b) => (a === 1 || b === 1) ? 1 : 0,
+        svg: `<path d="M98,30 Q118,67 98,105 Q150,105 186,67 Q150,30 98,30 Z" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/>`
+      },
+      NOT: {
+        name: 'NOT Gate (Inverter)',
+        ic: 'IC: 74LS04 (Hex Inverter)',
+        latex: 'Y = \\overline{A}',
+        rule: 'Inverts the single input signal: Input $0$ produces Output $1$; Input $1$ produces Output $0$.',
+        app: 'Active-low fault indicator / automatic night-light (Dark = 0 → Light ON = 1).',
+        singleInput: true,
+        eval: (a) => (a === 0) ? 1 : 0,
+        svg: `<polygon points="105,32 105,102 170,67" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/><circle cx="179" cy="67" r="7" fill="#050811" stroke="#22d3ee" stroke-width="3"/>`
+      },
+      NAND: {
+        name: 'NAND Gate (Universal)',
+        ic: 'IC: 74LS00 (Quad 2-Input NAND)',
+        latex: 'Y = \\overline{A \\cdot B}',
+        rule: 'Inverted AND: Output $Y$ is LOW ($0$) ONLY when all inputs are HIGH ($1$).',
+        app: 'Universal logic building block & pump/tank overflow cut-off control.',
+        singleInput: false,
+        eval: (a, b) => (a === 1 && b === 1) ? 0 : 1,
+        svg: `<path d="M105,30 L142,30 A37,37 0 0,1 142,105 L105,105 Z" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/><circle cx="186" cy="67" r="7" fill="#050811" stroke="#22d3ee" stroke-width="3"/>`
+      },
+      NOR: {
+        name: 'NOR Gate (Universal)',
+        ic: 'IC: 74LS02 (Quad 2-Input NOR)',
+        latex: 'Y = \\overline{A + B}',
+        rule: 'Inverted OR: Output $Y$ is HIGH ($1$) ONLY when all inputs are LOW ($0$).',
+        app: 'Zero-motion / all-clear standby detector (Green status LED when no fault lines are active).',
+        singleInput: false,
+        eval: (a, b) => (a === 0 && b === 0) ? 1 : 0,
+        svg: `<path d="M98,30 Q118,67 98,105 Q145,105 176,67 Q145,30 98,30 Z" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/><circle cx="184" cy="67" r="7" fill="#050811" stroke="#22d3ee" stroke-width="3"/>`
+      },
+      XOR: {
+        name: 'XOR Gate (Exclusive-OR)',
+        ic: 'IC: 74LS86 (Quad 2-Input XOR)',
+        latex: 'Y = A \\oplus B',
+        rule: 'Output $Y$ is HIGH ($1$) only when inputs $A$ and $B$ are DIFFERENT ($01$ or $10$).',
+        app: 'Two-way staircase light switching, binary addition & parity error checking.',
+        singleInput: false,
+        eval: (a, b) => (a !== b) ? 1 : 0,
+        svg: `<path d="M88,30 Q108,67 88,105" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/><path d="M98,30 Q118,67 98,105 Q150,105 186,67 Q150,30 98,30 Z" fill="rgba(6, 182, 212, 0.18)" stroke="#22d3ee" stroke-width="3"/>`
+      }
+    };
+
+    let currentGate = 'AND';
+    let inputA = 0;
+    let inputB = 0;
+    let pkgState = { guard: 0, estop: 0, air: 0 };
+
+    function selectSimGate(gateKey) {
+      currentGate = gateKey;
+      document.querySelectorAll('.gate-tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('gtab-' + gateKey);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderGateSimulator();
+    }
+
+    function toggleSimInput(which) {
+      if (which === 'A') inputA = inputA === 0 ? 1 : 0;
+      if (which === 'B') inputB = inputB === 0 ? 1 : 0;
+      renderGateSimulator();
+    }
+
+    function renderGateSimulator() {
+      const spec = GATE_SPECS[currentGate];
+      if (!spec) return;
+
+      const y = spec.eval(inputA, inputB);
+
+      // Update buttons
+      const btnA = document.getElementById('btn-in-a');
+      const lblA = document.getElementById('lbl-in-a');
+      const btnB = document.getElementById('btn-in-b');
+      const lblB = document.getElementById('lbl-in-b');
+
+      if (btnA && lblA) {
+        btnA.classList.toggle('high', inputA === 1);
+        lblA.textContent = inputA === 1 ? '1 (+5V)' : '0 (0V)';
+      }
+
+      if (btnB && lblB) {
+        if (spec.singleInput) {
+          btnB.style.opacity = '0.35';
+          btnB.disabled = true;
+          lblB.textContent = 'N/A';
+        } else {
+          btnB.style.opacity = '1';
+          btnB.disabled = false;
+          btnB.classList.toggle('high', inputB === 1);
+          lblB.textContent = inputB === 1 ? '1 (+5V)' : '0 (0V)';
+        }
+      }
+
+      // Update SVG Gate & Wires
+      const shapeGroup = document.getElementById('svg-gate-shape');
+      if (shapeGroup) shapeGroup.innerHTML = spec.svg;
+
+      const wireA = document.getElementById('svg-wire-a');
+      const groupB = document.getElementById('svg-group-b');
+      const wireB = document.getElementById('svg-wire-b');
+      const wireY = document.getElementById('svg-wire-y');
+
+      if (wireA) {
+        wireA.setAttribute('y1', spec.singleInput ? '67' : '45');
+        wireA.setAttribute('y2', spec.singleInput ? '67' : '45');
+        wireA.setAttribute('class', inputA === 1 ? 'sim-wire-high' : 'sim-wire-low');
+      }
+
+      if (groupB && wireB) {
+        groupB.style.display = spec.singleInput ? 'none' : 'block';
+        wireB.setAttribute('class', inputB === 1 ? 'sim-wire-high' : 'sim-wire-low');
+      }
+
+      if (wireY) {
+        wireY.setAttribute('class', y === 1 ? 'sim-wire-high' : 'sim-wire-low');
+      }
+
+      const ledBody = document.getElementById('svg-led-body');
+      const ledGlow = document.getElementById('svg-led-glow');
+      const ledTxt = document.getElementById('svg-led-txt');
+
+      if (ledBody && ledGlow && ledTxt) {
+        if (y === 1) {
+          ledBody.setAttribute('fill', '#10b981');
+          ledBody.setAttribute('stroke', '#6ee7b7');
+          ledGlow.setAttribute('fill', 'rgba(16, 185, 129, 0.35)');
+          ledTxt.textContent = 'Y = 1 (ON)';
+          ledTxt.setAttribute('fill', '#34d399');
+        } else {
+          ledBody.setAttribute('fill', '#1e293b');
+          ledBody.setAttribute('stroke', '#64748b');
+          ledGlow.setAttribute('fill', 'transparent');
+          ledTxt.textContent = 'Y = 0 (OFF)';
+          ledTxt.setAttribute('fill', '#94a3b8');
+        }
+      }
+
+      // Metadata
+      document.getElementById('sim-ic-badge').textContent = spec.ic;
+      const exprEl = document.getElementById('sim-bool-expr');
+      if (exprEl) {
+        if (window.katex) {
+          window.katex.render(spec.latex, exprEl, { throwOnError: false });
+        } else {
+          exprEl.innerHTML = `$${spec.latex}$`;
+        }
+      }
+      const outDesc = document.getElementById('sim-out-desc');
+      if (outDesc) {
+        outDesc.textContent = y === 1 ? 'HIGH (+5V • Logic 1)' : 'LOW (0V • Logic 0)';
+        outDesc.style.color = y === 1 ? '#34d399' : '#94a3b8';
+      }
+      const ruleEl = document.getElementById('sim-gate-rule');
+      if (ruleEl) {
+        ruleEl.innerHTML = `<strong>Rule:</strong> ${spec.rule}`;
+        if (window.renderMathInElement) {
+          window.renderMathInElement(ruleEl, { delimiters: [{ left: '$', right: '$', display: false }] });
+        }
+      }
+      document.getElementById('sim-gate-app').innerHTML = `<strong>🏭 Industrial Application:</strong> ${spec.app}`;
+
+      // Render Truth Table
+      document.getElementById('tt-gate-name').textContent = spec.name;
+      const headerRow = document.getElementById('tt-header-row');
+      const bodyRows = document.getElementById('tt-body-rows');
+
+      if (spec.singleInput) {
+        headerRow.innerHTML = `<th>Input A</th><th>Output Y</th><th>Voltage Level</th>`;
+        const combos = [0, 1];
+        bodyRows.innerHTML = combos.map(a => {
+          const out = spec.eval(a);
+          const isActive = (a === inputA);
+          return `<tr class="${isActive ? (out ? 'active-row out-high' : 'active-row') : ''}">
+            <td>${a}</td>
+            <td><strong>${out}</strong></td>
+            <td>${out ? 'HIGH (+5V)' : 'LOW (0V)'}</td>
+          </tr>`;
+        }).join('');
+      } else {
+        headerRow.innerHTML = `<th>Input A</th><th>Input B</th><th>Output Y</th><th>Voltage Level</th>`;
+        const combos = [[0, 0], [0, 1], [1, 0], [1, 1]];
+        bodyRows.innerHTML = combos.map(([a, b]) => {
+          const out = spec.eval(a, b);
+          const isActive = (a === inputA && b === inputB);
+          return `<tr class="${isActive ? (out ? 'active-row out-high' : 'active-row') : ''}">
+            <td>${a}</td>
+            <td>${b}</td>
+            <td><strong>${out}</strong></td>
+            <td>${out ? 'HIGH (+5V)' : 'LOW (0V)'}</td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    function togglePkgSensor(sensor) {
+      pkgState[sensor] = pkgState[sensor] === 0 ? 1 : 0;
+      ['guard', 'estop', 'air'].forEach(k => {
+        const btn = document.getElementById('pkg-' + k);
+        const val = document.getElementById('pkg-' + k + '-val');
+        if (btn && val) {
+          btn.classList.toggle('high', pkgState[k] === 1);
+          val.textContent = pkgState[k];
+        }
+      });
+      const allSafe = pkgState.guard === 1 && pkgState.estop === 1 && pkgState.air === 1;
+      const banner = document.getElementById('pkg-status-banner');
+      if (banner) {
+        if (allSafe) {
+          banner.style.background = 'rgba(16, 185, 129, 0.2)';
+          banner.style.borderColor = '#10b981';
+          banner.style.color = '#6ee7b7';
+          banner.textContent = '✅ MACHINE RUNNING (Y = 1 • 3-Input AND Gate Satisfied!)';
+        } else {
+          banner.style.background = 'rgba(239, 68, 68, 0.15)';
+          banner.style.borderColor = '#ef4444';
+          banner.style.color = '#fca5a5';
+          banner.textContent = '⛔ MACHINE INHIBITED (Y = 0) — Satisfy all 3 safety sensors to enable motor!';
+        }
+      }
+    }
+
+    function checkPrediction(button, isCorrect, feedbackText) {
+      const container = button.closest('.prediction-box');
+      if (!container) return;
+      const buttons = container.querySelectorAll('.pred-btn');
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+      button.classList.add(isCorrect ? 'correct' : 'incorrect');
+      const fb = container.querySelector('.pred-feedback');
+      if (fb) {
+        fb.textContent = feedbackText;
+        fb.className = `pred-feedback ${isCorrect ? 'success' : 'hint'}`;
+      }
+    }
+
+    function checkTruthTableInvestigation(gate, val) {
+      const fbEl = document.getElementById('tt_fb_' + gate.toLowerCase());
+      if (!fbEl) return;
+      if (val === 'correct') {
+        fbEl.textContent = '✅ Spot on!';
+        fbEl.style.color = '#34d399';
+      } else if (val === '') {
+        fbEl.textContent = 'Pending';
+        fbEl.style.color = 'var(--text-muted)';
+      } else {
+        fbEl.textContent = '❌ Check Slide 4';
+        fbEl.style.color = '#f87171';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ensure zero personal or student input data is stored in browser storage
+      try { localStorage.removeItem('u19_digital_w1_state'); } catch (e) {}
+      renderGateSimulator();
+      window.addEventListener('load', () => {
+        renderGateSimulator();
+      });
+    });
+  </script>
+</body>
+
+</html>

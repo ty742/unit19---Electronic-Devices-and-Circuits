@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #090d16; }
+      .chip { fill: #1e293b; stroke: #64748b; stroke-width: 2.5; }
+      .pin { fill: #cbd5e1; stroke: #475569; stroke-width: 1; }
+      .pin-pwr { fill: #ef4444; }
+      .pin-gnd { fill: #38bdf8; }
+      .txt { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; fill: #e2e8f0; }
+      .sub { font-family: 'Inter', sans-serif; font-size: 11px; fill: #94a3b8; }
+      .title { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 800; fill: #38bdf8; }
+    </style>
+  </defs>
+  <rect width="600" height="280" class="bg" rx="12"/>
+  <text x="24" y="32" class="title">Standard 14-Pin TTL Logic IC Pinout (e.g. 74LS08 Quad 2-Input AND)</text>
+
+  <!-- Top Pins 14 down to 8 -->
+  <g transform="translate(110, 65)">
+    <!-- Pin 14 VCC -->
+    <rect x="20" y="0" width="22" height="24" class="pin pin-pwr"/>
+    <text x="10" y="-8" class="txt" fill="#f87171">14 (+5V VCC)</text>
+    <!-- Pin 13 -->
+    <rect x="75" y="0" width="22" height="24" class="pin"/>
+    <text x="72" y="-8" class="txt">13 (4B)</text>
+    <!-- Pin 12 -->
+    <rect x="130" y="0" width="22" height="24" class="pin"/>
+    <text x="127" y="-8" class="txt">12 (4A)</text>
+    <!-- Pin 11 -->
+    <rect x="185" y="0" width="22" height="24" class="pin"/>
+    <text x="182" y="-8" class="txt">11 (4Y)</text>
+    <!-- Pin 10 -->
+    <rect x="240" y="0" width="22" height="24" class="pin"/>
+    <text x="237" y="-8" class="txt">10 (3B)</text>
+    <!-- Pin 9 -->
+    <rect x="295" y="0" width="22" height="24" class="pin"/>
+    <text x="295" y="-8" class="txt">9 (3A)</text>
+    <!-- Pin 8 -->
+    <rect x="350" y="0" width="22" height="24" class="pin"/>
+    <text x="350" y="-8" class="txt">8 (3Y)</text>
+
+    <!-- IC Body -->
+    <rect x="0" y="24" width="392" height="100" class="chip" rx="6"/>
+    <!-- Orientation Notch -->
+    <path d="M0,59 A15,15 0 0,1 0,89" fill="#090d16" stroke="#64748b" stroke-width="2"/>
+    <circle cx="24" cy="104" r="5" fill="#38bdf8"/>
+    <text x="95" y="72" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="800" fill="#ffffff">SN74LS08N • QUAD AND</text>
+    <text x="115" y="94" class="sub">Notch / Dot on Left identifies Pin 1 &amp; Pin 14</text>
+
+    <!-- Bottom Pins 1 to 7 -->
+    <!-- Pin 1 -->
+    <rect x="20" y="124" width="22" height="24" class="pin"/>
+    <text x="15" y="166" class="txt">1 (1A)</text>
+    <!-- Pin 2 -->
+    <rect x="75" y="124" width="22" height="24" class="pin"/>
+    <text x="72" y="166" class="txt">2 (1B)</text>
+    <!-- Pin 3 -->
+    <rect x="130" y="124" width="22" height="24" class="pin"/>
+    <text x="127" y="166" class="txt">3 (1Y)</text>
+    <!-- Pin 4 -->
+    <rect x="185" y="124" width="22" height="24" class="pin"/>
+    <text x="182" y="166" class="txt">4 (2A)</text>
+    <!-- Pin 5 -->
+    <rect x="240" y="124" width="22" height="24" class="pin"/>
+    <text x="237" y="166" class="txt">5 (2B)</text>
+    <!-- Pin 6 -->
+    <rect x="295" y="124" width="22" height="24" class="pin"/>
+    <text x="295" y="166" class="txt">6 (2Y)</text>
+    <!-- Pin 7 GND -->
+    <rect x="350" y="124" width="22" height="24" class="pin pin-gnd"/>
+    <text x="335" y="166" class="txt" fill="#38bdf8">7 (0V GND)</text>
+  </g>
+  <text x="24" y="262" class="sub">⚠️ Always connect Pin 14 to +5V DC and Pin 7 to 0V Ground before testing any 74-series TTL gate!</text>
+</svg>
+

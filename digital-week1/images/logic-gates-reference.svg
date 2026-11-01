@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #090d16; }
+      .card { fill: #111827; stroke: #334155; stroke-width: 1.5; rx: 10; }
+      .title { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 800; fill: #38bdf8; }
+      .ic-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; fill: #fbbf24; }
+      .expr { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; fill: #e2e8f0; }
+      .desc { font-family: 'Inter', sans-serif; font-size: 11px; fill: #94a3b8; }
+      .wire { stroke: #94a3b8; stroke-width: 2.5; fill: none; stroke-linecap: round; }
+      .gate-body { fill: rgba(6, 182, 212, 0.12); stroke: #22d3ee; stroke-width: 2.5; stroke-linejoin: round; }
+      .pin-lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; fill: #cbd5e1; }
+    </style>
+  </defs>
+
+  <rect width="900" height="420" class="bg" rx="12"/>
+
+  <!-- 1. AND GATE -->
+  <g transform="translate(20, 20)">
+    <rect width="270" height="180" class="card"/>
+    <text x="16" y="28" class="title">1. AND Gate</text>
+    <text x="195" y="28" class="ic-tag">IC: 74LS08</text>
+    <!-- Wires & Body -->
+    <line x1="45" y1="70" x2="95" y2="70" class="wire"/>
+    <line x1="45" y1="100" x2="95" y2="100" class="wire"/>
+    <text x="30" y="74" class="pin-lbl">A</text>
+    <text x="30" y="104" class="pin-lbl">B</text>
+    <path d="M95,55 L130,55 A30,30 0 0,1 130,115 L95,115 Z" class="gate-body"/>
+    <line x1="160" y1="85" x2="210" y2="85" class="wire"/>
+    <text x="218" y="89" class="pin-lbl">Y</text>
+    <text x="16" y="145" class="expr">Boolean: Y = A · B</text>
+    <text x="16" y="165" class="desc">HIGH (1) only if ALL inputs are HIGH</text>
+  </g>
+
+  <!-- 2. OR GATE -->
+  <g transform="translate(315, 20)">
+    <rect width="270" height="180" class="card"/>
+    <text x="16" y="28" class="title">2. OR Gate</text>
+    <text x="195" y="28" class="ic-tag">IC: 74LS32</text>
+    <line x1="45" y1="70" x2="98" y2="70" class="wire"/>
+    <line x1="45" y1="100" x2="98" y2="100" class="wire"/>
+    <text x="30" y="74" class="pin-lbl">A</text>
+    <text x="30" y="104" class="pin-lbl">B</text>
+    <path d="M88,55 Q105,85 88,115 Q135,115 162,85 Q135,55 88,55 Z" class="gate-body"/>
+    <line x1="162" y1="85" x2="210" y2="85" class="wire"/>
+    <text x="218" y="89" class="pin-lbl">Y</text>
+    <text x="16" y="145" class="expr">Boolean: Y = A + B</text>
+    <text x="16" y="165" class="desc">HIGH (1) if ANY input is HIGH</text>
+  </g>
+
+  <!-- 3. NOT GATE -->
+  <g transform="translate(610, 20)">
+    <rect width="270" height="180" class="card"/>
+    <text x="16" y="28" class="title">3. NOT Gate (Inverter)</text>
+    <text x="195" y="28" class="ic-tag">IC: 74LS04</text>
+    <line x1="45" y1="85" x2="95" y2="85" class="wire"/>
+    <text x="30" y="89" class="pin-lbl">A</text>
+    <polygon points="95,58 95,112 148,85" class="gate-body"/>
+    <circle cx="155" cy="85" r="6" class="gate-body"/>
+    <line x1="161" y1="85" x2="210" y2="85" class="wire"/>
+    <text x="218" y="89" class="pin-lbl">Y</text>
+    <text x="16" y="145" class="expr">Boolean: Y = A (NOT A)</text>
+    <line x1="110" y1="131" x2="121" y2="131" stroke="#e2e8f0" stroke-width="2"/>
+    <text x="16" y="165" class="desc">Inverts input: 0 → 1 and 1 → 0</text>
+  </g>
+
+  <!-- 4. NAND GATE -->
+  <g transform="translate(20, 220)">
+    <rect width="270" height="180" class="card"/>
+    <text x="16" y="28" class="title">4. NAND Gate</text>
+    <text x="195" y="28" class="ic-tag">IC: 74LS00</text>
+    <line x1="45" y1="70" x2="95" y2="70" class="wire"/>
+    <line x1="45" y1="100" x2="95" y2="100" class="wire"/>
+    <text x="30" y="74" class="pin-lbl">A</text>
+    <text x="30" y="104" class="pin-lbl">B</text>
+    <path d="M95,55 L130,55 A30,30 0 0,1 130,115 L95,115 Z" class="gate-body"/>
+    <circle cx="167" cy="85" r="6" class="gate-body"/>
+    <line x1="173" y1="85" x2="215" y2="85" class="wire"/>
+    <text x="222" y="89" class="pin-lbl">Y</text>
+    <text x="16" y="145" class="expr">Boolean: Y = A · B</text>
+    <line x1="110" y1="131" x2="150" y2="131" stroke="#e2e8f0" stroke-width="2"/>
+    <text x="16" y="165" class="desc">LOW (0) only if ALL inputs are HIGH</text>
+  </g>
+
+  <!-- 5. NOR GATE -->
+  <g transform="translate(315, 220)">
+    <rect width="270" height="180" class="card"/>
+    <text x="16" y="28" class="title">5. NOR Gate</text>
+    <text x="195" y="28" class="ic-tag">IC: 74LS02</text>
+    <line x1="45" y1="70" x2="98" y2="70" class="wire"/>
+    <line x1="45" y1="100" x2="98" y2="100" class="wire"/>
+    <text x="30" y="74" class="pin-lbl">A</text>
+    <text x="30" y="104" class="pin-lbl">B</text>
+    <path d="M88,55 Q105,85 88,115 Q135,115 162,85 Q135,55 88,55 Z" class="gate-body"/>
+    <circle cx="169" cy="85" r="6" class="gate-body"/>
+    <line x1="175" y1="85" x2="215" y2="85" class="wire"/>
+    <text x="222" y="89" class="pin-lbl">Y</text>
+    <text x="16" y="145" class="expr">Boolean: Y = A + B</text>
+    <line x1="110" y1="131" x2="150" y2="131" stroke="#e2e8f0" stroke-width="2"/>
+    <text x="16" y="165" class="desc">HIGH (1) only when ALL inputs are LOW</text>
+  </g>
+
+  <!-- 6. XOR GATE -->
+  <g transform="translate(610, 220)">
+    <rect width="270" height="180" class="card"/>
+    <text x="16" y="28" class="title">6. XOR Gate</text>
+    <text x="195" y="28" class="ic-tag">IC: 74LS86</text>
+    <line x1="45" y1="70" x2="96" y2="70" class="wire"/>
+    <line x1="45" y1="100" x2="96" y2="100" class="wire"/>
+    <text x="30" y="74" class="pin-lbl">A</text>
+    <text x="30" y="104" class="pin-lbl">B</text>
+    <path d="M84,55 Q101,85 84,115" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M94,55 Q111,85 94,115 Q141,115 168,85 Q141,55 94,55 Z" class="gate-body"/>
+    <line x1="168" y1="85" x2="215" y2="85" class="wire"/>
+    <text x="222" y="89" class="pin-lbl">Y</text>
+    <text x="16" y="145" class="expr">Boolean: Y = A ⊕ B</text>
+    <text x="16" y="165" class="desc">HIGH (1) when inputs are DIFFERENT</text>
+  </g>
+</svg>
+
