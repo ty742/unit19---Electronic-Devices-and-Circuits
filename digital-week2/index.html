@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices &amp; Circuits — Digital Week 2: Combinational Logic Design</title>
+  <meta name="description"
+    content="Unit 19 Learning Aim B Week 2: Combinational Logic — Design the Control System. Translate written requirements into truth tables, derive Boolean expressions, simulate in Multisim, assemble on breadboard using 74LS08 and 74LS32 ICs, and systematically verify operation.">
+
+  <!-- Shared CSS Tokens & Component Styling -->
+  <link rel="stylesheet" href="../shared/css/presentation.css">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX for Accessible LaTeX Mathematical Typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Digital Week 2 Custom Styling */
+    .hero-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #38bdf8 75%, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-pill.aim-b-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .badge-pill.role-pill {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #7dd3fc;
+    }
+
+    .badge-pill.poe-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    /* Learning Outcomes Matrix UI */
+    .lo-panel {
+      width: 100%;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border: 1px solid rgba(71, 85, 105, 0.65);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .lo-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.45);
+    }
+
+    .lo-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+
+    .lo-panel-subtitle {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    .lo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .lo-item {
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      border-left: 3px solid var(--accent-cyan);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .lo-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .lo-item.sim { border-left-color: #f59e0b; }
+    .lo-item.build { border-left-color: #10b981; }
+    .lo-item.verify { border-left-color: #a855f7; }
+
+    .lo-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .lo-num {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: rgba(6, 182, 212, 0.18);
+      color: #38bdf8;
+    }
+
+    .lo-item.sim .lo-num { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+    .lo-item.build .lo-num { background: rgba(16, 185, 129, 0.18); color: #34d399; }
+    .lo-item.verify .lo-num { background: rgba(168, 85, 247, 0.18); color: #c084fc; }
+
+    .lo-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+    }
+
+    .lo-text {
+      font-size: 0.83rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .lo-text strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* KSB 3-Column Profile */
+    .ksb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .ksb-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    .ksb-card.k { border-top: 4px solid var(--accent-cyan); }
+    .ksb-card.s { border-top: 4px solid var(--color-success); }
+    .ksb-card.b { border-top: 4px solid var(--color-warning); }
+
+    .ksb-card h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .ksb-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ksb-card li {
+      font-size: 0.83rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .ksb-card li::before {
+      content: "•";
+      color: var(--accent-cyan);
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+
+    /* Stretch & Challenge Mission Console Styling */
+    .mission-tab-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mission-tab-btn:hover {
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    .mission-tab-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    /* Interactive Live Combinational Simulator Workbench */
+    .comb-workbench {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sensor-toggles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .sensor-toggle-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .sensor-toggle-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+    }
+
+    .sensor-toggle-card.active {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .sensor-toggle-card .sensor-state-badge {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #1e293b;
+      color: #94a3b8;
+    }
+
+    .sensor-toggle-card.active .sensor-state-badge {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .sim-readout-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 14px;
+      flex-wrap: wrap;
+    }
+
+    .verif-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+
+    .verif-table th {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 7px 10px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .verif-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      text-align: center;
+      color: #cbd5e1;
+      font-family: var(--font-mono);
+    }
+
+    .verif-table tr.highlight-on {
+      background: rgba(16, 185, 129, 0.2);
+      font-weight: 700;
+      color: #34d399;
+    }
+
+    .verif-table tr.current-state {
+      outline: 2px solid #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    /* Study Accordions (Zero PII / Self-Check Reveal) */
+    .study-accordion {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      transition: border-color 0.18s ease;
+      margin-bottom: 6px;
+    }
+
+    .study-accordion:hover { border-color: rgba(6, 182, 212, 0.5); }
+
+    .study-accordion summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text-primary);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .study-accordion summary::-webkit-details-marker { display: none; }
+
+    .study-accordion summary::after {
+      content: "Reveal Answer ▾";
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.14);
+      padding: 2px 7px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .study-accordion[open] summary::after { content: "Hide ▴"; }
+
+    .study-accordion-ans {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(71, 85, 105, 0.4);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    /* Step Timeline Strip */
+    .step-timeline {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .step-chip {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-chip .step-time {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    /* Checklist Items */
+    .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      transition: var(--transition-smooth);
+    }
+
+    .check-item:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+      color: #ffffff;
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent-cyan);
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    /* Responsive Grid Adjustments */
+    @media (max-width: 1200px) {
+      .lo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .ksb-grid { grid-template-columns: 1fr; }
+      .sensor-toggles-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .lo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Navigation Header -->
+      <header class="deck-header">
+        <div class="header-left">
+          <a href="../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b;">AIM B • WEEK 2</span>
+            <span>Digital Electronics</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Combinational Logic: Design the Control System</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="https://www.futurlec.com/IC74LS00Series.shtml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" title="Study 74LS-Series Logic IC Datasheets on Futurlec" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            📑 IC Datasheets
+          </a>
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility &amp; Inclusion (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- =========================================================================
+             SLIDE 1: WELCOME & BRIEFING (THE CONTROL SYSTEM CHALLENGE)
+             ========================================================================= -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: flex-start; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill aim-b-pill">Learning Aim B: Digital Electronics • Week 2</span>
+              <span class="badge-pill role-pill">Role: Junior Control Systems Engineer</span>
+              <span class="badge-pill" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">Formative Practical Lab</span>
+            </div>
+
+            <h1 class="hero-title">Week 2: Combinational Logic – “Design the Control System”</h1>
+            <div class="hero-subtitle">
+              Workflow: Specification &rarr; Truth Table &rarr; Boolean Expression &rarr; Multisim Simulation &rarr; Physical Breadboard Build &amp; Verification
+            </div>
+
+            <!-- Balanced 4x2 Learning Outcomes Matrix -->
+            <div class="lo-panel" role="region" aria-label="Session Learning Outcomes">
+              <div class="lo-panel-header">
+                <div class="lo-panel-title">
+                  <span>🎯 Session Learning Outcomes</span>
+                  <span class="lo-panel-subtitle">— By the end of this engineering challenge you will be able to:</span>
+                </div>
+              </div>
+
+              <div class="lo-grid">
+                <div class="lo-item">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 01</span>
+                    <span class="lo-tag">Deconstruction</span>
+                  </div>
+                  <div class="lo-text"><strong>Translate</strong> a written requirement into discrete digital input and output definitions.</div>
+                </div>
+
+                <div class="lo-item">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 02</span>
+                    <span class="lo-tag">Mapping</span>
+                  </div>
+                  <div class="lo-text"><strong>Construct</strong> an exhaustive truth table evaluating all possible input combinations ($2^n$ binary states).</div>
+                </div>
+
+                <div class="lo-item sim">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 03</span>
+                    <span class="lo-tag">Algebra</span>
+                  </div>
+                  <div class="lo-text"><strong>Derive</strong> a Sum-of-Products (SOP) Boolean expression directly from the active HIGH ($1$) truth table rows.</div>
+                </div>
+
+                <div class="lo-item sim">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 04</span>
+                    <span class="lo-tag">Schematic</span>
+                  </div>
+                  <div class="lo-text"><strong>Convert</strong> the Boolean expression into a clean multi-gate logic circuit schematic.</div>
+                </div>
+
+                <div class="lo-item build">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 05</span>
+                    <span class="lo-tag">Virtual Sim</span>
+                  </div>
+                  <div class="lo-text"><strong>Simulate</strong> the combinational circuit in Multisim using standard logic gate ICs.</div>
+                </div>
+
+                <div class="lo-item build">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 06</span>
+                    <span class="lo-tag">Hardware Build</span>
+                  </div>
+                  <div class="lo-text"><strong>Wire &amp; assemble</strong> the physical dual-IC circuit on breadboard</div>
+                </div>
+
+                <div class="lo-item verify">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 07</span>
+                    <span class="lo-tag">Fault Finding</span>
+                  </div>
+                  <div class="lo-text"><strong>Diagnose</strong> circuit faults by systematically.</div>
+                </div>
+
+                <div class="lo-item verify">
+                  <div class="lo-item-top">
+                    <span class="lo-num">LO 08</span>
+                    <span class="lo-tag">Verification</span>
+                  </div>
+                  <div class="lo-text"><strong>Verify</strong> physical hardware operation against the client's original specification.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KSB 3-Column Profile -->
+            <div class="ksb-grid" style="width: 100%;">
+              <div class="ksb-card k">
+                <h4>📘 Knowledge (K)</h4>
+                <ul>
+                  <li>Combinational logic fundamentals (outputs depend strictly on present inputs)</li>
+                  <li>Boolean algebra Sum-of-Products (SOP) syntax and operator precedence</li>
+                  <li>Pinouts and electrical thresholds for 74LS08 (Quad AND) and 74LS32 (Quad OR)</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card s">
+                <h4>🛠️ Skills (S)</h4>
+                <ul>
+                  <li>Converting functional client specifications into formal mathematical truth tables</li>
+                  <li>Design combinational logic circuits from truth tables and simulate using Multisim</li>
+                  <li>Physically assemble components on a breadboard to build a working circuit</li>
+                </ul>
+              </div>
+
+              <div class="ksb-card b">
+                <h4>🎯 Behaviours (B)</h4>
+                <ul>
+                  <li>Disciplined pre-power checks (verifying Vcc and GND prior to energising)</li>
+                  <li>Predict &rarr; Wire &rarr; Test &rarr; Explain engineering reasoning</li>
+                  <li>Quality documentation and precise technical evidence recording</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Session Timeline Strip -->
+            <div class="step-timeline" aria-label="Session Roadmap">
+              <span class="step-chip">Engineering Toolbox</span>
+              <span class="step-chip">The Basics: Real-Life Logic</span>
+              <span class="step-chip">Combinational Design Method</span>
+              <span class="step-chip">Multisim Simulation</span>
+              <span class="step-chip">Physical Breadboard Build</span>
+              <span class="step-chip">Fault-Finding &amp; Exit Ticket</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 2: ENGINEERING TOOLBOX (RETRIEVAL CHECKPOINT)
+             ========================================================================= -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <div class="slide-tag">START OF LESSON &bull; 10 MINUTES</div>
+            <h2 class="slide-title">Engineering Toolbox: Cumulative Retrieval</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col" style="gap: 16px;">
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🔌 Retrieval 1: TTL Power Pins &amp; Floating Inputs (Week 1)</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                    In Week 1, you learned the cardinal rules for 14-pin 74LS-series logic ICs. Test your recall before touching any breadboard today:
+                  </p>
+                  <div class="prediction-box">
+                    <h4>Which pins MUST connect to the power supply for a 74LS08 or 74LS32?</h4>
+                    <div class="prediction-options">
+                      <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Pin 14 is Vcc (+5.0V ± 0.25V) and Pin 7 is Ground (0V). Powering backwards will permanently destroy the internal transistor substrate!')">
+                        Pin 14 = +5V (Vcc) and Pin 7 = 0V (GND)
+                      </button>
+                      <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. Pin 1 is Logic Input 1A, and Pin 8 is an output pin!')">
+                        Pin 1 = +5V and Pin 8 = 0V
+                      </button>
+                    </div>
+                    <div class="pred-feedback"></div>
+                  </div>
+                </div>
+
+                <div class="prediction-box">
+                  <h4>🔮 Retrieval 2: What happens if an unused TTL input is left disconnected?</h4>
+                  <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    If an input pin on a 74LS08 is left open-circuit without a wire connected to ground, what logic state does it assume?
+                  </p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! TTL inputs internally source current through a multi-emitter BJT. An open input drifts to HIGH (~1.4V to 2.0V), which can cause false triggers. Always tie unused inputs to GND or Vcc!')">
+                      It floats to Logic 1 (HIGH)
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Unlike CMOS which floats unpredictably, TTL inputs naturally pull up to HIGH due to internal BJT base current.')">
+                      It reliably stays at Logic 0 (0V)
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="self-check-card card" data-expected="220" data-type="numeric" data-tolerance="50"
+                  data-hint="R = (Vs - Vf) / If = (5.0V - 2.0V) / 0.015A = 3.0 / 0.015 = 200 Ω (standard 220 Ω or 330 Ω).">
+                  <div class="card-title">🔢 Retrieval 3: LED Current-Limiting Calculation (Aim A Week 1)</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Our digital output will drive an indicator LED from a $+5.0\,\text{V}$ rail. The LED forward voltage drop is $V_F = 2.0\,\text{V}$ and requires $I_F = 15\,\text{mA}$ ($0.015\,\text{A}$). Calculate the ideal series resistor $R$ in Ohms ($\Omega$):
+                    $$R = \frac{V_S - V_F}{I_F}$$
+                  </p>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" class="self-check-input" placeholder="Enter Ohms (e.g. 100)">
+                    <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+                  </div>
+                  <div class="self-check-feedback"></div>
+                </div>
+
+                <div class="card" style="margin-top: 14px; background: rgba(15, 23, 42, 0.7); border-left: 4px solid var(--accent-cyan);">
+                  <div class="card-title" style="margin-bottom: 6px;">🧠 Engineering Golden Rule for Today:</div>
+                  <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                    <strong>Combinational logic circuits have NO memory.</strong> The output at this exact microsecond is determined strictly by the present state of the inputs. There is no clock pulse, no feedback loop, and no past memory.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 3: THE BASICS — REAL-LIFE DECISION MAKING TO DIGITAL LOGIC
+             ========================================================================= -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <div class="slide-tag">FOUNDATIONAL CONCEPTS &bull; FROM INTUITION TO GATES</div>
+            <h2 class="slide-title">Part 1: How Real-World Decisions Become Digital Logic</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🏡 Everyday Example 1: The Microwave Oven Start Circuit</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Think about how a domestic microwave oven operates safely. When should the magnetron tube energise?
+                  </p>
+                  <div style="background: #0f172a; border-left: 3px solid #38bdf8; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 8px;">
+                    <em>“The microwave starts if the <strong>Door is Closed</strong> AND the <strong>Timer is Set</strong>.”</em>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(56, 189, 248, 0.1); padding: 8px 12px; border-radius: 6px; font-size: 0.86rem;">
+                    <span>Input $A$ = Door Closed ($1$)</span>
+                    <span>Input $B$ = Timer $> 0$ ($1$)</span>
+                    <span style="font-weight: 800; color: #38bdf8;">$\text{Cook} = A \cdot B$</span>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title">🚗 Everyday Example 2: The Car Seatbelt Reminder Alarm</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    When should the dashboard chime and warning light sound?
+                  </p>
+                  <div style="background: #0f172a; border-left: 3px solid #f59e0b; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 8px;">
+                    <em>“The alarm triggers if the <strong>Engine is Running</strong> AND the <strong>Seat is Occupied</strong> AND the <strong>Seatbelt is UNBUCKLED</strong>.”</em>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(245, 158, 11, 0.1); padding: 8px 12px; border-radius: 6px; font-size: 0.86rem;">
+                    <span>Engine ($E$) &bull; Weight ($W$) &bull; Belt ($B$)</span>
+                    <span style="font-weight: 800; color: #fbbf24;">$\text{Alarm} = E \cdot W \cdot \overline{B}$</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🏭 Industrial Step-Up: Combining Multiple Pathways</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Most commercial machines have <strong>more than one valid way</strong> to activate. For instance, an automatic conveyor can run in either <em>Automatic Production Mode</em> OR <em>Manual Test Mode</em>:
+                  </p>
+                  <div style="background: #090d16; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 0.85rem; line-height: 1.55; margin-bottom: 10px;">
+                    $$\text{Motor ON} = (\text{Automatic Mode} \cdot \text{Part Present}) + (\text{Manual Mode} \cdot \text{Jog Button})$$
+                  </div>
+                  <p style="font-size: 0.84rem; color: var(--text-secondary);">
+                    Notice the structure: We have <strong>two AND conditions</strong> combined together with an <strong>OR condition</strong>. In digital electronics, this is the foundational architecture known as <strong>Sum-of-Products (AND-OR logic)</strong>.
+                  </p>
+                </div>
+
+                <div class="card" style="border-top: 4px solid #10b981;">
+                  <div class="card-title" style="color: #34d399;">🔑 Why Engineers Use Combinational Logic ICs:</div>
+                  <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; margin: 0;">
+                    <li><strong>Instantaneous response:</strong> Sub-nanosecond propagation delays (~10 ns) without waiting for software boot-up.</li>
+                    <li><strong>Hardware safety interlocks:</strong> Cannot freeze, crash, or experience memory corruption like a microcontroller.</li>
+                    <li><strong>Deterministic verification:</strong> Every single input state can be mathematically tested and proven 100% reliable.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 4: THE 5-STEP ENGINEERING WORKFLOW
+             ========================================================================= -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <div class="slide-tag">THE SYSTEMATIC PROCESS &bull; SPECIFICATION TO HARDWARE</div>
+            <h2 class="slide-title">Part 2: The 5-Step Digital Design Methodology</h2>
+          </div>
+          <div class="slide-body">
+            <div style="margin-bottom: 20px; text-align: center;">
+              <a href="images/combinational-workflow.svg" target="_blank" rel="noopener noreferrer" title="Click to view full-resolution SVG in a new tab" style="display: block; cursor: zoom-in; text-decoration: none;">
+                <img src="images/combinational-workflow.svg" alt="The 5-Step Digital Engineering Workflow Diagram (Click to enlarge)" style="width: 100%; max-width: 1120px; height: auto; max-height: 420px; object-fit: contain; margin: 0 auto; display: block; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55); border: 1px solid rgba(56, 189, 248, 0.35);">
+              </a>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 8px;">
+                🔍 <em>Tip: Click the workflow diagram to open the full-resolution high-definition SVG in a new tab.</em>
+              </div>
+            </div>
+
+            <div class="grid-2col" style="gap: 14px;">
+              <div class="card">
+                <div class="card-title">📝 Steps 1 &amp; 2: Specification &rarr; Truth Table</div>
+                <ul style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.55; padding-left: 18px; margin: 0;">
+                  <li><strong>Step 1 (Extract Variables):</strong> Identify all binary inputs (switches, sensors) and assign symbols ($A, B, C\dots$). Identify the output ($Y$).</li>
+                  <li><strong>Step 2 (Exhaustive Table):</strong> Calculate the number of rows: $\text{Rows} = 2^n$ (e.g. 3 inputs = 8 rows; 4 inputs = 16 rows). Write binary numbers in ascending order ($000, 001, 010\dots$). Evaluate the specification for every single row.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-title">⚡ Steps 3, 4 &amp; 5: Boolean Equation &rarr; Multisim &rarr; Breadboard</div>
+                <ul style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.55; padding-left: 18px; margin: 0;">
+                  <li><strong>Step 3 (Derive Boolean Expression):</strong> Find every row where the system output is HIGH ($\text{Output} = 1$). Form product terms (AND) for each HIGH row, then OR the terms together ($\text{SOP}$).</li>
+                  <li><strong>Step 4 (Multisim Verification):</strong> Build the schematic virtually first to catch gate selection errors before cutting physical wires.</li>
+                  <li><strong>Step 5 (Hardware Build &amp; Test):</strong> Wire on breadboard with decoupling, test all states with a multimeter, and document evidence.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 5: GUIDED CASE STUDY — THE 2-INPUT SAFETY INTERLOCK
+             ========================================================================= -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <div class="slide-tag">STEP-BY-STEP WORKED EXAMPLE &bull; 2-INPUT SYSTEM</div>
+            <h2 class="slide-title">Guided Application: The 5-Step Method on a 2-Input Machine Interlock</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col" style="gap: 16px;">
+              <!-- Left Column: Detailed Client Memo & Junior Engineer Analysis Notebook -->
+              <div>
+                <!-- Formal Workplace Client Memorandum -->
+                <div class="card" style="margin-bottom: 12px; border-left: 4px solid var(--accent-cyan); background: rgba(15, 23, 42, 0.95);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 6px; margin-bottom: 8px;">
+                    <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.5px;">📋 CLIENT MEMORANDUM &bull; REF: HSE-2026-P04</span>
+                    <span style="font-size: 0.72rem; color: #f59e0b; background: rgba(245, 158, 11, 0.15); padding: 2px 8px; border-radius: 4px; font-weight: 600;">HSE COMPLIANCE</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; line-height: 1.4;">
+                    <strong>To:</strong> Junior Control Systems Engineering Team<br>
+                    <strong>From:</strong> Marcus Vance, Workshop Safety &amp; Maintenance Lead (Precision Machining Ltd)<br>
+                    <strong>Subject:</strong> Spindle Motor Entanglement Mitigation on Workshop Pillar Drill #3
+                  </div>
+                  <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                    <em>"Following a recent HSE inspection after an apprentice reached near a spinning 13mm chuck, we require an immediate electrical interlock retrofitted to the 3-phase drill spindle motor relay (Output State, denoted $\text{Spindle}$):</em>
+                  </p>
+                  <ul style="font-size: 0.82rem; color: #e2e8f0; line-height: 1.5; padding-left: 18px; margin: 0;">
+                    <li><strong style="color: #38bdf8;">[Clause 1 — Guarding]:</strong> The spindle motor must be physically prevented from turning unless the transparent polycarbonate chuck guard is locked firmly down in position.</li>
+                    <li><strong style="color: #38bdf8;">[Clause 2 — Intentional Operation]:</strong> Even with the guard closed, the motor must NOT run continuously; it must ONLY run while the operator is actively depressing the spring-loaded floor pedal switch.</li>
+                    <li><strong style="color: #f87171;">[Clause 3 — Instant Failsafe]:</strong> If the guard is flipped up at any time, power must cut within 15ms ($\text{Spindle} = 0$)."</li>
+                  </ul>
+                </div>
+
+                <!-- Junior Engineer's Analysis Notebook -->
+                <div class="card" style="border: 1px dashed rgba(56, 189, 248, 0.4); background: rgba(30, 41, 59, 0.4); margin-bottom: 12px;">
+                  <div style="font-family: var(--font-mono); font-size: 0.78rem; color: #38bdf8; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>📓 JUNIOR ENGINEER'S ANALYSIS NOTEBOOK</span>
+                    <span style="color: var(--text-muted); font-size: 0.72rem;">— Step 1: Technical Requirement Extraction</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem; margin-bottom: 8px;">
+                    <div style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #334155;">
+                      <strong style="color: #38bdf8;">Input Variable A:</strong><br>
+                      Chuck Guard Sensor<br>
+                      <span style="color: var(--text-muted); font-size: 0.76rem;">$0 = \text{Open/Hazard}$, $1 = \text{Closed & Safe}$</span>
+                    </div>
+                    <div style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #334155;">
+                      <strong style="color: #38bdf8;">Input Variable B:</strong><br>
+                      Operator Foot Pedal<br>
+                      <span style="color: var(--text-muted); font-size: 0.76rem;">$0 = \text{Released}$, $1 = \text{Pressed}$</span>
+                    </div>
+                  </div>
+                  <div style="background: rgba(16, 185, 129, 0.12); border-left: 3px solid #10b981; padding: 8px 10px; border-radius: 6px; font-size: 0.81rem; color: #e2e8f0;">
+                    <strong>Technical Acceptance Rule:</strong> Spindle Motor ($\text{Spindle}$) is HIGH ($1$) <strong>ONLY</strong> when Guard is closed ($A=1$) <strong>AND</strong> Pedal is pressed ($B=1$). Boolean Form: <span style="font-family: var(--font-mono); font-weight: 800; color: #34d399;">$$\text{Spindle} = A \cdot B$$</span>
+                  </div>
+                </div>
+
+                <!-- Hardware Mapping Card -->
+                <div class="card">
+                  <div class="card-title">🔌 Steps 4 &amp; 5: Multisim &amp; Hardware Allocation</div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px;">
+                    <strong>IC Selection:</strong> <code>74LS08</code> Quad 2-Input AND Gate (Gate 1 used):
+                  </p>
+                  <ul style="font-size: 0.81rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; margin: 0;">
+                    <li><strong>Pin 1 (Input A):</strong> Jumper to Chuck Guard switch.</li>
+                    <li><strong>Pin 2 (Input B):</strong> Jumper to Foot Pedal switch.</li>
+                    <li><strong>Pin 3 (Output $\text{Spindle}$):</strong> Feeds $330\,\Omega$ resistor &rarr; Green LED (spindle active indicator).</li>
+                    <li><strong>Power Rails:</strong> Pin 14 to $+5\,\text{V}$ (Vcc), Pin 7 to $0\,\text{V}$ (GND).</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Right Column: Interactive 2-Input Simulator & Truth Table -->
+              <div>
+                <div class="comb-workbench" style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 800; color: #ffffff; font-size: 0.95rem;">⚡ Interactive 2-Input Safety Workbench</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.76rem; color: #38bdf8;">Click buttons to test states</span>
+                  </div>
+
+                  <div style="display: flex; gap: 10px;">
+                    <button id="mini-btn-a" class="pred-btn" onclick="toggleMiniSensor('A')"
+                      style="flex: 1; padding: 10px; font-weight: 700; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #94a3b8; cursor: pointer;">
+                      Guard A: 0 (OPEN)
+                    </button>
+                    <button id="mini-btn-b" class="pred-btn" onclick="toggleMiniSensor('B')"
+                      style="flex: 1; padding: 10px; font-weight: 700; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #94a3b8; cursor: pointer;">
+                      Pedal B: 0 (RELEASED)
+                    </button>
+                  </div>
+
+                  <!-- Live Motor Output Status -->
+                  <div id="mini-motor-banner"
+                    style="background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; color: #94a3b8; font-weight: 600; text-align: center;">
+                    ⏸️ <strong>MOTOR STANDBY ($\text{Spindle} = 0$):</strong> Spindle motor de-energised (0V). Safe idle state.
+                  </div>
+
+                  <!-- Step 2: 4-Row Truth Table -->
+                  <div style="margin-top: 4px;">
+                    <div style="font-weight: 700; font-size: 0.86rem; color: #ffffff; margin-bottom: 6px;">
+                      📋 Step 2: Exhaustive Truth Table ($2^2 = 4\text{ Rows}$)
+                    </div>
+                    <table class="verif-table" style="text-align: center; font-size: 0.84rem;">
+                      <thead>
+                        <tr>
+                          <th>Row</th>
+                          <th>Guard ($A$)</th>
+                          <th>Pedal ($B$)</th>
+                          <th>Term ($A \cdot B$)</th>
+                          <th>Motor ($Y$)</th>
+                          <th style="text-align: left;">Safety Interpretation</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr id="row-2in-0" style="transition: all 0.2s ease;">
+                          <td>0</td>
+                          <td>0</td>
+                          <td>0</td>
+                          <td>0</td>
+                          <td><strong>0</strong></td>
+                          <td style="text-align: left;">Idle; guard open, pedal released.</td>
+                        </tr>
+                        <tr id="row-2in-1" style="transition: all 0.2s ease;">
+                          <td>1</td>
+                          <td>0</td>
+                          <td>1</td>
+                          <td>0</td>
+                          <td><strong style="color: #f87171;">0</strong></td>
+                          <td style="text-align: left; color: #fca5a5;"><strong>BLOCKED!</strong> Guard open; interlock trips.</td>
+                        </tr>
+                        <tr id="row-2in-2" style="transition: all 0.2s ease;">
+                          <td>2</td>
+                          <td>1</td>
+                          <td>0</td>
+                          <td>0</td>
+                          <td><strong>0</strong></td>
+                          <td style="text-align: left;">Safe standby; guard closed, awaiting pedal.</td>
+                        </tr>
+                        <tr id="row-2in-3" style="transition: all 0.2s ease;">
+                          <td>3</td>
+                          <td>1</td>
+                          <td>1</td>
+                          <td>1</td>
+                          <td><strong style="color: #34d399;">1</strong></td>
+                          <td style="text-align: left; color: #86efac;"><strong>RUN!</strong> Guard closed AND pedal down.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Pedagogical Bridge Callout -->
+                <div class="card" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.35);">
+                  <div class="card-title" style="color: #38bdf8;">🎯 Important Takeaway</div>
+                  <p style="font-size: 0.84rem; color: #e2e8f0; line-height: 1.5; margin: 0;">
+                    Notice the progression: Client Memo $\rightarrow$ Variable Extraction $\rightarrow$ Truth Table $\rightarrow$ Equation ($\text{Spindle} = A \cdot B$) $\rightarrow$ Breadboard Build.
+                    <strong>Ready to test your reasoning?</strong> On the next slide, choose a real-world engineering mission and apply this 5-step method independently!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 6: STRETCH & CHALLENGE — INDEPENDENT 2-INPUT MISSIONS
+             ========================================================================= -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <div class="slide-tag">STRETCH &amp; CHALLENGE &bull; INDEPENDENT MISSIONS</div>
+            <h2 class="slide-title">Part 2B: Apply the 5-Step Methodology — Select Your Mission</h2>
+          </div>
+          <div class="slide-body">
+            <!-- Mission Selection Bar -->
+            <div style="margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 0.88rem; font-weight: 700; color: #ffffff;">🎯 Choose a Challenge:</span>
+                <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">6 Diverse Engineering Missions</span>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="mission-tab-btn active" onclick="loadStretchMission(1)" id="mission-tab-1">Mission 1: Microwave Safety</button>
+                <button class="mission-tab-btn" onclick="loadStretchMission(2)" id="mission-tab-2">Mission 2: Smoke Alarm</button>
+                <button class="mission-tab-btn" onclick="loadStretchMission(3)" id="mission-tab-3">Mission 3: Press Safety Enable</button>
+                <button class="mission-tab-btn" onclick="loadStretchMission(4)" id="mission-tab-4">Mission 4: Irrigation Cutoff</button>
+                <button class="mission-tab-btn" onclick="loadStretchMission(5)" id="mission-tab-5">Mission 5: Smart Thermostat</button>
+                <button class="mission-tab-btn" onclick="loadStretchMission(6)" id="mission-tab-6">Mission 6: Stairway Lighting</button>
+              </div>
+            </div>
+
+            <div class="grid-2col" style="gap: 16px;">
+              <!-- Left: Client Engineering Brief & Specification -->
+              <div>
+                <div class="card" style="border-left: 4px solid var(--accent-cyan); margin-bottom: 12px; background: rgba(15, 23, 42, 0.95);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 6px; margin-bottom: 8px;">
+                    <span id="mission-sector-tag" style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-cyan); font-weight: 700;">CONSUMER APPLIANCE ENGINEERING</span>
+                    <span id="mission-client-tag" style="font-size: 0.72rem; color: var(--text-muted);">EcoHome Labs</span>
+                  </div>
+                  <h4 id="mission-title" style="font-size: 0.96rem; color: #ffffff; margin-bottom: 8px;">Mission 1: Domestic Microwave Radiation Safety Interlock</h4>
+                  <p id="mission-brief-text" style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px;">
+                    To protect users from high-frequency microwave radiation, the cavity magnetron generator (Output State $\text{Magnetron}$) must energise ($1$) ONLY when the user has pressed the Start Button ($A=1$) AND the heavy-duty door latch interlock switch confirms the door is fully closed ($B=1$). If the door latch opens for even a microsecond, the magnetron must instantly cut off ($\text{Magnetron} = 0$).
+                  </p>
+                </div>
+
+                <!-- Sensor Definitions Card -->
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🔌 Sensor Signal Definitions</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem; margin-bottom: 8px;">
+                    <div id="mission-sensor-a" style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #334155;">
+                      <strong style="color: #38bdf8;">Input Variable A:</strong><br>
+                      <span>Start Button<br>$0 = \text{Released}$, $1 = \text{Pressed}$</span>
+                    </div>
+                    <div id="mission-sensor-b" style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #334155;">
+                      <strong style="color: #38bdf8;">Input Variable B:</strong><br>
+                      <span>Door Interlock<br>$0 = \text{Open}$, $1 = \text{Closed}$</span>
+                    </div>
+                  </div>
+                  <div id="mission-output-def" style="background: rgba(15, 23, 42, 0.7); padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-secondary); border-left: 3px solid #38bdf8;">
+                    <strong>Target System Output:</strong> Magnetron Power Relay ($\text{Magnetron}$): $1 = \text{Energised}$, $0 = \text{Cutoff}$
+                  </div>
+                </div>
+
+                <!-- 5-Step Methodology Prompt -->
+                <div class="card" style="background: rgba(30, 41, 59, 0.3); border: 1px dashed #334155;">
+                  <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">
+                    💡 <strong>Engineering Protocol:</strong> (1) Extract inputs &rarr; (2) Complete Truth Table &rarr; (3) Derive Boolean Expression &rarr; (4) Identify the logic gate.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Interactive Truth Table Validator Console -->
+              <div>
+                <div class="comb-workbench">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-weight: 800; color: #ffffff; font-size: 0.92rem;">📋 Step 2: Formulate Truth Table</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.74rem; color: #38bdf8;">Deduce Output (0 or 1) for each state</span>
+                  </div>
+
+                  <!-- 4-Row Interactive Table -->
+                  <table class="verif-table" style="text-align: center; font-size: 0.84rem; margin-bottom: 10px;">
+                    <thead>
+                      <tr>
+                        <th>Row</th>
+                        <th>Input A</th>
+                        <th>Input B</th>
+                        <th>Output State</th>
+                        <th style="text-align: left;">Real-World Sensor Condition</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>
+                          <select id="m-tt-0" class="tt-input-select" style="background: #0f172a; color: #ffffff; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-weight: 700; font-family: var(--font-mono);">
+                            <option value="">?</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                          </select>
+                        </td>
+                        <td id="m-tt-desc-0" style="text-align: left; font-size: 0.78rem; color: var(--text-muted);">A=0, B=0 condition</td>
+                      </tr>
+                      <tr>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>
+                          <select id="m-tt-1" class="tt-input-select" style="background: #0f172a; color: #ffffff; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-weight: 700; font-family: var(--font-mono);">
+                            <option value="">?</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                          </select>
+                        </td>
+                        <td id="m-tt-desc-1" style="text-align: left; font-size: 0.78rem; color: var(--text-muted);">A=0, B=1 condition</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>
+                          <select id="m-tt-2" class="tt-input-select" style="background: #0f172a; color: #ffffff; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-weight: 700; font-family: var(--font-mono);">
+                            <option value="">?</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                          </select>
+                        </td>
+                        <td id="m-tt-desc-2" style="text-align: left; font-size: 0.78rem; color: var(--text-muted);">A=1, B=0 condition</td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>
+                          <select id="m-tt-3" class="tt-input-select" style="background: #0f172a; color: #ffffff; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-weight: 700; font-family: var(--font-mono);">
+                            <option value="">?</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                          </select>
+                        </td>
+                        <td id="m-tt-desc-3" style="text-align: left; font-size: 0.78rem; color: var(--text-muted);">A=1, B=1 condition</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <button class="btn btn-primary" onclick="validateMissionTT()" style="width: 100%; padding: 8px; font-size: 0.86rem; font-weight: 700;">
+                    🔍 Validate Truth Table
+                  </button>
+
+                  <div id="mission-tt-feedback" style="display: none; margin-top: 10px; padding: 8px 12px; border-radius: 6px; font-size: 0.82rem;"></div>
+
+                  <!-- Step 3 Synthesis Tray (Unlocked upon correct TT) -->
+                  <div id="mission-synthesis-tray" style="display: none; margin-top: 12px; padding-top: 10px; border-top: 1px solid #334155;">
+                    <div style="font-weight: 700; font-size: 0.86rem; color: #34d399; margin-bottom: 6px;">
+                      🎉 Truth Table Verified! Step 3: Identify the Logic Gate
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">
+                      Based on your completed truth table, which standard single logic gate implements this behaviour?
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px;">
+                      <button class="pred-btn" onclick="checkMissionGate('AND')">AND</button>
+                      <button class="pred-btn" onclick="checkMissionGate('OR')">OR</button>
+                      <button class="pred-btn" onclick="checkMissionGate('NAND')">NAND</button>
+                      <button class="pred-btn" onclick="checkMissionGate('NOR')">NOR</button>
+                      <button class="pred-btn" onclick="checkMissionGate('XOR')">XOR</button>
+                      <button class="pred-btn" onclick="checkMissionGate('NOT/Enable')">NOT / Enable</button>
+                    </div>
+                    <div id="mission-gate-feedback" style="display: none; padding: 10px; border-radius: 6px; font-size: 0.82rem; line-height: 1.5;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 7: INDUSTRIAL WORKPLACE CHALLENGE — CHEMICAL MIXING TANK
+             ========================================================================= -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <div class="slide-tag">INDUSTRIAL SCENARIO &bull; 4-INPUT SYSTEM</div>
+            <h2 class="slide-title">Part 3: Scaling Up to 4 Inputs — Chemical Mixing Tank</h2>
+          </div>
+          <div class="slide-body">
+            <!-- 5-Step Methodology Alignment Banner -->
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; font-size: 0.74rem; font-family: var(--font-mono); overflow-x: auto; padding-bottom: 2px;">
+              <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; padding: 4px 10px; border-radius: 4px; font-weight: 700;">STEP 01: Requirement Extraction</span>
+              <span style="background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px;">STEP 02: 16-Row Truth Table (Slide 8)</span>
+              <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; padding: 4px 10px; border-radius: 4px; font-weight: 700;">STEP 03: Sum-of-Products Expression</span>
+              <span style="background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px;">STEPS 04 &amp; 05: Multisim &amp; Hardware</span>
+            </div>
+
+            <div class="grid-2col" style="gap: 16px;">
+              <!-- Left Column: Detailed Client Memo & Plant Context -->
+              <div>
+                <div class="card" style="margin-bottom: 12px; border-left: 4px solid var(--accent-cyan); background: rgba(15, 23, 42, 0.95);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 6px; margin-bottom: 8px;">
+                    <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.5px;">📋 CLIENT MEMO &bull; REF: HAZOP-TK402</span>
+                    <span style="font-size: 0.72rem; color: #ef4444; background: rgba(239, 68, 68, 0.15); padding: 2px 8px; border-radius: 4px; font-weight: 600;">CRITICAL INTERLOCK</span>
+                  </div>
+                  <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                    Design the combinational logic interlock for the Reactor TK-402 Coolant Delivery Pump ($\text{Pump}$):
+                  </p>
+                  <ul style="font-size: 0.82rem; color: #e2e8f0; line-height: 1.5; padding-left: 18px; margin: 0;">
+                    <li><strong style="color: #38bdf8;">Condition 1 (Auto Mode):</strong> Pump runs if Auto Mode ($A=1$) <strong>AND</strong> Run Pressed ($B=1$).</li>
+                    <li><strong style="color: #f59e0b;">Condition 2 (Emergency Flush):</strong> Pump runs if Overheat ($C=1$) <strong>AND</strong> Fluid Present ($D=1$).</li>
+                    <li><strong style="color: var(--text-muted);">Quiescent State:</strong> Under all other states, the pump remains OFF ($\text{Pump} = 0$).</li>
+                  </ul>
+                </div>
+
+                <!-- Junior Engineer's Deconstruction Notebook -->
+                <div class="card" style="border: 1px dashed rgba(56, 189, 248, 0.4); background: rgba(30, 41, 59, 0.4);">
+                  <div style="font-family: var(--font-mono); font-size: 0.78rem; color: #38bdf8; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>📓 JUNIOR ENGINEER'S ANALYSIS NOTEBOOK</span>
+                    <span style="color: var(--text-muted); font-size: 0.72rem;">— Step 1: Sensor Signal Mapping</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem;">
+                    <div style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #334155;">
+                      <strong style="color: #38bdf8;">A: Auto Mode Switch</strong><br>
+                      <span style="color: var(--text-muted); font-size: 0.76rem;">$0 = \text{Manual}$, $1 = \text{Auto Mode}$</span>
+                    </div>
+                    <div style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #334155;">
+                      <strong style="color: #38bdf8;">B: Run Command Button</strong><br>
+                      <span style="color: var(--text-muted); font-size: 0.76rem;">$0 = \text{Standby}$, $1 = \text{Run Pressed}$</span>
+                    </div>
+                    <div style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #f59e0b;">
+                      <strong style="color: #fbbf24;">C: High Temp Sensor</strong><br>
+                      <span style="color: var(--text-muted); font-size: 0.76rem;">$0 = \text{Safe } \le 85^\circ\text{C}$, $1 = \text{Overheat } > 85^\circ\text{C}$</span>
+                    </div>
+                    <div style="background: #0f172a; padding: 6px 10px; border-radius: 6px; border: 1px solid #f59e0b;">
+                      <strong style="color: #fbbf24;">D: Coolant Level Sensor</strong><br>
+                      <span style="color: var(--text-muted); font-size: 0.76rem;">$0 = \text{Reservoir Empty}$, $1 = \text{Liquid Present}$</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Mathematical Derivation & IC Component Plan -->
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">🔍 Step 3: Deriving the Boolean Sum-of-Products</div>
+                  <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                    We translate the client's operational clauses directly into binary product terms:
+                  </p>
+                  <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.84rem;">
+                    <div style="background: #0f172a; border-left: 3px solid #38bdf8; padding: 8px 12px; border-radius: 6px;">
+                      <strong>Condition 1 (Clause 1 — Auto Run):</strong> Requires BOTH Auto Mode ($A=1$) AND Run Pressed ($B=1$).<br>
+                      Boolean Term: <strong style="color: #38bdf8; font-family: var(--font-mono); margin-left: 4px;">$\text{Term}_1 = A \cdot B$</strong>
+                    </div>
+                    <div style="background: #0f172a; border-left: 3px solid #f59e0b; padding: 8px 12px; border-radius: 6px;">
+                      <strong>Condition 2 (Clauses 2 &amp; 3 — Thermal Flush):</strong> Requires BOTH Overheat ($C=1$) AND Fluid Present ($D=1$).<br>
+                      Boolean Term: <strong style="color: #fbbf24; font-family: var(--font-mono); margin-left: 4px;">$\text{Term}_2 = C \cdot D$</strong>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; padding: 10px 12px; border-radius: 6px;">
+                      <strong>Combined System Output:</strong> The coolant pump ($\text{Pump}$) energises ($1$) if Condition 1 <strong>OR</strong> Condition 2 is met:
+                      <div style="font-size: 1.15rem; font-weight: 800; color: #34d399; font-family: var(--font-mono); text-align: center; margin-top: 6px;">
+                        $$\text{Pump} = (A \cdot B) + (C \cdot D)$$
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title">🛠️ Component Allocation for Physical Build</div>
+                  <table class="verif-table" style="text-align: left; font-size: 0.83rem; margin-bottom: 8px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align: left;">IC Device</th>
+                        <th style="text-align: left;">Circuit Function</th>
+                        <th>Required Gates</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>74LS08</strong></td>
+                        <td>Quad 2-Input AND Gates</td>
+                        <td>2 of 4 gates used (Computes $A \cdot B$ and $C \cdot D$)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>74LS32</strong></td>
+                        <td>Quad 2-Input OR Gates</td>
+                        <td>1 of 4 gates used (Computes $\text{Term}_1 + \text{Term}_2$)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Passive Stage</strong></td>
+                        <td>$330\,\Omega$ Resistor + Green LED</td>
+                        <td>Visual Pump State Indicator (Driven by OR output)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a href="#slide-8" onclick="goToSlide(7); return false;" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; text-decoration: none; border: 1px solid #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.1);">
+                    <span>⚡ Step 2: Open Interactive 16-Row Workbench on Slide 8</span> &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 8: INTERACTIVE EXPLORER — LIVE COMBINATIONAL WORKBENCH
+             ========================================================================= -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <div class="slide-tag">INTERACTIVE EXPLORER &bull; LIVE LOGIC SIMULATOR</div>
+            <h2 class="slide-title">Part 4: Interactive Combinational Logic Workbench</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col" style="gap: 16px;">
+              <!-- Left: Live Interactive Simulator -->
+              <div class="comb-workbench">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-weight: 800; color: #ffffff; font-size: 0.98rem;">⚡ Interactive Sensor Simulator</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.78rem; color: #38bdf8;">Click buttons to toggle states</span>
+                </div>
+
+                <!-- 4 Interactive Toggles -->
+                <div class="sensor-toggles-grid">
+                  <div class="sensor-toggle-card" id="card-sensor-a" onclick="toggleCombSensor('a')">
+                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">A: AUTO</span>
+                    <span class="sensor-state-badge" id="badge-sensor-a">0 (OFF)</span>
+                  </div>
+                  <div class="sensor-toggle-card" id="card-sensor-b" onclick="toggleCombSensor('b')">
+                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">B: RUN</span>
+                    <span class="sensor-state-badge" id="badge-sensor-b">0 (OFF)</span>
+                  </div>
+                  <div class="sensor-toggle-card" id="card-sensor-c" onclick="toggleCombSensor('c')">
+                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">C: TEMP</span>
+                    <span class="sensor-state-badge" id="badge-sensor-c">0 (NORM)</span>
+                  </div>
+                  <div class="sensor-toggle-card" id="card-sensor-d" onclick="toggleCombSensor('d')">
+                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">D: LEVEL</span>
+                    <span class="sensor-state-badge" id="badge-sensor-d">0 (EMPTY)</span>
+                  </div>
+                </div>
+
+                <!-- Intermediate Terms Display -->
+                <div class="sim-readout-strip">
+                  <div>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">Gate 1 (AND 1):</span>
+                    <strong id="sim-term1-val" style="font-family: var(--font-mono); font-size: 0.9rem; color: #cbd5e1; margin-left: 4px;">A·B = 0</strong>
+                  </div>
+                  <div>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">Gate 2 (AND 2):</span>
+                    <strong id="sim-term2-val" style="font-family: var(--font-mono); font-size: 0.9rem; color: #cbd5e1; margin-left: 4px;">C·D = 0</strong>
+                  </div>
+                  <div>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">Gate 3 (OR 1):</span>
+                    <strong id="sim-term3-val" style="font-family: var(--font-mono); font-size: 0.9rem; color: #cbd5e1; margin-left: 4px;">Pump = 0</strong>
+                  </div>
+                </div>
+
+                <!-- Live Pump Indicator Status -->
+                <div id="sim-pump-banner" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 12px; border-radius: 8px; text-align: center; font-family: var(--font-mono); font-weight: 800; font-size: 0.95rem;">
+                  ⛔ PUMP MOTOR INHIBITED (Pump = 0)
+                </div>
+
+                <!-- Active Logic Pathway Explanation -->
+                <div id="sim-pathway-desc" style="font-size: 0.82rem; color: var(--text-secondary); background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155;">
+                  Neither operating condition is satisfied. Toggle (A AND B) or (C AND D) to observe pump activation.
+                </div>
+              </div>
+
+              <!-- Right: Full Truth Table Matrix -->
+              <div class="card" style="padding: 12px 14px; max-height: 420px; overflow-y: auto;">
+                <div class="card-title" style="margin-bottom: 6px; font-size: 0.95rem;">
+                  📊 Complete 16-Row Truth Table ($2^4 = 16$)
+                </div>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 8px;">
+                  Active row highlights dynamically as you toggle sensor inputs on the left:
+                </p>
+                <table class="verif-table" id="comb-truth-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>A</th>
+                      <th>B</th>
+                      <th>C</th>
+                      <th>D</th>
+                      <th>Term 1 (A·B)</th>
+                      <th>Term 2 (C·D)</th>
+                      <th>Pump Y</th>
+                    </tr>
+                  </thead>
+                  <tbody id="comb-table-body">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 9: SCHEMATIC CAPTURE & PINOUT RULES
+             ========================================================================= -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <div class="slide-tag">CIRCUIT DESIGN &bull; PIN-TO-PIN SCHEMATIC</div>
+            <h2 class="slide-title">Part 5: Logic Schematic &amp; IC Terminal Mapping</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col" style="gap: 16px;">
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div class="card-title">📐 Hardware Interconnection Map</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Review the exact pin numbers before opening Multisim or touching your breadboard. Every IC terminal has a dedicated role:
+                  </p>
+                  <table class="verif-table" style="text-align: left;">
+                    <thead>
+                      <tr>
+                        <th style="text-align: left;">Gate Stage</th>
+                        <th style="text-align: left;">IC Device</th>
+                        <th style="text-align: left;">Input Pins</th>
+                        <th style="text-align: left;">Output Pin</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>AND Gate 1</strong></td>
+                        <td>74LS08 (Gate 1)</td>
+                        <td>Pin 1 (A) &amp; Pin 2 (B)</td>
+                        <td>Pin 3 (Term 1 = A·B)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>AND Gate 2</strong></td>
+                        <td>74LS08 (Gate 2)</td>
+                        <td>Pin 4 (C) &amp; Pin 5 (D)</td>
+                        <td>Pin 6 (Term 2 = C·D)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>OR Gate 1</strong></td>
+                        <td>74LS32 (Gate 1)</td>
+                        <td>Pin 1 (from 7408 p3) &amp; Pin 2 (from 7408 p6)</td>
+                        <td>Pin 3 (Final Output: $\text{Pump}$)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Output Load</strong></td>
+                        <td>Indicator Stage</td>
+                        <td>Connects from 74LS32 Pin 3</td>
+                        <td>Through $330\,\Omega$ to LED Anode</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-warning);">
+                  <div class="card-title" style="color: #fbbf24;">⚠️ Essential Workshop Safety &amp; IC Rules:</div>
+                  <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; margin: 0;">
+                    <li><strong>Ground Pin 7 on BOTH chips:</strong> Connect IC1 Pin 7 and IC2 Pin 7 directly to the $0\,\text{V}$ rail.</li>
+                    <li><strong>Vcc Pin 14 on BOTH chips:</strong> Connect IC1 Pin 14 and IC2 Pin 14 directly to the $+5.0\,\text{V}$ rail.</li>
+                    <li><strong>Never leave floating inputs:</strong> During testing, every gate input must be explicitly wired to either $+5\,\text{V}$ or $0\,\text{V}$.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Schematic Graphic & Datasheet Reference -->
+              <div>
+                <div class="card" style="padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 12px;">
+                  <img src="images/combinational-schematic.svg" alt="Complete Combinational Logic Schematic" style="max-height: 330px; width: 100%; object-fit: contain;">
+                </div>
+
+                <div class="card" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.35); padding: 12px 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <div style="font-weight: 700; color: #38bdf8; font-size: 0.88rem; margin-bottom: 2px;">
+                        📑 Official IC Datasheets Reference: Futurlec
+                      </div>
+                      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        Study complete manufacturer datasheets, internal gate structures, and pinouts for <code>74LS08</code> and <code>74LS32</code>:
+                      </div>
+                    </div>
+                    <a href="https://www.futurlec.com/IC74LS00Series.shtml" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                      <span>Futurlec 74LS Library ↗</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 10: MULTISIM SIMULATION CHALLENGE (30 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <div class="slide-tag">VIRTUAL PROTOTYPING &bull; 30 MINUTES</div>
+            <h2 class="slide-title">Part 6: Multisim Simulation Investigation</h2>
+          </div>
+          <div class="slide-body">
+            <div class="grid-2col">
+              <div>
+                <div class="card" style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div class="card-title" style="margin: 0;">💻 Simulation Task Brief</div>
+                    <div class="timer-widget" data-duration="30" style="display: inline-flex; align-items: center; gap: 6px; background: #0f172a; padding: 4px 10px; border-radius: 8px; border: 1px solid #334155;">
+                      <span class="timer-display" style="font-family: var(--font-mono); font-weight: 800; color: var(--accent-cyan);">30:00</span>
+                      <button class="timer-toggle btn btn-primary" style="padding: 3px 8px; font-size: 0.75rem;">Start</button>
+                      <button class="timer-reset btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;">Reset</button>
+                    </div>
+                  </div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                    Open Multisim and construct the complete combinational circuit before assembling physical hardware. Professional engineers simulate first to verify logic equations and avoid wiring damaged ICs on the bench.
+                  </p>
+                  <div style="background: rgba(15, 23, 42, 0.7); border-left: 3px solid var(--accent-cyan); padding: 10px 12px; border-radius: 6px; font-size: 0.84rem; margin-bottom: 10px;">
+                    <strong style="color: #ffffff;">Required Multisim Components:</strong>
+                    <ul style="padding-left: 18px; margin-top: 4px; line-height: 1.5; color: var(--text-secondary);">
+                      <li><code>74LS08D</code> (Quad 2-Input AND gate package)</li>
+                      <li><code>74LS32D</code> (Quad 2-Input OR gate package)</li>
+                      <li>4 &times; SPST Interactive Switches (Keys: A, B, C, D) tied to Vcc and GND</li>
+                      <li>1 &times; <code>PROBE</code> or Output LED with series $330\,\Omega$ resistor</li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+              <div>
+                <div class="prediction-box" style="margin-bottom: 12px;">
+                  <h4>🔮 Pre-Simulation Prediction: The Overlap State</h4>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    What should happen if <strong>BOTH</strong> conditions occur at the same time: Auto mode is running ($A=1, B=1$) AND a high temperature condition exists with liquid present ($C=1, D=1$)?
+                  </p>
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! In Boolean algebra: 1 + 1 = 1. Both inputs to the OR gate are HIGH, so the Coolant Pump remains securely HIGH (1).')">
+                      The pump stays reliably ON ($\text{Pump} = 1$) because $1 + 1 = 1$ in Boolean logic.
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'In standard inclusive-OR gates, having both inputs HIGH results in HIGH (1). An XOR gate would turn off, but we are using 74LS32 OR!')">
+                      The circuit shorts out or switches OFF because of conflicting signals.
+                    </button>
+                  </div>
+                  <div class="pred-feedback"></div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title">💡 Multisim Verification Checklist</div>
+                  <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; padding-left: 18px; margin: 0;">
+                    <li>Did you wire the switches to both $+5\,\text{V}$ and $0\,\text{V}$ so inputs never float?</li>
+                    <li>Are intermediate voltages measuring close to $0\,\text{V}$ for LOW and $> 3.5\,\text{V}$ for HIGH?</li>
+                    <li>Does the truth table on Slide 6 match your simulated results 100%?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 11: PHYSICAL BREADBOARD BUILD (50 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <div class="slide-tag">PRACTICAL HARDWARE BUILD &bull; 50 MINUTES</div>
+            <h2 class="slide-title">Part 7: Physical Breadboard Assembly</h2>
+          </div>
+          <div class="slide-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 440px;">
+            <div class="card" style="max-width: 820px; width: 100%; text-align: center; padding: 36px 32px; border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
+              <div style="font-size: 2.8rem; margin-bottom: 12px;">🛠️</div>
+              <h3 style="font-size: 1.6rem; color: #ffffff; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.3px;">
+                Assemble your circuit components on the breadboard.
+              </h3>
+              <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                Using your <strong>74LS08</strong> (AND) and <strong>74LS32</strong> (OR) ICs, wire and test the combinational logic controller for the chemical mixing tank:
+              </p>
+              
+              <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                <div style="font-size: 1.3rem; font-weight: 800; color: #34d399; font-family: var(--font-mono);">
+                  $$\text{Pump} = (A \cdot B) + (C \cdot D)$$
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; font-size: 0.88rem; color: #94a3b8;">
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">IC 1: <code>74LS08</code> (AND)</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">IC 2: <code>74LS32</code> (OR)</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">Resistor: $330\,\Omega$</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">Output: Green LED</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">Supply: $+5\,\text{V}$ DC</span>
+              </div>
+
+              <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 10px 16px; border-radius: 6px; font-size: 0.85rem; color: #fde68a; display: inline-block;">
+                🛑 <strong>Lecturer Check:</strong> Have your lecturer inspect your wiring before turning on the power supply.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 12: PRACTICAL TROUBLESHOOTING (20 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <div class="slide-tag">FAULT-FINDING &bull; 20 MINUTES</div>
+            <h2 class="slide-title">Part 8: Practical Troubleshooting</h2>
+          </div>
+          <div class="slide-body">
+            <!-- Direct Practical Directive Card -->
+            <div class="card" style="margin-bottom: 16px; border-left: 4px solid var(--accent-cyan); background: rgba(15, 23, 42, 0.95); padding: 18px 20px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 1.4rem;">🔍</span>
+                <h3 style="font-size: 1.15rem; color: #ffffff; font-weight: 800; margin: 0;">
+                  Spend time testing your circuit, locating any faults, and troubleshooting your breadboard.
+                </h3>
+              </div>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                Systematically test all 16 input combinations ($A, B, C, D$) against your truth table specification. If the output LED does not behave exactly as expected for any condition, use your DMM and the engineering tips below to isolate and fix the root cause.
+              </p>
+            </div>
+
+            <!-- Practical Troubleshooting Tips Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+              <!-- Tip 1 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #ef4444;">
+                <div style="font-weight: 700; color: #f87171; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span>⚡ 1. Power &amp; Ground Check</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Measure directly across <strong>Pin 14 ($+5\,\text{V}$)</strong> and <strong>Pin 7 ($0\,\text{V}$)</strong> on <em>both</em> the 74LS08 and 74LS32 with your DMM. A logic IC cannot operate if a power rail jumper is loose or misplaced.
+                </p>
+              </div>
+
+              <!-- Tip 2 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #f59e0b;">
+                <div style="font-weight: 700; color: #fbbf24; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span>🔌 2. Beware Floating Inputs</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  In TTL logic, any input wire left disconnected in open air will float to HIGH ($\approx 1.5\,\text{V}-2.0\,\text{V}$). Ensure all 4 inputs ($A, B, C, D$) are firmly pressed into either $+5\,\text{V}$ or $0\,\text{V}$.
+                </p>
+              </div>
+
+              <!-- Tip 3 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                <div style="font-weight: 700; color: #38bdf8; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span>🔎 3. Check Hole Alignment</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Inspect each wire jumper to confirm it shares the <strong>exact same 5-hole vertical strip</strong> as the target IC pin. Off-by-one errors are the most common breadboard fault!
+                </p>
+              </div>
+
+              <!-- Tip 4 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                <div style="font-weight: 700; color: #34d399; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span>🔀 4. Trace Intermediate Signals</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Probe 74LS08 Pin 3 ($A \cdot B$) and Pin 6 ($C \cdot D$) with your DMM. Then probe 74LS32 Pins 1 &amp; 2 to confirm the signals actually reach the OR gate inputs.
+                </p>
+              </div>
+
+              <!-- Tip 5 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #a855f7;">
+                <div style="font-weight: 700; color: #c084fc; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span>💡 5. Verify LED &amp; Resistor</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Check LED polarity (anode/longer leg connects to $330\,\Omega$ resistor, cathode/flat edge connects to GND). Check that your resistor is $330\,\Omega$ (Orange-Orange-Brown) and not $330\,\text{k}\Omega$.
+                </p>
+              </div>
+
+              <!-- Tip 6 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #06b6d4;">
+                <div style="font-weight: 700; color: #06b6d4; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span>🎯 6. Compare with Multisim</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  If a state produces unexpected results, check your verified Multisim schematic or the live simulator on Slide 8 to confirm what the gate voltages should be.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 13: ENGINEER EXIT TICKET (5 MINS)
+             ========================================================================= -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <div class="slide-tag">END OF LESSON &bull; 5 MINUTES</div>
+            <h2 class="slide-title">Part 9: Engineer Exit Ticket &amp; Wrap-Up</h2>
+          </div>
+          <div class="slide-body">
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 12px;">
+              Verify your technical competence before leaving the electronics lab today:
+            </p>
+
+            <div class="grid-2col" style="gap: 16px;">
+              <div class="self-check-card card" data-expected="(A·B)+(C·D)" data-type="includes"
+                data-hint="Write in Sum-of-Products format: (A.B)+(C.D)">
+                <div class="card-title">1. Today's Learning: Boolean Synthesis</div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  What is the final Boolean equation for our chemical pump controller combining Auto Run and Emergency Flush?
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" class="self-check-input" placeholder="e.g. (A·B)+(C·D)">
+                  <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+                </div>
+                <div class="self-check-feedback"></div>
+              </div>
+
+              <div class="self-check-card card" data-expected="16" data-type="numeric" data-tolerance="0"
+                data-hint="Calculate 2 raised to the power of inputs: 2^4 = 16!">
+                <div class="card-title">2. Fundamental Principle: Truth Table Size</div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  How many total rows are required in a complete truth table for a system with <strong>4 digital inputs</strong>?
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" class="self-check-input" placeholder="Enter number of rows">
+                  <button class="self-check-btn btn btn-primary" style="padding: 6px 14px;">Check</button>
+                </div>
+                <div class="self-check-feedback"></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <div class="card-title" style="margin-bottom: 4px;">3. Workshop Handover &amp; Clean Bench Routine</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                  Ensure your DC bench power supply is powered off, ICs returned to the component tray, and all jumper wires tidied into the storage box. A clean bench is a safe bench!
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 13</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Digital Electronics • Level 3 Engineering</span>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid"></div>
+      </div>
+    </div>
+
+    <!-- Accessibility Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Full Parity Accessibility & Neurodiversity Side-Drawer -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary" style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Shared Scripts -->
+  <script src="../shared/js/accessibility-engine.js"></script>
+  <script src="../shared/js/presentation-engine.js"></script>
+  <script src="../shared/js/self-check.js"></script>
+  <script src="../shared/js/timer.js"></script>
+
+  <!-- Digital Week 2 Combinational Logic Interactive Engine -->
+  <script>
+    // 2-Input Machine Interlock Mini-Simulator State
+    let miniA = 0;
+    let miniB = 0;
+
+    function toggleMiniSensor(sensor) {
+      if (sensor === 'A') miniA = miniA === 0 ? 1 : 0;
+      if (sensor === 'B') miniB = miniB === 0 ? 1 : 0;
+      updateMiniWorkbench();
+    }
+
+    function updateMiniWorkbench() {
+      const btnA = document.getElementById('mini-btn-a');
+      const btnB = document.getElementById('mini-btn-b');
+      const outBanner = document.getElementById('mini-motor-banner');
+
+      if (btnA) {
+        btnA.textContent = miniA ? 'Guard A: 1 (CLOSED)' : 'Guard A: 0 (OPEN)';
+        btnA.style.borderColor = miniA ? '#34d399' : '#334155';
+        btnA.style.color = miniA ? '#34d399' : '#94a3b8';
+        btnA.style.background = miniA ? 'rgba(16, 185, 129, 0.15)' : '#0f172a';
+      }
+      if (btnB) {
+        btnB.textContent = miniB ? 'Pedal B: 1 (PRESSED)' : 'Pedal B: 0 (RELEASED)';
+        btnB.style.borderColor = miniB ? '#34d399' : '#334155';
+        btnB.style.color = miniB ? '#34d399' : '#94a3b8';
+        btnB.style.background = miniB ? 'rgba(16, 185, 129, 0.15)' : '#0f172a';
+      }
+
+      const Y = (miniA === 1 && miniB === 1) ? 1 : 0;
+
+      if (outBanner) {
+        if (Y === 1) {
+          outBanner.style.background = 'rgba(16, 185, 129, 0.2)';
+          outBanner.style.borderColor = '#10b981';
+          outBanner.style.color = '#34d399';
+          outBanner.innerHTML = '⚙️ <strong>SPINDLE MOTOR RUNNING (1):</strong> Guard closed AND pedal depressed. +5V to relay!';
+        } else if (miniA === 0 && miniB === 1) {
+          outBanner.style.background = 'rgba(239, 68, 68, 0.18)';
+          outBanner.style.borderColor = '#ef4444';
+          outBanner.style.color = '#f87171';
+          outBanner.innerHTML = '🛑 <strong>SAFETY LOCKOUT (0):</strong> Guard is OPEN! Interlock blocks motor start.';
+        } else {
+          outBanner.style.background = '#0f172a';
+          outBanner.style.borderColor = '#334155';
+          outBanner.style.color = '#94a3b8';
+          outBanner.innerHTML = '⏸️ <strong>MOTOR STANDBY (0):</strong> Spindle motor de-energised (0V). Safe state.';
+        }
+      }
+
+      // Highlight active row in 4-row truth table
+      for (let r = 0; r < 4; r++) {
+        const rowEl = document.getElementById(`row-2in-${r}`);
+        if (rowEl) {
+          const rowA = (r >> 1) & 1;
+          const rowB = r & 1;
+          if (rowA === miniA && rowB === miniB) {
+            rowEl.style.backgroundColor = (Y === 1) ? 'rgba(16, 185, 129, 0.3)' : 'rgba(56, 189, 248, 0.25)';
+            rowEl.style.outline = '2px solid #38bdf8';
+            rowEl.style.fontWeight = '700';
+          } else {
+            rowEl.style.backgroundColor = (r === 3) ? 'rgba(16, 185, 129, 0.08)' : '';
+            rowEl.style.outline = 'none';
+            rowEl.style.fontWeight = 'normal';
+          }
+        }
+      }
+    }
+
+    // State of the 4 inputs
+    const combState = { a: 0, b: 0, c: 0, d: 0 };
+
+    function toggleCombSensor(key) {
+      combState[key] = combState[key] === 0 ? 1 : 0;
+      updateCombUI();
+    }
+
+    function updateCombUI() {
+      // 1. Update button cards and badges
+      ['a', 'b', 'c', 'd'].forEach(k => {
+        const card = document.getElementById(`card-sensor-${k}`);
+        const badge = document.getElementById(`badge-sensor-${k}`);
+        const val = combState[k];
+        if (card && badge) {
+          card.classList.toggle('active', val === 1);
+          if (k === 'a') badge.textContent = val === 1 ? '1 (AUTO)' : '0 (MANUAL)';
+          else if (k === 'b') badge.textContent = val === 1 ? '1 (RUN)' : '0 (STOP)';
+          else if (k === 'c') badge.textContent = val === 1 ? '1 (HOT >85°)' : '0 (NORM)';
+          else if (k === 'd') badge.textContent = val === 1 ? '1 (LIQUID OK)' : '0 (EMPTY)';
+        }
+      });
+
+      // 2. Compute Intermediate Terms
+      const term1 = (combState.a === 1 && combState.b === 1) ? 1 : 0; // A · B
+      const term2 = (combState.c === 1 && combState.d === 1) ? 1 : 0; // C · D
+      const outY = (term1 === 1 || term2 === 1) ? 1 : 0;              // (A·B) + (C·D)
+
+      // 3. Update Readouts
+      const t1El = document.getElementById('sim-term1-val');
+      const t2El = document.getElementById('sim-term2-val');
+      const t3El = document.getElementById('sim-term3-val');
+      if (t1El) {
+        t1El.textContent = `A·B = ${term1}`;
+        t1El.style.color = term1 ? '#34d399' : '#94a3b8';
+      }
+      if (t2El) {
+        t2El.textContent = `C·D = ${term2}`;
+        t2El.style.color = term2 ? '#34d399' : '#94a3b8';
+      }
+      if (t3El) {
+        t3El.textContent = `Pump = ${outY}`;
+        t3El.style.color = outY ? '#34d399' : '#94a3b8';
+      }
+
+      // 4. Update Banner
+      const banner = document.getElementById('sim-pump-banner');
+      const desc = document.getElementById('sim-pathway-desc');
+      if (banner && desc) {
+        if (outY === 1) {
+          banner.style.background = 'rgba(16, 185, 129, 0.2)';
+          banner.style.borderColor = '#10b981';
+          banner.style.color = '#34d399';
+          banner.textContent = '✅ PUMP MOTOR ENERGISED (1)';
+
+          let reason = [];
+          if (term1) reason.push('Auto Mode is running (A=1, B=1)');
+          if (term2) reason.push('Emergency Overheat flush is active (C=1, D=1)');
+          desc.innerHTML = `<strong>Active Logic Pathway:</strong> Pump is running because ${reason.join(' AND ')}. The OR gate output is driven HIGH (${term1 || term2}V).`;
+        } else {
+          banner.style.background = 'rgba(239, 68, 68, 0.15)';
+          banner.style.borderColor = '#ef4444';
+          banner.style.color = '#fca5a5';
+          banner.textContent = '⛔ PUMP MOTOR INHIBITED (0)';
+          desc.innerHTML = `Neither Auto condition nor Emergency cooling condition is fully satisfied. Both AND gate terms are $0$.`;
+        }
+      }
+
+      // 5. Highlight active row in the truth table
+      highlightTruthTableRow();
+    }
+
+    function buildTruthTable() {
+      const tbody = document.getElementById('comb-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      for (let i = 0; i < 16; i++) {
+        const a = (i >> 3) & 1;
+        const b = (i >> 2) & 1;
+        const c = (i >> 1) & 1;
+        const d = i & 1;
+        const t1 = (a && b) ? 1 : 0;
+        const t2 = (c && d) ? 1 : 0;
+        const y = (t1 || t2) ? 1 : 0;
+
+        const row = document.createElement('tr');
+        row.id = `tt-row-${i}`;
+        if (y === 1) row.classList.add('highlight-on');
+
+        row.innerHTML = `
+          <td>${i}</td>
+          <td>${a}</td>
+          <td>${b}</td>
+          <td>${c}</td>
+          <td>${d}</td>
+          <td>${t1}</td>
+          <td>${t2}</td>
+          <td><strong>${y}</strong></td>
+        `;
+        tbody.appendChild(row);
+      }
+    }
+
+    function highlightTruthTableRow() {
+      const idx = (combState.a << 3) | (combState.b << 2) | (combState.c << 1) | combState.d;
+      document.querySelectorAll('#comb-table-body tr').forEach((r, i) => {
+        r.classList.toggle('current-state', i === idx);
+      });
+    }
+
+    function checkPrediction(button, isCorrect, feedbackText) {
+      const container = button.closest('.prediction-box');
+      if (!container) return;
+      const buttons = container.querySelectorAll('.pred-btn');
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+      button.classList.add(isCorrect ? 'correct' : 'incorrect');
+      const fb = container.querySelector('.pred-feedback');
+      if (fb) {
+        fb.textContent = feedbackText;
+        fb.className = `pred-feedback ${isCorrect ? 'success' : 'hint'}`;
+      }
+    }
+
+    // =========================================================================
+    // STRETCH & CHALLENGE: INDEPENDENT 2-INPUT MISSIONS ENGINE
+    // =========================================================================
+    const stretchMissions = {
+      1: {
+        title: "Mission 1: Domestic Microwave Radiation Safety Interlock",
+        sector: "CONSUMER APPLIANCE ENGINEERING",
+        client: "EcoHome Labs / Product Safety Board",
+        brief: "To protect consumers from high-frequency microwave radiation, the cavity magnetron microwave generator (Output State $\\text{Magnetron}$) must energise ($1$) ONLY when the user has pressed the Start Button ($A=1$) AND the heavy-duty door latch interlock switch confirms the door is fully closed ($B=1$). If the door latch opens for even a microsecond, the magnetron must instantly cut off ($\\text{Magnetron} = 0$).",
+        sensorA: { name: "Start Button (A)", text: "0 = Released, 1 = Pressed" },
+        sensorB: { name: "Door Interlock (B)", text: "0 = Door Open, 1 = Door Closed" },
+        outputDef: "Magnetron Power Relay (\\(\\text{Magnetron}\\)): \\(1\\) = Energised (+5V), \\(0\\) = Cutoff (0V)",
+        rowDesc: [
+          "Start button released ($A=0$), Door open ($B=0$)",
+          "Start button released ($A=0$), Door closed ($B=1$)",
+          "Start button pressed ($A=1$), Door open ($B=0$)",
+          "Start button pressed ($A=1$), Door closed ($B=1$)"
+        ],
+        expectedTT: ["0", "0", "0", "1"],
+        correctGate: "AND",
+        equation: "\\text{Magnetron} = A \\cdot B",
+        explanation: "Both inputs must be simultaneously TRUE for the magnetron to activate. This is the definition of an <strong>AND gate</strong> (IC: <code>74LS08</code>)."
+      },
+      2: {
+        title: "Mission 2: Dual-Zone Residential Fire & Smoke Detection System",
+        sector: "BUILDING SAFETY & FIRE PROTECTION",
+        client: "Municipal Fire Authority / SafeHaven Systems",
+        brief: "A domestic dwelling requires an interconnected fire warning system. The central master piezo siren (Output State $\\text{Siren}$) must trigger loudly ($1$) if smoke particles are detected by the kitchen optical sensor ($A=1$) OR by the upstairs hallway sensor ($B=1$). If neither detector senses smoke, the siren remains completely silent ($\\text{Siren} = 0$).",
+        sensorA: { name: "Kitchen Detector (A)", text: "0 = Clear, 1 = Smoke Detected" },
+        sensorB: { name: "Hallway Detector (B)", text: "0 = Clear, 1 = Smoke Detected" },
+        outputDef: "Master Piezo Siren (\\(\\text{Siren}\\)): \\(1\\) = Alarm Sounding (+5V), \\(0\\) = Silent (0V)",
+        rowDesc: [
+          "Kitchen detector clear ($A=0$), Hallway detector clear ($B=0$)",
+          "Kitchen detector clear ($A=0$), Hallway smoke detected ($B=1$)",
+          "Kitchen smoke detected ($A=1$), Hallway detector clear ($B=0$)",
+          "Kitchen smoke detected ($A=1$), Hallway smoke detected ($B=1$)"
+        ],
+        expectedTT: ["0", "1", "1", "1"],
+        correctGate: "OR",
+        equation: "\\text{Siren} = A + B",
+        explanation: "If AT LEAST ONE detector senses smoke (or both), the siren triggers. This is the definition of an <strong>OR gate</strong> (IC: <code>74LS32</code>)."
+      },
+      3: {
+        title: "Mission 3: High-Torque Industrial Press Safe Run Enable",
+        sector: "MANUFACTURING & HEAVY MACHINERY",
+        client: "Vanguard Machining Ltd / HSE Compliance",
+        brief: "A high-tonnage hydraulic stamping press is controlled by an operator Run Command ($A$). However, for emergency stop protection, an Active-High Emergency Stop tripwire ($B$) is fitted. The press hydraulic motor (Output State $\\text{Press}$) is allowed to run ($1$) ONLY if the Run Command is active ($A=1$) AND the Emergency Stop is NOT active ($B=0$). If the E-stop is tripped ($B=1$), the press must immediately be inhibited ($\\text{Press} = 0$).",
+        sensorA: { name: "Operator Run Switch (A)", text: "0 = Off, 1 = Run Commanded" },
+        sensorB: { name: "Emergency Stop Sensor (B)", text: "0 = Normal (Safe), 1 = Tripped (Stop!)" },
+        outputDef: "Hydraulic Pump Motor (\\(\\text{Press}\\)): \\(1\\) = Running (+5V), \\(0\\) = Inhibited (0V)",
+        rowDesc: [
+          "Run switch OFF ($A=0$), E-Stop untripped / normal ($B=0$)",
+          "Run switch OFF ($A=0$), E-Stop tripped ($B=1$)",
+          "Run switch ON ($A=1$), E-Stop untripped / normal ($B=0$)",
+          "Run switch ON ($A=1$), E-Stop tripped ($B=1$)"
+        ],
+        expectedTT: ["0", "0", "1", "0"],
+        correctGate: "NOT/Enable",
+        equation: "\\text{Press} = A \\cdot \\overline{B}",
+        explanation: "The press requires run command A to be TRUE while E-stop B is INVERTED (NOT). The logic expression is $\\text{Press} = A \\cdot \\overline{B}$ (AND gate preceded by a <strong>NOT inverter</strong> on input B: <code>74LS04</code> into <code>74LS08</code>)."
+      },
+      4: {
+        title: "Mission 4: Automated Agritech Irrigation Pump Cutoff",
+        sector: "AGRITECH AUTOMATION & RESOURCE CONSERVATION",
+        client: "GreenGrow Automated Hydroponics Ltd",
+        brief: "To prevent root rot and conserve groundwater, an automated irrigation water pump (Output State $\\text{Pump}$) operates normally ($1$) to supply moisture. However, the pump MUST shut off ($0$) if the electronic soil sensor detects the soil is already saturated ($A=1$) AND the optical rain detector confirms it is actively raining outside ($B=1$). Under all other conditions, pumping continues ($\\text{Pump} = 1$).",
+        sensorA: { name: "Soil Moisture Sensor (A)", text: "0 = Dry/Normal, 1 = Saturated" },
+        sensorB: { name: "Rain Detector (B)", text: "0 = Dry, 1 = Active Rain" },
+        outputDef: "Irrigation Water Pump (\\(\\text{Pump}\\)): \\(1\\) = Pumping (+5V), \\(0\\) = Cutoff (0V)",
+        rowDesc: [
+          "Soil dry / normal ($A=0$), No rainfall detected ($B=0$)",
+          "Soil dry / normal ($A=0$), Active rainfall detected ($B=1$)",
+          "Soil saturated ($A=1$), No rainfall detected ($B=0$)",
+          "Soil saturated ($A=1$), Active rainfall detected ($B=1$)"
+        ],
+        expectedTT: ["1", "1", "1", "0"],
+        correctGate: "NAND",
+        equation: "\\text{Pump} = \\overline{A \\cdot B}",
+        explanation: "The pump runs in all conditions, cutting off ONLY when BOTH soil is saturated AND active rain occurs. This inverted AND behaviour is the definition of a <strong>NAND gate</strong> (IC: <code>74LS00</code>)."
+      },
+      5: {
+        title: "Mission 5: Multi-Zone Smart Climate Heating Interlock",
+        sector: "BUILDING AUTOMATION & HVAC",
+        client: "EcoThermal Residential Controls",
+        brief: "A dual-zone auxiliary boiler heating unit (Output State $\\text{Heater}$) is engineered for maximum energy efficiency. The supplementary boiler turns ON ($1$) ONLY when BOTH the living room temperature is uncomfortably cold ($A=0$) AND the bedroom temperature is uncomfortably cold ($B=0$). If either room (or both) achieves its warm target temperature ($1$), the supplementary boiler stays completely OFF ($\\text{Heater} = 0$).",
+        sensorA: { name: "Living Room Temp (A)", text: "0 = Cold (<18°C), 1 = Warm (≥18°C)" },
+        sensorB: { name: "Bedroom Temp (B)", text: "0 = Cold (<18°C), 1 = Warm (≥18°C)" },
+        outputDef: "Boiler Booster Heater (\\(\\text{Heater}\\)): \\(1\\) = Heating ON (+5V), \\(0\\) = OFF (0V)",
+        rowDesc: [
+          "Living room cold $<18^\\circ\\text{C}$ ($A=0$), Bedroom cold $<18^\\circ\\text{C}$ ($B=0$)",
+          "Living room cold $<18^\\circ\\text{C}$ ($A=0$), Bedroom warm $\\ge 18^\\circ\\text{C}$ ($B=1$)",
+          "Living room warm $\\ge 18^\\circ\\text{C}$ ($A=1$), Bedroom cold $<18^\\circ\\text{C}$ ($B=0$)",
+          "Living room warm $\\ge 18^\\circ\\text{C}$ ($A=1$), Bedroom warm $\\ge 18^\\circ\\text{C}$ ($B=1$)"
+        ],
+        expectedTT: ["1", "0", "0", "0"],
+        correctGate: "NOR",
+        equation: "\\text{Heater} = \\overline{A + B}",
+        explanation: "The heating booster is ON ONLY when both rooms are cold ($0, 0$). If either room reaches comfort temperature, it shuts off. This inverted OR behaviour is the definition of a <strong>NOR gate</strong> (IC: <code>74LS02</code>)."
+      },
+      6: {
+        title: "Mission 6: Industrial Warehouse Two-Way Staircase Lighting",
+        sector: "FACILITY INFRASTRUCTURE & ELECTRICAL",
+        client: "Apex Logistics Distribution Hub",
+        brief: "An industrial mezzanine access stairway has a heavy-duty toggle switch at the ground floor ($A$) and another switch on the mezzanine walkway ($B$). The stairway lighting fixture (Output State $\\text{Light}$) must turn ON ($1$) whenever the two switches are in OPPOSITE positions (one UP, one DOWN). Flipping either switch toggles the light ON or OFF regardless of which end of the stairs the worker stands.",
+        sensorA: { name: "Ground Floor Switch (A)", text: "0 = DOWN, 1 = UP" },
+        sensorB: { name: "Mezzanine Switch (B)", text: "0 = DOWN, 1 = UP" },
+        outputDef: "Stairway Illumination (\\(\\text{Light}\\)): \\(1\\) = Lights ON (+5V), \\(0\\) = OFF (0V)",
+        rowDesc: [
+          "Ground switch DOWN ($A=0$), Mezzanine switch DOWN ($B=0$)",
+          "Ground switch DOWN ($A=0$), Mezzanine switch UP ($B=1$)",
+          "Ground switch UP ($A=1$), Mezzanine switch DOWN ($B=0$)",
+          "Ground switch UP ($A=1$), Mezzanine switch UP ($B=1$)"
+        ],
+        expectedTT: ["0", "1", "1", "0"],
+        correctGate: "XOR",
+        equation: "\\text{Light} = A \\oplus B",
+        explanation: "The stairway light activates when the switches are in DIFFERENT positions ($01$ or $10$), and shuts off when they match ($00$ or $11$). This is the Exclusive-OR (<strong>XOR gate</strong>, IC: <code>74LS86</code>)."
+      }
+    };
+
+    let activeMissionId = 1;
+
+    function loadStretchMission(id) {
+      activeMissionId = id;
+      const m = stretchMissions[id];
+      if (!m) return;
+
+      // Update tabs
+      for (let i = 1; i <= 6; i++) {
+        const tab = document.getElementById(`mission-tab-${i}`);
+        if (tab) tab.classList.toggle('active', i === id);
+      }
+
+      // Update content
+      document.getElementById('mission-sector-tag').textContent = m.sector;
+      document.getElementById('mission-client-tag').textContent = m.client;
+      document.getElementById('mission-title').textContent = m.title;
+      document.getElementById('mission-brief-text').innerHTML = m.brief;
+
+      document.getElementById('mission-sensor-a').innerHTML = `<strong style="color: #38bdf8;">${m.sensorA.name}:</strong><br><span>${m.sensorA.text}</span>`;
+      document.getElementById('mission-sensor-b').innerHTML = `<strong style="color: #38bdf8;">${m.sensorB.name}:</strong><br><span>${m.sensorB.text}</span>`;
+      document.getElementById('mission-output-def').innerHTML = `<strong>Target System Output:</strong> ${m.outputDef}`;
+
+      for (let r = 0; r < 4; r++) {
+        const descEl = document.getElementById(`m-tt-desc-${r}`);
+        const selEl = document.getElementById(`m-tt-${r}`);
+        if (descEl) descEl.innerHTML = m.rowDesc[r];
+        if (selEl) {
+          selEl.value = "";
+          selEl.style.borderColor = "#334155";
+          selEl.disabled = false;
+        }
+      }
+
+      // Hide feedback and synthesis tray
+      const fb = document.getElementById('mission-tt-feedback');
+      if (fb) fb.style.display = 'none';
+      const tray = document.getElementById('mission-synthesis-tray');
+      if (tray) tray.style.display = 'none';
+      const gateFb = document.getElementById('mission-gate-feedback');
+      if (gateFb) gateFb.style.display = 'none';
+
+      // Reset gate buttons
+      if (tray) {
+        tray.querySelectorAll('.pred-btn').forEach(b => b.classList.remove('correct', 'incorrect'));
+      }
+
+      // Re-render LaTeX math inside Slide 6
+      if (window.renderMathInElement) {
+        const slide6 = document.getElementById('slide-6');
+        if (slide6) {
+          renderMathInElement(slide6, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false }
+            ]
+          });
+        }
+      }
+    }
+
+    function validateMissionTT() {
+      const m = stretchMissions[activeMissionId];
+      if (!m) return;
+
+      const userVals = [];
+      let allFilled = true;
+      for (let r = 0; r < 4; r++) {
+        const val = document.getElementById(`m-tt-${r}`).value;
+        if (val === "") allFilled = false;
+        userVals.push(val);
+      }
+
+      const fb = document.getElementById('mission-tt-feedback');
+      if (!allFilled) {
+        fb.style.display = 'block';
+        fb.style.background = 'rgba(245, 158, 11, 0.15)';
+        fb.style.border = '1px solid #f59e0b';
+        fb.style.color = '#fbbf24';
+        fb.innerHTML = '⚠️ Please select a value (0 or 1) for all 4 truth table rows before validating.';
+        return;
+      }
+
+      let isCorrect = true;
+      for (let r = 0; r < 4; r++) {
+        const sel = document.getElementById(`m-tt-${r}`);
+        if (userVals[r] === m.expectedTT[r]) {
+          sel.style.borderColor = '#34d399';
+        } else {
+          sel.style.borderColor = '#ef4444';
+          isCorrect = false;
+        }
+      }
+
+      fb.style.display = 'block';
+      if (isCorrect) {
+        fb.style.background = 'rgba(16, 185, 129, 0.2)';
+        fb.style.border = '1px solid #10b981';
+        fb.style.color = '#34d399';
+        fb.innerHTML = '✅ <strong>100% Accurate Truth Table!</strong> You correctly mapped all 4 operational states to the client specification.';
+        
+        // Lock selects
+        for (let r = 0; r < 4; r++) {
+          document.getElementById(`m-tt-${r}`).disabled = true;
+        }
+
+        // Reveal synthesis step
+        const tray = document.getElementById('mission-synthesis-tray');
+        if (tray) tray.style.display = 'block';
+      } else {
+        fb.style.background = 'rgba(239, 68, 68, 0.15)';
+        fb.style.border = '1px solid #ef4444';
+        fb.style.color = '#fca5a5';
+        fb.innerHTML = '❌ Some output states do not match the client brief. Re-read the scenario carefully and adjust the red-bordered rows.';
+      }
+    }
+
+    function checkMissionGate(selectedGate) {
+      const m = stretchMissions[activeMissionId];
+      if (!m) return;
+
+      const tray = document.getElementById('mission-synthesis-tray');
+      const buttons = tray.querySelectorAll('.pred-btn');
+      buttons.forEach(b => {
+        b.classList.remove('correct', 'incorrect');
+        if (b.textContent.trim().startsWith(selectedGate)) {
+          if (selectedGate === m.correctGate) b.classList.add('correct');
+          else b.classList.add('incorrect');
+        }
+      });
+
+      const gateFb = document.getElementById('mission-gate-feedback');
+      gateFb.style.display = 'block';
+      if (selectedGate === m.correctGate) {
+        gateFb.style.background = 'rgba(16, 185, 129, 0.2)';
+        gateFb.style.border = '1px solid #10b981';
+        gateFb.style.color = '#34d399';
+        gateFb.innerHTML = `<strong>Spot on!</strong> ${m.explanation}<div style="margin-top: 6px; font-size: 1.05rem; font-family: var(--font-mono); color: #38bdf8;">$$${m.equation}$$</div>`;
+        if (window.renderMathInElement) {
+          renderMathInElement(gateFb, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false }
+            ]
+          });
+        }
+      } else {
+        gateFb.style.background = 'rgba(239, 68, 68, 0.15)';
+        gateFb.style.border = '1px solid #ef4444';
+        gateFb.style.color = '#fca5a5';
+        gateFb.innerHTML = `Not quite. Compare your verified truth table rows against the standard gate truth tables. Try again!`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      buildTruthTable();
+      updateCombUI();
+      updateMiniWorkbench();
+      loadStretchMission(1);
+    });
+  </script>
+</body>
+
+</html>

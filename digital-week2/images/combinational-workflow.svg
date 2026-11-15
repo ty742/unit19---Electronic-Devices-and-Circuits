@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 350" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-canvas { fill: #070c18; rx: 16px; }
+      .step-box { fill: #0f172a; stroke: #334155; stroke-width: 2.5; rx: 14px; }
+      .step-num { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; letter-spacing: 0.5px; }
+      .step-title { font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 800; fill: #ffffff; }
+      .step-desc { font-family: 'Inter', sans-serif; font-size: 13.5px; fill: #94a3b8; }
+      .arrow { stroke: #38bdf8; stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .arrow-head { fill: #38bdf8; }
+    </style>
+    <!-- Subtle Glow Filters -->
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#38bdf8" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1140" height="350" class="bg-canvas" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Top Title Banner -->
+  <text x="32" y="40" font-family="'Inter', sans-serif" font-size="22" font-weight="800" fill="#38bdf8" letter-spacing="-0.3px">The 5-Step Digital Engineering Workflow</text>
+  <text x="32" y="64" font-family="'JetBrains Mono', monospace" font-size="13.5" fill="#94a3b8">From Written Technical Specification to Verified Physical Hardware</text>
+
+  <!-- STEP 01 -->
+  <g transform="translate(20, 86)">
+    <rect width="188" height="236" class="step-box" stroke="#38bdf8" filter="url(#cyanGlow)"/>
+    <rect x="14" y="14" width="76" height="24" rx="6" fill="rgba(56, 189, 248, 0.15)"/>
+    <text x="22" y="31" class="step-num" fill="#38bdf8">STEP 01</text>
+    <text x="16" y="68" class="step-title">Specification</text>
+    <text x="16" y="100" class="step-desc">Extract all inputs</text>
+    <text x="16" y="122" class="step-desc">and conditions.</text>
+    <text x="16" y="156" class="step-desc">Define when output</text>
+    <text x="16" y="178" class="step-desc">MUST be active:</text>
+    <text x="16" y="206" class="step-desc" font-weight="800" font-size="14" fill="#34d399">HIGH (1) / LOW (0)</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <path d="M214,204 L236,204" class="arrow"/>
+  <polygon points="236,198 246,204 236,210" class="arrow-head"/>
+
+  <!-- STEP 02 -->
+  <g transform="translate(248, 86)">
+    <rect width="188" height="236" class="step-box" stroke="#60a5fa"/>
+    <rect x="14" y="14" width="76" height="24" rx="6" fill="rgba(96, 165, 250, 0.15)"/>
+    <text x="22" y="31" class="step-num" fill="#60a5fa">STEP 02</text>
+    <text x="16" y="68" class="step-title">Truth Table</text>
+    <text x="16" y="100" class="step-desc">Enumerate all 2ⁿ</text>
+    <text x="16" y="122" class="step-desc">binary input states.</text>
+    <text x="16" y="156" class="step-desc">Map each row to</text>
+    <text x="16" y="178" class="step-desc">its exact required</text>
+    <text x="16" y="206" class="step-desc" font-weight="800" font-size="14" fill="#60a5fa">System Response</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <path d="M442,204 L464,204" class="arrow"/>
+  <polygon points="464,198 474,204 464,210" class="arrow-head"/>
+
+  <!-- STEP 03 -->
+  <g transform="translate(476, 86)">
+    <rect width="188" height="236" class="step-box" stroke="#f59e0b"/>
+    <rect x="14" y="14" width="76" height="24" rx="6" fill="rgba(245, 158, 11, 0.15)"/>
+    <text x="22" y="31" class="step-num" fill="#fbbf24">STEP 03</text>
+    <text x="16" y="68" class="step-title">Boolean Form</text>
+    <text x="16" y="100" class="step-desc">Derive equation</text>
+    <text x="16" y="122" class="step-desc">from HIGH (1) rows.</text>
+    <text x="16" y="156" class="step-desc">Sum-of-Products:</text>
+    <text x="16" y="184" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="13" fill="#fbbf24">Y = T₁ + T₂ + ...</text>
+    <text x="16" y="206" class="step-desc" font-size="12" fill="#d97706">(AND-OR Structure)</text>
+  </g>
+
+  <!-- Arrow 3 -> 4 -->
+  <path d="M670,204 L692,204" class="arrow"/>
+  <polygon points="692,198 702,204 692,210" class="arrow-head"/>
+
+  <!-- STEP 04 -->
+  <g transform="translate(704, 86)">
+    <rect width="188" height="236" class="step-box" stroke="#22d3ee"/>
+    <rect x="14" y="14" width="76" height="24" rx="6" fill="rgba(34, 211, 238, 0.15)"/>
+    <text x="22" y="31" class="step-num" fill="#22d3ee">STEP 04</text>
+    <text x="16" y="68" class="step-title">Multisim Sim</text>
+    <text x="16" y="100" class="step-desc">Capture schematic</text>
+    <text x="16" y="122" class="step-desc">with 74LSxx ICs.</text>
+    <text x="16" y="156" class="step-desc">Virtually probe</text>
+    <text x="16" y="178" class="step-desc">all combinations</text>
+    <text x="16" y="206" class="step-desc" font-weight="800" font-size="13.5" fill="#22d3ee">BEFORE Building!</text>
+  </g>
+
+  <!-- Arrow 4 -> 5 -->
+  <path d="M898,204 L920,204" class="arrow"/>
+  <polygon points="920,198 930,204 920,210" class="arrow-head"/>
+
+  <!-- STEP 05 -->
+  <g transform="translate(932, 86)">
+    <rect width="188" height="236" class="step-box" stroke="#10b981"/>
+    <rect x="14" y="14" width="76" height="24" rx="6" fill="rgba(16, 185, 129, 0.15)"/>
+    <text x="22" y="31" class="step-num" fill="#34d399">STEP 05</text>
+    <text x="16" y="68" class="step-title" fill="#34d399">Physical Build</text>
+    <text x="16" y="100" class="step-desc">Assemble on</text>
+    <text x="16" y="122" class="step-desc">breadboard.</text>
+    <text x="16" y="156" class="step-desc">Measure voltages &amp;</text>
+    <text x="16" y="178" class="step-desc">verify systematically</text>
+    <text x="16" y="206" class="step-desc" font-weight="800" font-size="13.5" fill="#34d399">Against Specs</text>
+  </g>
+</svg>
