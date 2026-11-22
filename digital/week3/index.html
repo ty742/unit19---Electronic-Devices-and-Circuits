@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices &amp; Circuits — Digital Week 3: Boolean Algebra Optimization</title>
+  <meta name="description"
+    content="Unit 19 Learning Aim B Week 3: Boolean Algebra — Can You Make It Simpler? Apply Boolean laws and De Morgan's theorems to reduce logic gate count, simulate in Multisim, assemble on breadboard, and verify circuit equivalence.">
+
+  <!-- Shared CSS Tokens & Component Styling -->
+  <link rel="stylesheet" href="../../shared/css/presentation.css">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX for Accessible LaTeX Mathematical Typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Digital Week 3 Custom Styling */
+    .hero-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #38bdf8 75%, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-pill.aim-b-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .badge-pill.role-pill {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #7dd3fc;
+    }
+
+    .badge-pill.poe-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    /* 60-Minute Masterclass Framework Banner */
+    .quick-teach-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin: 14px 0 18px 0;
+    }
+
+    .quick-teach-step {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-top: 3px solid #38bdf8;
+    }
+
+    .quick-teach-step.s1 { border-top-color: #38bdf8; }
+    .quick-teach-step.s2 { border-top-color: #a855f7; }
+    .quick-teach-step.s3 { border-top-color: #f59e0b; }
+    .quick-teach-step.s4 { border-top-color: #10b981; }
+
+    .qt-time {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .qt-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .qt-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Responsive Video Embed Container */
+    .video-responsive-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: #020617;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-responsive-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Interactive Law Card Grid */
+    .laws-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .law-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 12px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .law-card:hover {
+      transform: translateY(-2px);
+      border-color: #38bdf8;
+    }
+
+    .law-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .law-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    .law-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .law-equations {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: #f8fafc;
+      background: #090d16;
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+    }
+
+    .law-meaning {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Prediction Checkpoint Box */
+    .prediction-box {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+
+    .prediction-box h4 {
+      font-size: 0.95rem;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+
+    .prediction-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pred-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .pred-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+
+    .pred-btn.correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+      font-weight: 700;
+    }
+
+    .pred-btn.incorrect {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: #ef4444 !important;
+      color: #f87171 !important;
+    }
+
+    /* Live Workbench Visual Toggles */
+    .switch-toggle-btn {
+      background: #1e293b;
+      border: 2px solid #475569;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 75px;
+    }
+
+    .switch-toggle-btn.active {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+    }
+
+    @media (max-width: 900px) {
+      .quick-teach-strip { grid-template-columns: repeat(2, 1fr); }
+      .laws-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Navigation Header -->
+      <header class="deck-header">
+        <div class="header-left">
+          <a href="../../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b;">AIM B • WEEK 3</span>
+            <span>Digital Electronics</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Boolean Algebra: Can You Make It Simpler?</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="https://www.futurlec.com/IC74LS00Series.shtml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" title="Study 74LS-Series Logic IC Datasheets on Futurlec" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            📑 IC Datasheets
+          </a>
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility &amp; Inclusion (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- =========================================================================
+             SLIDE 1: WELCOME & 60-MINUTE MASTERCLASS FRAMEWORK
+             ========================================================================= -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: flex-start; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill aim-b-pill">Learning Aim B: Digital Electronics • Week 3</span>
+              <span class="badge-pill role-pill">Role: Junior Production &amp; Optimisation Engineer</span>
+              <span class="badge-pill poe-pill">PoE Reference: B03 Logic Optimisation</span>
+            </div>
+
+            <h1 class="hero-title">Boolean Algebra: “Can You Make It Simpler?”</h1>
+            <p class="hero-subtitle">
+              Reduce circuit complexity, cut gate count, and verify mathematical equivalence between bloated prototypes and lean production hardware.
+            </p>
+
+            <!-- Learning Outcomes & KSBs -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; margin-top: 10px;">
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">🎯 Session Learning Outcomes</div>
+                <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; margin: 0;">
+                  <li><strong>Apply Boolean Laws:</strong> Identity, complement, distributive, and absorption rules to algebraic logic.</li>
+                  <li><strong>De Morgan’s Duality:</strong> Transform inverted gate configurations using $\overline{A \cdot B} = \overline{A} + \overline{B}$.</li>
+                  <li><strong>Circuit Reduction:</strong> Redesign a multi-IC bloated prototype into minimal hardware with identical behavior.</li>
+                  <li><strong>Hardware Verification:</strong> Prove 100% truth-table equivalence in Multisim and on physical breadboard.</li>
+                </ul>
+              </div>
+
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">📋 Workplace Scenario Brief</div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                  “Our prototype team built a working chemical reactor vent controller, but it uses <strong>5 gates across 3 separate TTL ICs</strong>. Board space is full and BOM costs are too high. Redesign this circuit to its absolute minimum gate count without altering safety logic!”
+                </p>
+                <div style="display: flex; gap: 8px; font-size: 0.78rem; font-family: var(--font-mono); color: #38bdf8;">
+                  <span>Client: Apex Chemical Processing</span> &bull; <span>Ref: OPT-VT201</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 2: ENGINEERING TOOLBOX (CUMULATIVE RETRIEVAL)
+             ========================================================================= -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <div class="slide-tag">START OF LESSON &bull; CUMULATIVE RETRIEVAL</div>
+            <h2 class="slide-title">Engineering Toolbox: Prior Recall</h2>
+            <div class="slide-subtitle">Retrieve foundational TTL wiring and combinational logic principles before simplifying circuits.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <div class="card">
+                <div class="card-title">🔌 Retrieval 1: TTL Power Pins &amp; Floating Inputs (Weeks 1 &amp; 2)</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  In a 14-pin 74LS-series logic IC (such as <code>74LS08</code> AND or <code>74LS32</code> OR), what happens if an unused gate input is left completely disconnected (open-circuit)?
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! TTL inputs internally pull up through their multi-emitter input transistors. Disconnected pins float to HIGH (~1.4V to 2.0V), causing false logic states or erratic oscillation!')">
+                      It floats HIGH to Logic 1, causing unpredictable false triggers
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. TTL inputs do NOT naturally stay at 0V. They float towards Logic 1.')">
+                      It remains solidly tied to 0V Ground (Logic 0)
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. The IC will not blow up immediately, but its outputs will be corrupted.')">
+                      It immediately blows the internal substrate fuse
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🧮 Retrieval 2: Sum-of-Products (SOP) Notation (Week 2)</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  Which standard Boolean expression represents the output of a 2-input AND gate feeding into an OR gate along with input $C$?
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! (A · B) computes the product term, which is then OR-summed with input C.')">
+                      $$\text{Output} = (A \cdot B) + C$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. (A + B) · C is Product-of-Sums (POS), requiring an OR gate feeding into an AND gate.')">
+                      $$\text{Output} = (A + B) \cdot C$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. This represents an inverted NOR structure.')">
+                      $$\text{Output} = \overline{A + B + C}$$
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reminder Card -->
+            <div class="card" style="margin-top: 14px; width: 100%; border-left: 4px solid #38bdf8; padding: 12px 16px;">
+              <div style="font-weight: 700; color: #38bdf8; font-size: 0.88rem; margin-bottom: 4px;">💡 Why Does Circuit Minimisation Matter in Real Engineering?</div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                Every redundant logic gate increases PCB surface area, adds copper traces, consumes continuous quiescent supply current (~16mA per 74LS package), and introduces ~10ns of signal propagation delay. Professional engineers never build un-simplified circuits!
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 3: VIDEO MASTERCLASS & VISUAL CONCEPT HOOK
+             ========================================================================= -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <div class="slide-tag">CONCEPT HOOK &bull; VIDEO EXPLANATION</div>
+            <h2 class="slide-title">Video Masterclass: Boolean Logic &amp; Minimisation</h2>
+            <div class="slide-subtitle">Watch how foundational Boolean rules govern electronic decision circuits and reduce complex hardware.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Embedded Responsive Video Player -->
+              <div>
+                <div class="video-responsive-wrapper">
+                  <iframe src="https://www.youtube-nocookie.com/embed/gI-qXk7XojA?rel=0" 
+                          title="Crash Course Computer Science: Boolean Logic &amp; Logic Gates" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowfullscreen>
+                  </iframe>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                  <span style="font-size: 0.78rem; color: #94a3b8;">Source: Crash Course Computer Science (Ep. 3)</span>
+                  <a href="https://www.youtube.com/watch?v=gI-qXk7XojA" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; color: #38bdf8; text-decoration: none;">
+                    ↗ Open Video in New Tab
+                  </a>
+                </div>
+              </div>
+
+              <!-- Masterclass Core Takeaways -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #38bdf8; margin-bottom: 4px;">
+                    1. George Boole’s Insight (1847)
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    Any logical proposition can be evaluated using purely binary algebraic variables (0 = FALSE, 1 = TRUE). In electronics, this directly matches voltage rails ($0\,\text{V}$ and $+5\,\text{V}$).
+                  </p>
+                </div>
+
+                <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #34d399; margin-bottom: 4px;">
+                    2. The Engineering Target: Less Silicon
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    A circuit built with 6 gates can often be simplified to 2 gates performing the <strong>exact same function</strong>. Fewer gates mean fewer ICs, lower power dissipation, and higher reliability.
+                  </p>
+                </div>
+
+                <div class="card" style="padding: 14px; border-top: 3px solid #f59e0b;">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #fbbf24; margin-bottom: 4px;">
+                    3. Equivalence Verification
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    A simplified circuit is only valid if its truth table matches the original specification across <strong>every single input combination</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 4: WHAT IS BOOLEAN ALGEBRA? (FUNDAMENTALS & TRUTH TABLE EXAMPLE)
+             ========================================================================= -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <div class="slide-tag">PART 1: BOOLEAN BASICS</div>
+            <h2 class="slide-title">1. What is Boolean Algebra?</h2>
+            <div class="slide-subtitle">Mathematical rules for variables that can only ever be 0 (LOW / FALSE) or 1 (HIGH / TRUE).</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Left Column: Explanation + 3 Fundamental Operations -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="padding: 12px 16px; border-left: 4px solid #38bdf8;">
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                    Unlike ordinary algebra (where $x = 2$ or $x = 5$), <strong>Boolean variables can only be $0$ or $1$</strong>. In digital electronics, $0 = \text{LOW (0V / FALSE)}$ and $1 = \text{HIGH (+5V / TRUE)}$. Every digital circuit can be written as a mathematical equation using three basic operations:
+                  </p>
+                </div>
+
+                <!-- 3 Fundamental Operations Grid -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                  <!-- AND -->
+                  <div class="card" style="padding: 10px 12px; text-align: center; border-top: 3px solid #38bdf8;">
+                    <div style="font-weight: 800; color: #38bdf8; font-size: 0.92rem; margin-bottom: 4px;">AND</div>
+                    <svg viewBox="0 0 90 44" width="84" height="40" style="margin: 2px auto; display: block;">
+                      <line x1="6" y1="14" x2="26" y2="14" stroke="#38bdf8" stroke-width="2"/>
+                      <line x1="6" y1="30" x2="26" y2="30" stroke="#38bdf8" stroke-width="2"/>
+                      <path d="M 26 6 L 44 6 A 16 16 0 0 1 44 38 L 26 38 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+                      <line x1="60" y1="22" x2="84" y2="22" stroke="#10b981" stroke-width="2"/>
+                    </svg>
+                    <div style="font-family: var(--font-mono); font-size: 1rem; color: #ffffff; margin: 4px 0;">$A \cdot B$</div>
+                    <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.35;">
+                      Output is <strong>1</strong> only when <strong>both</strong> inputs are 1.
+                    </div>
+                  </div>
+
+                  <!-- OR -->
+                  <div class="card" style="padding: 10px 12px; text-align: center; border-top: 3px solid #a855f7;">
+                    <div style="font-weight: 800; color: #c084fc; font-size: 0.92rem; margin-bottom: 4px;">OR</div>
+                    <svg viewBox="0 0 90 44" width="84" height="40" style="margin: 2px auto; display: block;">
+                      <line x1="6" y1="14" x2="29" y2="14" stroke="#c084fc" stroke-width="2"/>
+                      <line x1="6" y1="30" x2="29" y2="30" stroke="#c084fc" stroke-width="2"/>
+                      <path d="M 24 6 Q 36 22 24 38 Q 52 38 64 22 Q 52 6 24 6 Z" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+                      <line x1="64" y1="22" x2="84" y2="22" stroke="#10b981" stroke-width="2"/>
+                    </svg>
+                    <div style="font-family: var(--font-mono); font-size: 1rem; color: #ffffff; margin: 4px 0;">$A + B$</div>
+                    <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.35;">
+                      Output is <strong>1</strong> when <strong>at least one</strong> input is 1.
+                    </div>
+                  </div>
+
+                  <!-- NOT -->
+                  <div class="card" style="padding: 10px 12px; text-align: center; border-top: 3px solid #f59e0b;">
+                    <div style="font-weight: 800; color: #fbbf24; font-size: 0.92rem; margin-bottom: 4px;">NOT</div>
+                    <svg viewBox="0 0 90 44" width="84" height="40" style="margin: 2px auto; display: block;">
+                      <line x1="8" y1="22" x2="26" y2="22" stroke="#fbbf24" stroke-width="2"/>
+                      <polygon points="26,8 54,22 26,36" fill="#1e293b" stroke="#fbbf24" stroke-width="2"/>
+                      <circle cx="58" cy="22" r="4" fill="#0f172a" stroke="#fbbf24" stroke-width="2"/>
+                      <line x1="62" y1="22" x2="82" y2="22" stroke="#10b981" stroke-width="2"/>
+                    </svg>
+                    <div style="font-family: var(--font-mono); font-size: 1rem; color: #ffffff; margin: 4px 0;">$\overline{A}$</div>
+                    <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.35;">
+                      <strong>Inverts</strong> the input ($0 \to 1$, $1 \to 0$).
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Worked Reading Example -->
+                <div class="card" style="padding: 12px 16px; border-left: 4px solid #10b981;">
+                  <div style="font-weight: 800; color: #34d399; font-size: 0.88rem; margin-bottom: 4px;">
+                    📖 How to Read an Expression: $\text{Output} = A \cdot B + C$
+                  </div>
+                  <ol style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; padding-left: 18px; margin: 0;">
+                    <li>First, <strong>AND</strong> inputs $A$ and $B$ together ($A \cdot B$).</li>
+                    <li>Next, <strong>OR</strong> that result with input $C$.</li>
+                    <li>Notice: Boolean algebra lets us describe a complete truth table in one short equation!</li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Right Column: Complete 8-Row Truth Table for Y = A·B + C -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                <div class="card-title">📊 Truth Table for $\text{Output} = (A \cdot B) + C$</div>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0 0 8px 0;">
+                  Check every row: the output is $1$ whenever $C=1$, OR when both $A=1$ and $B=1$.
+                </p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; font-family: var(--font-mono); text-align: center;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; color: #94a3b8;">
+                      <th style="padding: 5px;">$A$</th>
+                      <th style="padding: 5px;">$B$</th>
+                      <th style="padding: 5px;">$C$</th>
+                      <th style="padding: 5px; color: #38bdf8;">$A \cdot B$</th>
+                      <th style="padding: 5px; color: #34d399;">$\text{Output}$</th>
+                    </tr>
+                  </thead>
+                  <tbody style="color: #cbd5e1;">
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>0</td><td>0</td><td style="color:#64748b;">0</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>0</td><td>1</td><td style="color:#64748b;">0</td><td style="color: #34d399; font-weight: 800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>1</td><td>0</td><td style="color:#64748b;">0</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>1</td><td>1</td><td style="color:#64748b;">0</td><td style="color: #34d399; font-weight: 800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>1</td><td>0</td><td>0</td><td style="color:#64748b;">0</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>1</td><td>0</td><td>1</td><td style="color:#64748b;">0</td><td style="color: #34d399; font-weight: 800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>1</td><td>1</td><td>0</td><td style="color:#38bdf8;">1</td><td style="color: #34d399; font-weight: 800;">1</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td><td style="color:#38bdf8;">1</td><td style="color: #34d399; font-weight: 800;">1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 5: BOOLEAN ALGEBRA LAWS & REPEATABLE WORKED EXAMPLE
+             ========================================================================= -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <div class="slide-tag">PART 2: LAWS &amp; SIMPLIFICATION</div>
+            <h2 class="slide-title">Boolean Algebra Laws &amp; Worked Example</h2>
+            <div class="slide-subtitle">Use these laws to simplify logic expressions without changing the circuit’s truth table.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Left: Clean Scannable Laws Table -->
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">📜 Essential Boolean Algebra Laws</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 4px;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; color: #94a3b8; text-align: left;">
+                      <th style="padding: 5px;">Law</th>
+                      <th style="padding: 5px;">OR Form</th>
+                      <th style="padding: 5px;">AND Form</th>
+                    </tr>
+                  </thead>
+                  <tbody style="font-family: var(--font-mono); color: #f8fafc;">
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4);">
+                      <td style="padding: 5px; font-family: var(--font-sans); color: #38bdf8; font-weight: 700;">Identity</td>
+                      <td style="padding: 5px;">$A + 0 = A$</td>
+                      <td style="padding: 5px;">$A \cdot 1 = A$</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4);">
+                      <td style="padding: 5px; font-family: var(--font-sans); color: #94a3b8; font-weight: 700;">Null</td>
+                      <td style="padding: 5px;">$A + 1 = 1$</td>
+                      <td style="padding: 5px;">$A \cdot 0 = 0$</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4);">
+                      <td style="padding: 5px; font-family: var(--font-sans); color: #94a3b8; font-weight: 700;">Idempotent</td>
+                      <td style="padding: 5px;">$A + A = A$</td>
+                      <td style="padding: 5px;">$A \cdot A = A$</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4); background: rgba(56,189,248,0.08);">
+                      <td style="padding: 5px; font-family: var(--font-sans); color: #38bdf8; font-weight: 800;">Complement ⚡</td>
+                      <td style="padding: 5px; color: #38bdf8;">$A + \overline{A} = 1$</td>
+                      <td style="padding: 5px; color: #38bdf8;">$A \cdot \overline{A} = 0$</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 5px; font-family: var(--font-sans); color: #34d399; font-weight: 800;">Absorption ✂️</td>
+                      <td style="padding: 5px; color: #34d399;">$A + A\cdot B = A$</td>
+                      <td style="padding: 5px; color: #34d399;">$A(A + B) = A$</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div style="margin-top: 8px; font-size: 0.78rem; color: var(--text-secondary);">
+                  Also remember <strong>Distributive (Factoring)</strong>: $A\cdot B + A\cdot C = A(B + C)$.
+                </div>
+              </div>
+
+              <!-- Right: Dedicated Worked Example 1 -->
+              <div class="card" style="padding: 14px; border-left: 4px solid #10b981;">
+                <div class="card-title" style="color: #34d399;">🧪 Worked Example 1: $\text{Output} = A \cdot B + A \cdot \overline{B}$</div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.84rem;">
+                  <div style="background: #0f172a; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.76rem;">1. Factorise the common variable $A$:</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$\text{Output} = A \cdot (B + \overline{B})$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.76rem;">2. Apply the Complement Law ($B + \overline{B} = 1$):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono);">$$\text{Output} = A \cdot 1$$</strong>
+                  </div>
+                  <div style="background: rgba(16, 185, 129, 0.14); border: 1px solid #10b981; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #a7f3d0; font-size: 0.76rem;">3. Apply the Identity Law ($A \cdot 1 = A$):</span><br>
+                    <strong style="color: #34d399; font-family: var(--font-mono); font-size: 1.05rem;">$$\text{Output} = A$$</strong>
+                  </div>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin: 8px 0 0 0;">
+                  <strong>What have we achieved?</strong> 2 AND gates, 1 OR gate, and 1 NOT gate simplify to a <strong>direct wire from $A$ to the output</strong>!
+                </p>
+              </div>
+            </div>
+
+            <!-- Fill-in-the-Blank Practice on Boolean Laws (No Guessing!) -->
+            <div class="card" style="margin-top: 10px; width: 100%; padding: 10px 14px;">
+              <div style="font-weight: 800; color: #ffffff; font-size: 0.88rem; margin-bottom: 8px;">
+                ✍️ Fill-in-the-Blank Practice: Apply the Laws (Type Your Answer — No Guessing!)
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                <div class="self-check-card" data-expected="B" data-type="exact" data-hint="Identity Law: anything + 0 equals itself." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 6px;">1. $B + 0 =$ ?</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="e.g. B" style="width: 100%; padding: 4px 8px; font-size: 0.82rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.76rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.72rem; margin-top: 4px;"></div>
+                </div>
+
+                <div class="self-check-card" data-expected="1" data-type="exact" data-hint="Complement Law: a variable OR its inverse is always TRUE (1)." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 6px;">2. $C + \overline{C} =$ ?</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="0 or 1" style="width: 100%; padding: 4px 8px; font-size: 0.82rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.76rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.72rem; margin-top: 4px;"></div>
+                </div>
+
+                <div class="self-check-card" data-expected="0" data-type="exact" data-hint="Null Law: anything AND 0 is always 0." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 6px;">3. $D \cdot 0 =$ ?</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="0 or 1" style="width: 100%; padding: 4px 8px; font-size: 0.82rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.76rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.72rem; margin-top: 4px;"></div>
+                </div>
+
+                <div class="self-check-card" data-expected="B" data-type="exact" data-hint="Absorption Law: B + (B·C) = B(1 + C) = B." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 6px;">4. $B + (B \cdot C) =$ ?</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="e.g. B" style="width: 100%; padding: 4px 8px; font-size: 0.82rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.76rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.72rem; margin-top: 4px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 6: DEDICATED WORKED EXAMPLES 2 & 3 (BOOLEAN ALGEBRA)
+             ========================================================================= -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <div class="slide-tag">WORKED EXAMPLES &bull; BOOLEAN ALGEBRA</div>
+            <h2 class="slide-title">Boolean Algebra: More Step-by-Step Examples</h2>
+            <div class="slide-subtitle">Follow each line carefully to see how Absorption, Expansion, and Complement laws eliminate redundant gates.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; align-items: stretch;">
+              <!-- Worked Example 2 -->
+              <div class="card" style="padding: 12px 16px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column;">
+                <div class="card-title" style="color: #38bdf8;">🧪 Worked Example 2: $\text{Output} = A + (A \cdot B) + (A \cdot C)$</div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.84rem; margin-top: 6px; flex: 1;">
+                  <div style="background: #0f172a; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.76rem;">Step 1 — Factor out $A$ (or apply Absorption to $A + A\cdot B$):</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$\text{Output} = A \cdot (1 + B + C)$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.76rem;">Step 2 — Apply the Null Law ($1 + B + C = 1$):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono);">$$\text{Output} = A \cdot 1$$</strong>
+                  </div>
+                  <div style="background: rgba(56, 189, 248, 0.14); border: 1px solid #38bdf8; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #7dd3fc; font-size: 0.76rem;">Step 3 — Apply the Identity Law ($A \cdot 1 = A$):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 1.05rem;">$$\text{Output} = A$$</strong>
+                  </div>
+                </div>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 8px 0 0 0;">
+                  <strong>Result:</strong> Whenever $A = 1$, the whole OR expression is already $1$, so $B$ and $C$ never change the output!
+                </p>
+              </div>
+
+              <!-- Worked Example 3 -->
+              <div class="card" style="padding: 12px 16px; border-left: 4px solid #f59e0b; display: flex; flex-direction: column;">
+                <div class="card-title" style="color: #fbbf24;">🧪 Worked Example 3: $\text{Output} = (A + B) \cdot (A + \overline{B})$</div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.84rem; margin-top: 6px; flex: 1;">
+                  <div style="background: #0f172a; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.76rem;">Step 1 — Expand the brackets (just like normal algebra):</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$= (A \cdot A) + (A \cdot \overline{B}) + (B \cdot A) + (B \cdot \overline{B})$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.76rem;">Step 2 — Apply $A\cdot A = A$ and $B \cdot \overline{B} = 0$:</span><br>
+                    <strong style="color: #fbbf24; font-family: var(--font-mono);">$$= A + A \cdot (\overline{B} + B) + 0 = A + A \cdot (1)$$</strong>
+                  </div>
+                  <div style="background: rgba(245, 158, 11, 0.14); border: 1px solid #f59e0b; padding: 8px 12px; border-radius: 6px;">
+                    <span style="color: #fde68a; font-size: 0.76rem;">Step 3 — Apply Idempotent Law ($A + A = A$):</span><br>
+                    <strong style="color: #fbbf24; font-family: var(--font-mono); font-size: 1.05rem;">$$\text{Output} = A$$</strong>
+                  </div>
+                </div>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 8px 0 0 0;">
+                  <strong>Result:</strong> 2 OR gates, 1 AND gate, and 1 NOT gate simplify cleanly to a single wire from $A$!
+                </p>
+              </div>
+            </div>
+
+            <!-- Fill-in-the-Blank Practice Questions on Simplifying Expressions -->
+            <div class="card" style="margin-top: 10px; width: 100%; padding: 10px 14px;">
+              <div style="font-weight: 800; color: #ffffff; font-size: 0.86rem; margin-bottom: 8px;">
+                ✍️ Your Turn — Apply the Laws to Simplify These Expressions (Type Your Answer):
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                <div class="self-check-card" data-expected="B" data-type="exact" data-hint="Factor out B: B·(1 + C + D) = B·1 = B." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.76rem; color: #cbd5e1; margin-bottom: 6px;">1. $B + (B\cdot C) + (B\cdot D) =$</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="e.g. B" style="width: 100%; padding: 4px 8px; font-size: 0.8rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.74rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.7rem; margin-top: 4px;"></div>
+                </div>
+
+                <div class="self-check-card" data-expected="X" data-type="exact" data-hint="Factor out X: X·(Y + Ȳ) = X·1 = X." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.76rem; color: #cbd5e1; margin-bottom: 6px;">2. $(X\cdot Y) + (X\cdot \overline{Y}) =$</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="e.g. X" style="width: 100%; padding: 4px 8px; font-size: 0.8rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.74rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.7rem; margin-top: 4px;"></div>
+                </div>
+
+                <div class="self-check-card" data-expected="P" data-type="exact" data-hint="Expand brackets like Example 3: P·P + P·Q̄ + P·Q + Q·Q̄ = P." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.76rem; color: #cbd5e1; margin-bottom: 6px;">3. $(P + Q)\cdot(P + \overline{Q}) =$</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="e.g. P" style="width: 100%; padding: 4px 8px; font-size: 0.8rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.74rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.7rem; margin-top: 4px;"></div>
+                </div>
+
+                <div class="self-check-card" data-expected="A" data-type="exact" data-hint="Apply Absorption A·(A+B) = A, then Identity A + 0 = A." style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 10px;">
+                  <div style="font-size: 0.76rem; color: #cbd5e1; margin-bottom: 6px;">4. $A\cdot(A + B) + 0 =$</div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="text" class="self-check-input" placeholder="e.g. A" style="width: 100%; padding: 4px 8px; font-size: 0.8rem;">
+                    <button class="self-check-btn btn btn-primary" style="padding: 4px 10px; font-size: 0.74rem;">Check</button>
+                  </div>
+                  <div class="self-check-feedback" style="font-size: 0.7rem; margin-top: 4px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 7: DE MORGAN'S THEOREMS & TRUTH TABLE PROOF
+             ========================================================================= -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <div class="slide-tag">PART 3: DE MORGAN’S THEOREMS</div>
+            <h2 class="slide-title">2. De Morgan’s Theorems &amp; Truth Table Proof</h2>
+            <div class="slide-subtitle">“Break the bar, flip the sign” — proven with a truth table and visualised as bubble pushing.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; align-items: stretch;">
+              <!-- Left: Both Theorems -->
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card" style="padding: 10px 14px; border-left: 4px solid #38bdf8;">
+                  <div style="font-weight: 800; color: #38bdf8; font-size: 0.88rem;">First Theorem: NAND $\equiv$ Inverted-Input OR</div>
+                  <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin: 2px 0;">
+                    $$\overline{A \cdot B} = \overline{A} + \overline{B}$$
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-secondary);">In words: <strong>NOT (A AND B) = (NOT A) OR (NOT B)</strong>.</div>
+                </div>
+
+                <div class="card" style="padding: 10px 14px; border-left: 4px solid #a855f7;">
+                  <div style="font-weight: 800; color: #c084fc; font-size: 0.88rem;">Second Theorem: NOR $\equiv$ Inverted-Input AND</div>
+                  <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin: 2px 0;">
+                    $$\overline{A + B} = \overline{A} \cdot \overline{B}$$
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-secondary);">In words: <strong>NOT (A OR B) = (NOT A) AND (NOT B)</strong>.</div>
+                </div>
+              </div>
+
+              <!-- Right: Truth Table Proof -->
+              <div class="card" style="padding: 10px 14px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-weight: 800; color: #fbbf24; font-size: 0.86rem; margin-bottom: 6px;">
+                  ✅ Truth Table Proof: $\overline{A \cdot B} = \overline{A} + \overline{B}$
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; font-family: var(--font-mono); text-align: center;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; color: #94a3b8;">
+                      <th>A</th><th>B</th><th>$A\cdot B$</th><th style="color: #38bdf8;">$\overline{A\cdot B}$</th><th>$\overline{A}$</th><th>$\overline{B}$</th><th style="color: #34d399;">$\overline{A}+\overline{B}$</th>
+                    </tr>
+                  </thead>
+                  <tbody style="color: #cbd5e1;">
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4);"><td>0</td><td>0</td><td>0</td><td style="color:#38bdf8;font-weight:800;">1</td><td>1</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4);"><td>0</td><td>1</td><td>0</td><td style="color:#38bdf8;font-weight:800;">1</td><td>1</td><td>0</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.4);"><td>1</td><td>0</td><td>0</td><td style="color:#38bdf8;font-weight:800;">1</td><td>0</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td><td style="color:#38bdf8;font-weight:800;">0</td><td>0</td><td>0</td><td style="color:#34d399;font-weight:800;">0</td></tr>
+                  </tbody>
+                </table>
+                <div style="font-size: 0.76rem; color: #a7f3d0; margin-top: 6px; text-align: center;">
+                  Both highlighted columns are <strong>100% identical</strong> &rarr; Theorem proven!
+                </div>
+              </div>
+            </div>
+
+            <!-- Full-Width Large Bubble-Pushing Diagram -->
+            <div style="width: 100%; margin-top: 10px; display: flex; justify-content: center;">
+              <img src="images/demorgan-bubble-pushing.svg" alt="De Morgan's Theorems and Bubble Pushing Graphic" style="width: 100%; max-height: 265px; object-fit: contain; border-radius: 10px; border: 1px solid #334155; background: #0b1120;">
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 8: DEDICATED WORKED EXAMPLES — DE MORGAN'S THEOREMS
+             ========================================================================= -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <div class="slide-tag">WORKED EXAMPLES &bull; DE MORGAN’S THEOREMS</div>
+            <h2 class="slide-title">De Morgan’s Theorems: Step-by-Step Examples</h2>
+            <div class="slide-subtitle">Practise the two-step rule: (1) Break the overbar, (2) Flip the operator ($\cdot \leftrightarrow +$).</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- De Morgan Example A -->
+              <div class="card" style="padding: 16px; border-left: 4px solid #38bdf8;">
+                <div class="card-title" style="color: #38bdf8;">🧪 De Morgan Example 1: Simplify $Y = \overline{\overline{A} + B}$</div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.86rem; margin-top: 8px;">
+                  <div style="background: #0f172a; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.78rem;">Step 1 — Break the top bar and flip $+$ to $\cdot$:</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$Y = \overline{\overline{A}} \cdot \overline{B}$$</strong>
+                  </div>
+                  <div style="background: rgba(56, 189, 248, 0.14); border: 1px solid #38bdf8; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #7dd3fc; font-size: 0.78rem;">Step 2 — Cancel the double bar on $A$ ($\overline{\overline{A}} = A$):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 1.15rem;">$$Y = A \cdot \overline{B}$$</strong>
+                  </div>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 10px 0 0 0;">
+                  <strong>Meaning:</strong> An active-low NOR gate with $A$ inverted behaves identically to $A \text{ AND } (\text{NOT } B)$.
+                </p>
+              </div>
+
+              <!-- De Morgan Example B -->
+              <div class="card" style="padding: 16px; border-left: 4px solid #a855f7;">
+                <div class="card-title" style="color: #c084fc;">🧪 De Morgan Example 2: Simplify $Y = \overline{(A \cdot B) + \overline{C}}$</div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.86rem; margin-top: 8px;">
+                  <div style="background: #0f172a; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.78rem;">Step 1 — Break the outer bar and flip $+$ to $\cdot$:</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$Y = \overline{(A \cdot B)} \cdot \overline{\overline{C}}$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.78rem;">Step 2 — Cancel double bar on $C$ ($\overline{\overline{C}} = C$):</span><br>
+                    <strong style="color: #c084fc; font-family: var(--font-mono);">$$Y = \overline{(A \cdot B)} \cdot C$$</strong>
+                  </div>
+                  <div style="background: rgba(168, 85, 247, 0.14); border: 1px solid #a855f7; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #e9d5ff; font-size: 0.78rem;">Step 3 — Break the inner bar over $(A \cdot B)$ and flip $\cdot$ to $+$:</span><br>
+                    <strong style="color: #c084fc; font-family: var(--font-mono); font-size: 1.1rem;">$$Y = (\overline{A} + \overline{B}) \cdot C$$</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 9: THE ENGINEERING PROBLEM — ANALYSE & TRANSLATE INTO LOGIC
+             ========================================================================= -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <div class="slide-tag">STEP 1: PROBLEM ANALYSIS</div>
+            <h2 class="slide-title">Engineering Problem: Smart Workshop Ventilation Fan</h2>
+            <div class="slide-subtitle">Read the design brief carefully, identify the three inputs, and translate each rule into Boolean logic.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Left: Plain-English Educational Specification -->
+              <div class="card" style="padding: 16px; border-left: 4px solid #f59e0b;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-weight: 800; color: #fbbf24; font-size: 0.92rem;">📋 DESIGN BRIEF: WORKSHOP VENTILATION</span>
+                </div>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  We want to control an automatic <strong>Extractor Vent Fan ($\text{Vent} = 1$)</strong> in an electronics workshop using three simple inputs:
+                </p>
+                <ul style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.55; padding-left: 18px; margin-bottom: 10px;">
+                  <li><strong>$A$ — Manual Override Switch:</strong> $1 = \text{Pressed ON}$, $0 = \text{OFF}$</li>
+                  <li><strong>$B$ — Window Closed Sensor:</strong> $1 = \text{Closed}$, $0 = \text{Open}$</li>
+                  <li><strong>$C$ — High Temperature Sensor:</strong> $1 = \text{Too Hot}$, $0 = \text{Normal}$</li>
+                </ul>
+                <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; border-radius: 8px; padding: 10px; font-size: 0.82rem; color: #fde68a; line-height: 1.5;">
+                  <strong>When should the Vent Fan turn ON ($\text{Vent} = 1$)?</strong><br>
+                  1. Manual Override is ON <strong>AND</strong> the Window is Closed.<br>
+                  2. Manual Override is ON <strong>AND</strong> the Window is Open.<br>
+                  3. The Window is Closed <strong>AND</strong> the Workshop is Too Hot.
+                </div>
+              </div>
+
+              <!-- Right: Translating English Rules into Boolean Logic -->
+              <div class="card" style="padding: 16px; border-left: 4px solid #38bdf8;">
+                <div class="card-title" style="color: #38bdf8;">🔎 Step-by-Step Translation into Logic</div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.84rem; margin-top: 6px;">
+                  <div style="background: #0f172a; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.78rem;">Rule 1 ("Manual Override ON AND Window Closed"):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono);">$$A \cdot B$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.78rem;">Rule 2 ("Manual Override ON AND Window Open"):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono);">$$A \cdot \overline{B}$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.78rem;">Rule 3 ("Window Closed AND Too Hot"):</span><br>
+                    <strong style="color: #38bdf8; font-family: var(--font-mono);">$$B \cdot C$$</strong>
+                  </div>
+                  <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; padding: 10px 12px; border-radius: 6px;">
+                    <span style="color: #fca5a5; font-size: 0.78rem;">Combined Raw Expression (OR the three rules together):</span><br>
+                    <strong style="color: #fca5a5; font-family: var(--font-mono); font-size: 1.05rem;">$$\text{Vent} = (A \cdot B) + (A \cdot \overline{B}) + (B \cdot C)$$</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 10: STEP-BY-STEP SIMPLIFICATION WALKTHROUGH (BEFORE CIRCUIT!)
+             ========================================================================= -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <div class="slide-tag">STEP 2: ALGEBRAIC SIMPLIFICATION &bull; BEFORE BUILDING</div>
+            <h2 class="slide-title">Simplification Walkthrough: Reducing the Expression</h2>
+            <div class="slide-subtitle">Always simplify the Boolean expression mathematically BEFORE drawing or wiring the circuit!</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+              <div class="card" style="padding: 12px 16px; border-left: 4px solid #ef4444;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-weight: 800; color: #f87171; font-size: 0.88rem;">STEP 1: Raw Expression Translated from Client Rules</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.78rem; color: #94a3b8;">5 Gates • 3 ICs</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.15rem; color: #ffffff;">
+                  $$\text{Vent} = (A \cdot B) + (A \cdot \overline{B}) + (B \cdot C)$$
+                </div>
+              </div>
+
+              <div class="card" style="padding: 12px 16px; border-left: 4px solid #f59e0b;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-weight: 800; color: #fbbf24; font-size: 0.88rem;">STEP 2: Apply Distributive Law (Factor Out Common Input $A$)</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.78rem; color: #fbbf24;">Factorisation</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.15rem; color: #ffffff;">
+                  $$\text{Vent} = A \cdot (B + \overline{B}) + (B \cdot C)$$
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 4px 0 0 0;">
+                  Both $(A \cdot B)$ and $(A \cdot \overline{B})$ contain $A$, so we factor $A$ outside the bracket.
+                </p>
+              </div>
+
+              <div class="card" style="padding: 12px 16px; border-left: 4px solid #38bdf8;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-weight: 800; color: #38bdf8; font-size: 0.88rem;">STEP 3: Apply Complement Law ($B + \overline{B} = 1$) &amp; Identity Law ($A \cdot 1 = A$)</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.78rem; color: #38bdf8;">Cancellation</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.15rem; color: #ffffff;">
+                  $$\text{Vent} = A \cdot (1) + (B \cdot C) \implies \text{Vent} = A + (B \cdot C)$$
+                </div>
+              </div>
+
+              <div class="card" style="padding: 12px 18px; border: 2px solid #10b981; background: rgba(16, 185, 129, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-weight: 800; color: #34d399; font-size: 0.96rem;">✨ SIMPLIFIED EXPRESSION READY FOR HARDWARE</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.85rem; color: #34d399; font-weight: 700;">Reduced from 5 Gates to 2 Gates!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 11: VISUAL LOGIC CIRCUIT COMPARISON (BLOATED VS LEAN)
+             ========================================================================= -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <div class="slide-tag">STEP 3: CIRCUIT COMPARISON &bull; BEFORE VS. AFTER</div>
+            <h2 class="slide-title">Logic Circuit Comparison: Bloated vs. Lean</h2>
+            <div class="slide-subtitle">Compare the un-simplified 5-gate prototype with our simplified 2-gate circuit from Slide 10.</div>
+          </div>
+          <div class="slide-body" style="align-items: center;">
+            <img src="images/boolean-bloated-vs-lean.svg" alt="Bloated Circuit vs Lean Circuit Comparison" style="width: 100%; max-height: 390px; object-fit: contain; border-radius: 10px; border: 1px solid #334155; background: #0b1120;">
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 12: NAND-ONLY EXAMPLE 1 — VENT = A + (B·C) WITH CIRCUIT DIAGRAM
+             ========================================================================= -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <div class="slide-tag">NAND-ONLY IMPLEMENTATION &bull; EXAMPLE 1 (3 INPUTS)</div>
+            <h2 class="slide-title">Using ONLY NAND Gates: $\text{Vent} = A + (B \cdot C)$</h2>
+            <div class="slide-subtitle">Convert the simplified 3-input circuit into a single 74LS00 Quad NAND IC using Double Inversion + De Morgan’s Theorem.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 14px; width: 100%; align-items: start;">
+              <!-- Step-by-Step Algebraic Conversion -->
+              <div class="card" style="padding: 14px; border-left: 4px solid #38bdf8;">
+                <div class="card-title" style="color: #38bdf8;">🔢 Step-by-Step NAND Conversion</div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; margin-top: 4px;">
+                  <div style="background: #0f172a; padding: 8px 10px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.74rem;">Step 1 — Start with simplified expression:</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$\text{Vent} = A + (B \cdot C)$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 8px 10px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.74rem;">Step 2 — Apply Double Inversion ($\overline{\overline{X}} = X$):</span><br>
+                    <strong style="color: #fbbf24; font-family: var(--font-mono);">$$\text{Vent} = \overline{\overline{A + (B \cdot C)}}$$</strong>
+                  </div>
+                  <div style="background: rgba(16, 185, 129, 0.14); border: 1px solid #10b981; padding: 8px 10px; border-radius: 6px;">
+                    <span style="color: #a7f3d0; font-size: 0.74rem;">Step 3 — Break inner bar &amp; flip $+$ to $\cdot$ (De Morgan):</span><br>
+                    <strong style="color: #34d399; font-family: var(--font-mono); font-size: 1.05rem;">$$\text{Vent} = \overline{\overline{A} \cdot \overline{(B \cdot C)}}$$</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Logic Circuit Diagram + Gate Wiring -->
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <img src="images/nand-only-vent.svg" alt="NAND-Only Logic Circuit for Vent = A + (B·C)" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+                <div class="card" style="padding: 10px 12px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45;">
+                  &bull; <strong>NAND 1:</strong> Tie $A$ to both inputs &rarr; outputs $\overline{A}$ (NOT gate).<br>
+                  &bull; <strong>NAND 2:</strong> Inputs $B, C$ &rarr; outputs $\overline{B \cdot C}$.<br>
+                  &bull; <strong>NAND 3:</strong> Inputs $\overline{A}$ &amp; $\overline{B \cdot C}$ &rarr; outputs $A + (B \cdot C)$.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 13: NAND-ONLY EXAMPLE 2 — 4 INPUTS ALARM = (A·B) + (C·D)
+             ========================================================================= -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <div class="slide-tag">NAND-ONLY IMPLEMENTATION &bull; EXAMPLE 2 (4 INPUTS)</div>
+            <h2 class="slide-title">Repeat with 4 Inputs: $\text{Alarm} = (A \cdot B) + (C \cdot D)$</h2>
+            <div class="slide-subtitle">Analyse a 4-input safety alarm, apply the exact same 3 NAND-only steps, and build the 4-input logic circuit on ONE 74LS00 IC.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 14px; width: 100%; align-items: start;">
+              <!-- Problem + 3-Step Conversion -->
+              <div class="card" style="padding: 14px; border-left: 4px solid #a855f7;">
+                <div class="card-title" style="color: #c084fc;">🔁 4-Input Problem &amp; 3-Step Conversion</div>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0 0 8px 0;">
+                  <strong>Rule:</strong> Alarm sounds if (Sensor $A$ AND Guard $B$ trip) OR (Temp $C$ AND Pressure $D$ trip):
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem;">
+                  <div style="background: #0f172a; padding: 8px 10px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.74rem;">Step 1 — Translate to Sum-of-Products (4 inputs):</span><br>
+                    <strong style="color: #ffffff; font-family: var(--font-mono);">$$\text{Alarm} = (A \cdot B) + (C \cdot D)$$</strong>
+                  </div>
+                  <div style="background: #0f172a; padding: 8px 10px; border-radius: 6px;">
+                    <span style="color: #94a3b8; font-size: 0.74rem;">Step 2 — Apply Double Inversion:</span><br>
+                    <strong style="color: #fbbf24; font-family: var(--font-mono);">$$\text{Alarm} = \overline{\overline{(A \cdot B) + (C \cdot D)}}$$</strong>
+                  </div>
+                  <div style="background: rgba(168, 85, 247, 0.14); border: 1px solid #a855f7; padding: 8px 10px; border-radius: 6px;">
+                    <span style="color: #e9d5ff; font-size: 0.74rem;">Step 3 — Break inner bar &amp; flip $+$ to $\cdot$ (De Morgan):</span><br>
+                    <strong style="color: #c084fc; font-family: var(--font-mono); font-size: 1.05rem;">$$\text{Alarm} = \overline{\overline{(A \cdot B)} \cdot \overline{(C \cdot D)}}$$</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4-Input Logic Circuit Diagram + Gate Wiring -->
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <img src="images/nand-only-alarm-4in.svg" alt="4-Input NAND-Only Logic Circuit for Alarm = (A·B) + (C·D)" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+                <div class="card" style="padding: 10px 12px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45;">
+                  &bull; <strong>NAND 1:</strong> Inputs $A, B$ &rarr; outputs $\overline{A \cdot B}$.<br>
+                  &bull; <strong>NAND 2:</strong> Inputs $C, D$ &rarr; outputs $\overline{C \cdot D}$.<br>
+                  &bull; <strong>NAND 3:</strong> Takes $\overline{A \cdot B}$ &amp; $\overline{C \cdot D}$ &rarr; outputs $(A \cdot B) + (C \cdot D)$ on <strong>1x 74LS00 IC</strong>!
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 8: INTERACTIVE LOGIC REDUCER & EQUIVALENCE WORKBENCH
+             ========================================================================= -->
+        <section class="slide" id="slide-14">
+          <div class="slide-header">
+            <div class="slide-tag">INTERACTIVE EXPLORER &bull; EQUIVALENCE VERIFIER</div>
+            <h2 class="slide-title">Interactive Logic Reducer Workbench</h2>
+            <div class="slide-subtitle">Toggle sensor inputs to test and prove 100% truth-table equivalence between both circuits.</div>
+          </div>
+          <div class="slide-body">
+            <!-- Sensor Toggle Controls -->
+            <div style="display: flex; justify-content: center; gap: 20px; width: 100%; margin-bottom: 16px;">
+              <button class="switch-toggle-btn" id="btn-toggle-A" onclick="toggleWeek3Sensor('A')">
+                <span style="font-size: 0.75rem; color: #94a3b8;">INPUT A</span>
+                <span id="val-toggle-A" style="font-size: 1.4rem;">0</span>
+                <span style="font-size: 0.68rem; color: #64748b;">Overpressure</span>
+              </button>
+
+              <button class="switch-toggle-btn" id="btn-toggle-B" onclick="toggleWeek3Sensor('B')">
+                <span style="font-size: 0.75rem; color: #94a3b8;">INPUT B</span>
+                <span id="val-toggle-B" style="font-size: 1.4rem;">0</span>
+                <span style="font-size: 0.68rem; color: #64748b;">Scrubber</span>
+              </button>
+
+              <button class="switch-toggle-btn" id="btn-toggle-C" onclick="toggleWeek3Sensor('C')">
+                <span style="font-size: 0.75rem; color: #94a3b8;">INPUT C</span>
+                <span id="val-toggle-C" style="font-size: 1.4rem;">0</span>
+                <span style="font-size: 0.68rem; color: #64748b;">Thermal Trip</span>
+              </button>
+            </div>
+
+            <!-- Side-by-Side Equivalence Display -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <!-- Bloated Circuit Evaluator -->
+              <div class="card" style="padding: 16px; border-top: 3px solid #ef4444;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-weight: 800; color: #f87171; font-size: 0.9rem;">ORIGINAL BLOATED CIRCUIT</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">5 GATES</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.88rem; color: #94a3b8; margin-bottom: 10px;">
+                  $$(A \cdot B) + (A \cdot \overline{B}) + (B \cdot C)$$
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #0f172a; border-radius: 8px; padding: 10px 14px;">
+                  <span style="font-size: 0.85rem; color: var(--text-secondary);">Computed Output State:</span>
+                  <span id="bloated-out-badge" style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 800; color: #94a3b8;">0 (LOW)</span>
+                </div>
+                <div id="bloated-intermediate-trace" style="font-size: 0.78rem; font-family: var(--font-mono); color: #64748b; margin-top: 8px;">
+                  Terms: (0·0) + (0·1) + (0·0) = 0
+                </div>
+              </div>
+
+              <!-- Lean Circuit Evaluator -->
+              <div class="card" style="padding: 16px; border-top: 3px solid #10b981;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-weight: 800; color: #34d399; font-size: 0.9rem;">OPTIMISED LEAN CIRCUIT</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981; font-weight: 700;">2 GATES</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.88rem; color: #94a3b8; margin-bottom: 10px;">
+                  $$A + (B \cdot C)$$
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #0f172a; border-radius: 8px; padding: 10px 14px;">
+                  <span style="font-size: 0.85rem; color: var(--text-secondary);">Computed Output State:</span>
+                  <span id="lean-out-badge" style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 800; color: #94a3b8;">0 (LOW)</span>
+                </div>
+                <div id="lean-intermediate-trace" style="font-size: 0.78rem; font-family: var(--font-mono); color: #64748b; margin-top: 8px;">
+                  Terms: 0 + (0·0) = 0
+                </div>
+              </div>
+            </div>
+
+            <!-- Equivalence Banner -->
+            <div id="equivalence-status-banner" style="width: 100%; margin-top: 14px; padding: 10px 14px; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.9rem; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399;">
+              ✅ Mathematical Equivalence Confirmed: Both circuits output identical states for this input combination!
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 9: GATE COUNT & BILL OF MATERIALS (BOM) AUDIT
+             ========================================================================= -->
+        <section class="slide" id="slide-15">
+          <div class="slide-header">
+            <div class="slide-tag">ENGINEERING METRICS &bull; BOM COST REDUCTION</div>
+            <h2 class="slide-title">Gate Count &amp; Hardware Audit</h2>
+            <div class="slide-subtitle">Quantify the physical savings in silicon, board space, power, and assembly reliability.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; width: 100%;">
+              <!-- Audit Table -->
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">📊 3-Way Hardware Audit: Bloated vs. Lean vs. NAND-Only</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 6px;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; text-align: left; color: #94a3b8;">
+                      <th style="padding: 6px;">Metric</th>
+                      <th style="padding: 6px; color: #f87171;">Bloated</th>
+                      <th style="padding: 6px; color: #34d399;">Lean (AND+OR)</th>
+                      <th style="padding: 6px; color: #38bdf8;">NAND-Only</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">Total Logic Gates</td>
+                      <td style="padding: 6px; color: #fca5a5;">5 gates</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">2 gates (-60%)</td>
+                      <td style="padding: 6px; color: #7dd3fc; font-weight: 700;">3 gates (-40%)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">IC Packages</td>
+                      <td style="padding: 6px; color: #fca5a5;">3 ICs (04, 08, 32)</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">2 ICs (08, 32)</td>
+                      <td style="padding: 6px; color: #7dd3fc; font-weight: 700;">1 IC (74LS00)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">Supply Current</td>
+                      <td style="padding: 6px; color: #fca5a5;">~48 mA</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">~30 mA (-38%)</td>
+                      <td style="padding: 6px; color: #7dd3fc; font-weight: 700;">~16 mA (-67%)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">Propagation Delay</td>
+                      <td style="padding: 6px; color: #fca5a5;">~30 ns (3 stages)</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">~20 ns (2 stages)</td>
+                      <td style="padding: 6px; color: #7dd3fc; font-weight: 700;">~18 ns (2 stages)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px; font-weight: 600;">Jumper Wires</td>
+                      <td style="padding: 6px; color: #fca5a5;">14 wires</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">7 wires</td>
+                      <td style="padding: 6px; color: #7dd3fc; font-weight: 700;">6 wires (1 IC)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Datasheet Reference & Selection Card -->
+              <div class="card" style="padding: 14px; border-left: 4px solid #f59e0b;">
+                <div class="card-title">📑 74LS-Series Component Selection</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 8px;">
+                  Consult the official TTL pinouts to prepare for simulation and bench assembly:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.78rem;">
+                  <div style="background: #0f172a; padding: 7px 10px; border-radius: 6px; border: 1px solid #334155;">
+                    <strong style="color: #34d399;">74LS08 Quad AND:</strong> Pin 14 = +5V, Pin 7 = GND. Gate 1: Pins 1, 2 &rarr; Pin 3 ($B\cdot C$).
+                  </div>
+                  <div style="background: #0f172a; padding: 7px 10px; border-radius: 6px; border: 1px solid #334155;">
+                    <strong style="color: #a855f7;">74LS32 Quad OR:</strong> Pin 14 = +5V, Pin 7 = GND. Gate 1: Pins 1, 2 &rarr; Pin 3 ($\text{Vent}$).
+                  </div>
+                  <div style="background: #0f172a; padding: 7px 10px; border-radius: 6px; border: 1px solid #38bdf8;">
+                    <strong style="color: #38bdf8;">74LS00 Quad NAND (1-IC Option):</strong> Pin 14 = +5V, Pin 7 = GND. Uses 3 NAND gates on a single IC!
+                  </div>
+                </div>
+                <div style="margin-top: 10px;">
+                  <a href="https://www.futurlec.com/IC74LS00Series.shtml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    🌐 Open Futurlec 74LS Series Datasheets Catalog &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 11: TINKERCAD / MULTISIM SIMULATION & GATE COUNT COMPARISON
+             ========================================================================= -->
+        <section class="slide" id="slide-16">
+          <div class="slide-header">
+            <div class="slide-tag">VIRTUAL PROTOTYPING &bull; 45–60 MINUTES</div>
+            <h2 class="slide-title">Tinkercad / Multisim Simulation: Build &amp; Compare</h2>
+            <div class="slide-subtitle">Build both the original and simplified circuits in Tinkercad or Multisim, compare gate counts, and verify identical outputs.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">💻 Simulator Protocol (Tinkercad / Multisim)</div>
+                <ol style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; padding-left: 20px; margin: 0;">
+                  <li><strong>Setup Input Switches:</strong> Place 3 SPDT switches or DIP switches ($+5\,\text{V}$ / $0\,\text{V}$) for inputs $A$, $B$, and $C$.</li>
+                  <li><strong>Build Original Circuit:</strong> Wire $(A \cdot B) + (A \cdot \overline{B}) + (B \cdot C)$ using <code>74LS04</code>, <code>74LS08</code>, and <code>74LS32</code> into a <strong>Red LED</strong> (5 gates / 3 ICs).</li>
+                  <li><strong>Build Simplified Circuit:</strong> Wire $A + (B \cdot C)$ using <code>74LS08</code> and <code>74LS32</code> into a <strong>Green LED</strong> (2 gates / 2 ICs).</li>
+                  <li><strong>Test &amp; Compare Gate Count:</strong> Cycle all 8 input states ($000_2 \to 111_2$). Confirm both LEDs match in every row while counting the ICs and gates saved.</li>
+                </ol>
+                <div style="margin-top: 10px; background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; border-radius: 6px; padding: 8px 10px; font-size: 0.78rem; color: #7dd3fc;">
+                  🎓 <strong>Assignment Prep:</strong> Save screenshots of both simulated circuits and your gate-count comparison — this directly supports <strong>Unit 19 Assignment 2, Question 1</strong> on combinational logic!
+                </div>
+              </div>
+
+              <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                <div class="card-title">📝 Verification Truth Table Record</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; font-family: var(--font-mono); margin-top: 4px;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; text-align: center; color: #94a3b8;">
+                      <th>A</th><th>B</th><th>C</th><th>Bloated (Red)</th><th>Lean (Green)</th><th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody style="text-align: center; color: #cbd5e1;">
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);"><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td style="color: #34d399;">MATCH</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td style="color: #34d399;">MATCH</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 17: PHYSICAL BREADBOARD BUILD (UNOPTIMISED, SIMPLIFIED & NAND-ONLY)
+             ========================================================================= -->
+        <section class="slide" id="slide-17">
+          <div class="slide-header">
+            <div class="slide-tag">PRACTICAL HARDWARE BUILD &bull; BENCH ASSEMBLY</div>
+            <h2 class="slide-title">Physical Breadboard Build</h2>
+            <div class="slide-subtitle">Assemble and test the three Smart Workshop Ventilation Fan circuits on your breadboard and verify identical outputs.</div>
+          </div>
+          <div class="slide-body" style="align-items: center; text-align: center; max-width: 960px; margin: 0 auto;">
+            <div class="card" style="padding: 20px; width: 100%; border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.85); box-shadow: 0 12px 32px rgba(0,0,0,0.4);">
+              <h3 style="font-size: 1.35rem; color: #ffffff; margin-bottom: 14px; font-weight: 800;">
+                🔌 Assemble the circuits on the breadboard: Unoptimised, Simplified, and NAND-Only.
+              </h3>
+
+              <!-- 3-Column Build Cards -->
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; text-align: left;">
+                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 12px;">
+                  <div style="font-weight: 800; color: #f87171; font-size: 0.88rem; margin-bottom: 6px;">1. Unoptimised (5 Gates)</div>
+                  <div style="font-family: var(--font-mono); font-size: 0.84rem; color: #fca5a5; margin-bottom: 6px;">
+                    $$\text{Vent} = A\cdot B + A\cdot\overline{B} + B\cdot C$$
+                  </div>
+                  <div style="font-size: 0.78rem; color: #cbd5e1;">ICs: <code>74LS04</code>, <code>74LS08</code>, <code>74LS32</code></div>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 12px;">
+                  <div style="font-weight: 800; color: #34d399; font-size: 0.88rem; margin-bottom: 6px;">2. Simplified (2 Gates)</div>
+                  <div style="font-family: var(--font-mono); font-size: 0.84rem; color: #6ee7b7; margin-bottom: 6px;">
+                    $$\text{Vent} = A + (B \cdot C)$$
+                  </div>
+                  <div style="font-size: 0.78rem; color: #cbd5e1;">ICs: <code>74LS08</code> + <code>74LS32</code></div>
+                </div>
+
+                <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; border-radius: 8px; padding: 12px;">
+                  <div style="font-weight: 800; color: #38bdf8; font-size: 0.88rem; margin-bottom: 6px;">3. NAND-Only (3 Gates)</div>
+                  <div style="font-family: var(--font-mono); font-size: 0.84rem; color: #7dd3fc; margin-bottom: 6px;">
+                    $$\text{Vent} = \overline{\overline{A} \cdot \overline{(B \cdot C)}}$$
+                  </div>
+                  <div style="font-size: 0.78rem; color: #cbd5e1;">IC: <strong>1x</strong> <code>74LS00</code> only</div>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; font-size: 0.84rem; color: #94a3b8;">
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 5px 12px; border-radius: 6px;">Resistor: $330\,\Omega$</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 5px 12px; border-radius: 6px;">Output: Green Indicator LED</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 5px 12px; border-radius: 6px;">Supply: $+5.0\,\text{V}$ DC (Pin 14 = +5V, Pin 7 = 0V)</span>
+              </div>
+
+              <div style="background: rgba(56, 189, 248, 0.1); border: 1px dashed #38bdf8; border-radius: 8px; padding: 10px 16px; font-size: 0.84rem; color: #cbd5e1; text-align: left;">
+                <strong style="color: #38bdf8;">⚡ Practical Step:</strong> Test all 8 input combinations ($000_2 \to 111_2$) on each build to prove all three circuits produce the exact same truth table!
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 12: TROUBLESHOOTING & FAULT-FINDING CLINIC
+             ========================================================================= -->
+        <section class="slide" id="slide-18">
+          <div class="slide-header">
+            <div class="slide-tag">BENCH DIAGNOSTICS &bull; TROUBLESHOOTING</div>
+            <h2 class="slide-title">Circuit Fault-Finding &amp; Diagnostics</h2>
+            <div class="slide-subtitle">Spend time testing and troubleshooting your physical breadboard circuit using these tips.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+              <!-- Tip 1 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #ef4444;">
+                <div style="font-weight: 700; color: #f87171; font-size: 0.9rem; margin-bottom: 6px;">
+                  ⚡ 1. Power &amp; Ground Rails
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Measure directly across <strong>Pin 14 ($+5\,\text{V}$)</strong> and <strong>Pin 7 ($0\,\text{V}$)</strong> on <em>both</em> ICs with your DMM. Breadboard power split rails often lack center jumpers!
+                </p>
+              </div>
+
+              <!-- Tip 2 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #f59e0b;">
+                <div style="font-weight: 700; color: #fbbf24; font-size: 0.9rem; margin-bottom: 6px;">
+                  ⚠️ 2. Floating Input Pins
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Never leave an active input floating when testing Logic 0. Connect input wires securely to the $0\,\text{V}$ rail. Disconnected TTL inputs drift to Logic 1!
+                </p>
+              </div>
+
+              <!-- Tip 3 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                <div style="font-weight: 700; color: #38bdf8; font-size: 0.9rem; margin-bottom: 6px;">
+                  🔍 3. Trace Intermediate Gate Signals
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Probe 74LS08 Pin 3 ($B \cdot C$) with your DMM before checking the final OR gate output. Verify that the intermediate product term behaves correctly.
+                </p>
+              </div>
+
+              <!-- Tip 4 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                <div style="font-weight: 700; color: #34d399; font-size: 0.9rem; margin-bottom: 6px;">
+                  💡 4. LED &amp; Resistor Polarity
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Confirm the indicator LED anode (longer leg) connects to the $330\,\Omega$ current-limiting resistor and the cathode connects directly to $0\,\text{V}$ Ground.
+                </p>
+              </div>
+
+              <!-- Tip 5 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #a855f7;">
+                <div style="font-weight: 700; color: #c084fc; font-size: 0.9rem; margin-bottom: 6px;">
+                  🔌 5. IC Pin Orientation
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Ensure the semi-circular notch on the IC faces to the <strong>LEFT</strong>. Pin 1 is bottom-left, Pin 7 bottom-right, Pin 8 top-right, and Pin 14 top-left.
+                </p>
+              </div>
+
+              <!-- Tip 6 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #06b6d4;">
+                <div style="font-weight: 700; color: #22d3ee; font-size: 0.9rem; margin-bottom: 6px;">
+                  📋 6. Full 8-State Audit
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Do not stop at testing one condition. Systematically test all 8 input combinations ($000_2$ to $111_2$) to prove zero unexpected glitches occur.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 13: ENGINEER EXIT TICKET & PoE B03 WRAP-UP
+             ========================================================================= -->
+        <section class="slide" id="slide-19">
+          <div class="slide-header">
+            <div class="slide-tag">END OF LESSON &bull; FORMATIVE ASSESSMENT</div>
+            <h2 class="slide-title">Engineer Exit Ticket: Week 3</h2>
+            <div class="slide-subtitle">Demonstrate your understanding of Boolean algebraic optimization before leaving the laboratory.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <!-- Exit Question 1 -->
+              <div class="card">
+                <div class="card-title">1. Today's Learning: Boolean Absorption</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  Simplify the expression: $$Z = X + (X \cdot Y)$$
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! By the Absorption Law, X + (X · Y) = X · (1 + Y) = X · 1 = X.')">
+                      $$Z = X$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. Whenever X=1, the entire OR expression is already TRUE.')">
+                      $$Z = Y$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. This expression is not in its simplest form.')">
+                      $$Z = X \cdot Y$$
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Exit Question 2 -->
+              <div class="card">
+                <div class="card-title">2. De Morgan’s Law Application</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  According to De Morgan's theorem, what is the equivalent dual form of: $$\overline{C + D}$$
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! Break the line, change the sign: !(C + D) = !C · !D (an AND gate with inverted inputs).')">
+                      $$\overline{C} \cdot \overline{D}$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. The OR sign must change to an AND sign.')">
+                      $$\overline{C} + \overline{D}$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. You must invert each individual variable.')">
+                      $$C \cdot D$$
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio of Evidence B03 Summary -->
+            <div class="card" style="margin-top: 14px; width: 100%; border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08); padding: 12px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <div style="font-weight: 800; color: #34d399; font-size: 0.95rem;">📁 Portfolio of Evidence B03: Logic Optimisation</div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 2px 0 0 0;">
+                    Document your un-optimised schematic, step-by-step algebraic working, minimised schematic, Multisim simulation capture, and breadboard verification photo in your engineering portfolio.
+                  </p>
+                </div>
+                <span class="badge-pill poe-pill">PoE B03 Complete</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 15: PRACTICE QUESTIONS — BOOLEAN ALGEBRA & SIMPLIFICATION
+             ========================================================================= -->
+        <section class="slide" id="slide-20">
+          <div class="slide-header">
+            <div class="slide-tag">INDEPENDENT PRACTICE &bull; BOOLEAN ALGEBRA</div>
+            <h2 class="slide-title">Practice Questions: Boolean Simplification (Set 1)</h2>
+            <div class="slide-subtitle">Test yourself on Boolean laws and expression simplification — click any option for step-by-step feedback.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+              <!-- Q1 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q1. Null &amp; Identity</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = (A \cdot 1) + (B \cdot 0)$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'A·1 = A (Identity) and B·0 = 0 (Null), so A + 0 = A.')">$A$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Remember: B·0 is always 0, not B.')">$A + B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'A·1 preserves A, and A + 0 = A.')">$1$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q2 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q2. Factoring &amp; Complement</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = \overline{A}\cdot B + A\cdot B$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Factor B: B(Ā + A) = B·1 = B.')">$B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Factor out the common variable B, not A.')">$A$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Ā + A = 1, not 0.')">$0$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q3 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q3. Absorption Law</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = C + (C \cdot D)$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'By Absorption: C + C·D = C(1 + D) = C·1 = C.')">$C$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'C absorbs C·D because whenever C=1, output is already 1.')">$C \cdot D$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'D only matters if C is not already present.')">$D$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q4 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #34d399; font-size: 0.85rem; margin-bottom: 4px;">Q4. 3-Variable Reduction</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = A\cdot B\cdot C + A\cdot B\cdot \overline{C}$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Factor A·B: A·B(C + C̄) = A·B·1 = A·B.')">$A \cdot B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'C + C̄ cancels to 1, leaving A·B.')">$A \cdot C$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Both terms are ANDed with A·B, so only C cancels.')">$A + B$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q5 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #34d399; font-size: 0.85rem; margin-bottom: 4px;">Q5. Bracket Expansion</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = A \cdot (A + B)$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Expand: A·A + A·B = A + A·B = A (Absorption).')">$A$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Remember A·A = A, then A + A·B absorbs to A.')">$A + B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'If A=1 and B=0, A·(A+B) = 1·(1+0) = 1, whereas A·B = 0.')">$A \cdot B$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q6 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #fbbf24; font-size: 0.85rem; margin-bottom: 4px;">Q6. Complement Identity</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = A + \overline{A} \cdot B$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Distribute: (A + Ā)·(A + B) = 1·(A + B) = A + B!')">$A + B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Try distributing OR over AND: A + Ā·B = (A+Ā)(A+B).')">$A \cdot B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'If A=0 and B=1, Y = 0 + 1·1 = 1, so it cannot be just A.')">$A$</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 16: PRACTICE QUESTIONS — DE MORGAN'S & NAND-ONLY LOGIC
+             ========================================================================= -->
+        <section class="slide" id="slide-21">
+          <div class="slide-header">
+            <div class="slide-tag">INDEPENDENT PRACTICE &bull; DE MORGAN &amp; NAND-ONLY</div>
+            <h2 class="slide-title">Practice Questions: De Morgan’s &amp; NAND Logic (Set 2)</h2>
+            <div class="slide-subtitle">Practise breaking the bar, flipping the sign, and converting circuits to NAND-only (74LS00) hardware.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+              <!-- Q7 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #c084fc; font-size: 0.85rem; margin-bottom: 4px;">Q7. De Morgan Theorem 1</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Rewrite using De Morgan: $Y = \overline{A \cdot \overline{B}}$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Break bar, flip · to +: Ā + B̿ = Ā + B.')">$\overline{A} + B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'B already had a bar, so B̿ = B.')">$\overline{A} + \overline{B}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'You must flip the · (AND) to + (OR).')">$\overline{A} \cdot B$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q8 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #c084fc; font-size: 0.85rem; margin-bottom: 4px;">Q8. De Morgan Theorem 2</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Rewrite using De Morgan: $Y = \overline{\overline{A} + \overline{B}}$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Break bar, flip + to ·: A̿ · B̿ = A · B (an AND gate!).')">$A \cdot B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Double bars cancel on both A and B.')">$\overline{A} \cdot \overline{B}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Flip + to · when breaking the top bar.')">$A + B$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q9 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q9. NAND as a NOT Gate</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">How do you make a NOT gate ($\overline{A}$) using a 2-input NAND gate?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Tie both inputs together to A: !(A · A) = !A (Idempotent law).')">Tie both inputs together to $A$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '!(A · 0) = !(0) = 1 always, so it ignores A!')">Connect the second input to 0V</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Floating TTL inputs drift HIGH, which is unsafe practice.')">Leave the second input floating</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q10 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q10. NAND-Only Equivalent</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Which NAND-only form equals $Y = A + B$?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Double invert A+B = !(!(A+B)) = !(!A · !B) — 3 NAND gates!')">$\overline{\overline{A} \cdot \overline{B}}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '!(A · B) is NAND, which equals !A + !B, not A + B.')">$\overline{A \cdot B}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '!(A + B) is NOR.')">$\overline{A + B}$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q11 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #34d399; font-size: 0.85rem; margin-bottom: 4px;">Q11. IC Count Savings</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">How many 74LS00 ICs are needed to build $Y = (A\cdot B) + (C\cdot D)$ using NAND-only logic?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'It uses 3 NAND gates, and one 74LS00 contains 4 NAND gates — so just 1 IC!')">1 IC (uses 3 of 4 gates)</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'One 74LS00 has 4 gates inside it, and we only need 3 gates.')">2 ICs</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '3 ICs would be AND + OR + NOT, which is what NAND-only avoids!')">3 ICs</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q12 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #fbbf24; font-size: 0.85rem; margin-bottom: 4px;">Q12. Multi-Gate De Morgan</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Simplify: $Y = \overline{(A + B) \cdot C}$</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Break outer bar: !(A+B) + !C = (!A·!B) + !C.')">$(\overline{A} \cdot \overline{B}) + \overline{C}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Breaking the outer bar flips · to + between !(A+B) and !C.')">$\overline{A} \cdot \overline{B} \cdot \overline{C}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Remember to invert C as well when breaking the outer bar.')">$(\overline{A} \cdot \overline{B}) + C$</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 21</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Digital Electronics • Level 3 Engineering</span>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid"></div>
+      </div>
+    </div>
+
+    <!-- Accessibility Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Full Parity Accessibility & Neurodiversity Side-Drawer -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary" style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Shared Scripts -->
+  <script src="../../shared/js/accessibility-engine.js"></script>
+  <script src="../../shared/js/presentation-engine.js"></script>
+  <script src="../../shared/js/self-check.js"></script>
+  <script src="../../shared/js/timer.js"></script>
+
+  <!-- Digital Week 3 Interactive Engine -->
+  <script>
+    // State for Slide 8 Interactive Logic Reducer Workbench
+    let w3A = 0;
+    let w3B = 0;
+    let w3C = 0;
+
+    function toggleWeek3Sensor(sensor) {
+      if (sensor === 'A') w3A = w3A === 0 ? 1 : 0;
+      if (sensor === 'B') w3B = w3B === 0 ? 1 : 0;
+      if (sensor === 'C') w3C = w3C === 0 ? 1 : 0;
+      updateWeek3Workbench();
+    }
+
+    function updateWeek3Workbench() {
+      // Update Button visual states
+      const btnA = document.getElementById('btn-toggle-A');
+      const btnB = document.getElementById('btn-toggle-B');
+      const btnC = document.getElementById('btn-toggle-C');
+
+      const valA = document.getElementById('val-toggle-A');
+      const valB = document.getElementById('val-toggle-B');
+      const valC = document.getElementById('val-toggle-C');
+
+      if (btnA && valA) {
+        valA.textContent = w3A;
+        btnA.classList.toggle('active', w3A === 1);
+      }
+      if (btnB && valB) {
+        valB.textContent = w3B;
+        btnB.classList.toggle('active', w3B === 1);
+      }
+      if (btnC && valC) {
+        valC.textContent = w3C;
+        btnC.classList.toggle('active', w3C === 1);
+      }
+
+      // Compute Bloated Circuit: (A · B) + (A · !B) + (B · C)
+      const term1 = (w3A === 1 && w3B === 1) ? 1 : 0;
+      const term2 = (w3A === 1 && w3B === 0) ? 1 : 0;
+      const term3 = (w3B === 1 && w3C === 1) ? 1 : 0;
+      const bloatedOut = (term1 === 1 || term2 === 1 || term3 === 1) ? 1 : 0;
+
+      // Compute Lean Circuit: A + (B · C)
+      const leanOut = (w3A === 1 || (w3B === 1 && w3C === 1)) ? 1 : 0;
+
+      // Update Badges
+      const bBadge = document.getElementById('bloated-out-badge');
+      const lBadge = document.getElementById('lean-out-badge');
+      const bTrace = document.getElementById('bloated-intermediate-trace');
+      const lTrace = document.getElementById('lean-intermediate-trace');
+
+      if (bBadge) {
+        bBadge.textContent = bloatedOut === 1 ? '1 (HIGH - VENT OPEN)' : '0 (LOW - CLOSED)';
+        bBadge.style.color = bloatedOut === 1 ? '#34d399' : '#94a3b8';
+      }
+      if (lBadge) {
+        lBadge.textContent = leanOut === 1 ? '1 (HIGH - VENT OPEN)' : '0 (LOW - CLOSED)';
+        lBadge.style.color = leanOut === 1 ? '#34d399' : '#94a3b8';
+      }
+
+      if (bTrace) {
+        const notB = w3B === 1 ? 0 : 1;
+        bTrace.textContent = `Terms: (${w3A}·${w3B}) + (${w3A}·${notB}) + (${w3B}·${w3C}) = ${term1} + ${term2} + ${term3} = ${bloatedOut}`;
+      }
+      if (lTrace) {
+        lTrace.textContent = `Terms: ${w3A} + (${w3B}·${w3C}) = ${w3A} + ${term3} = ${leanOut}`;
+      }
+
+      // Banner equivalence
+      const banner = document.getElementById('equivalence-status-banner');
+      if (banner) {
+        if (bloatedOut === leanOut) {
+          banner.style.background = 'rgba(16, 185, 129, 0.15)';
+          banner.style.borderColor = '#10b981';
+          banner.style.color = '#34d399';
+          banner.innerHTML = `✅ Mathematical Equivalence Confirmed: Bloated (${bloatedOut}) ≡ Lean (${leanOut}) across input state (${w3A}, ${w3B}, ${w3C})!`;
+        } else {
+          banner.style.background = 'rgba(239, 68, 68, 0.2)';
+          banner.style.borderColor = '#ef4444';
+          banner.style.color = '#fca5a5';
+          banner.innerHTML = `❌ Discrepancy detected! Check logic terms.`;
+        }
+      }
+    }
+
+    // Prediction check helper
+    function checkPrediction(btn, isCorrect, explanation) {
+      const container = btn.closest('.prediction-box') || btn.parentElement;
+      const allBtns = container.querySelectorAll('.pred-btn');
+      allBtns.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('incorrect');
+      }
+
+      let fb = container.querySelector('.prediction-feedback');
+      if (!fb) {
+        fb = document.createElement('div');
+        fb.className = 'prediction-feedback';
+        fb.style.marginTop = '10px';
+        fb.style.padding = '10px 14px';
+        fb.style.borderRadius = '8px';
+        fb.style.fontSize = '0.84rem';
+        fb.style.lineHeight = '1.45';
+        container.appendChild(fb);
+      }
+
+      fb.style.display = 'block';
+      if (isCorrect) {
+        fb.style.background = 'rgba(16, 185, 129, 0.2)';
+        fb.style.border = '1px solid #10b981';
+        fb.style.color = '#34d399';
+        fb.innerHTML = `<strong>Spot on!</strong> ${explanation}`;
+      } else {
+        fb.style.background = 'rgba(239, 68, 68, 0.15)';
+        fb.style.border = '1px solid #ef4444';
+        fb.style.color = '#fca5a5';
+        fb.innerHTML = `<strong>Not quite.</strong> ${explanation}`;
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(fb, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ]
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateWeek3Workbench();
+    });
+  </script>
+</body>
+
+</html>

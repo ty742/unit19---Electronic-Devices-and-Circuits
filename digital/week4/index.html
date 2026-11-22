@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 19: Electronic Devices &amp; Circuits — Digital Week 4: Karnaugh Maps Minimisation</title>
+  <meta name="description"
+    content="Unit 19 Learning Aim B Week 4: Karnaugh Maps — Find the Shortest Route. Master 2, 3, and 4-variable K-maps, Gray code mapping, grouping rules, gate count optimisation challenge, Multisim simulation, and breadboard verification.">
+
+  <!-- Shared CSS Tokens & Component Styling -->
+  <link rel="stylesheet" href="../../shared/css/presentation.css">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- KaTeX for Accessible LaTeX Mathematical Typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Digital Week 4 Custom Styling */
+    .hero-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #38bdf8 75%, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      background: rgba(0, 151, 157, 0.2);
+      border: 1px solid var(--accent-arduino);
+      color: var(--accent-cyan);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-pill.aim-b-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .badge-pill.role-pill {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #7dd3fc;
+    }
+
+    .badge-pill.poe-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    /* 60-Minute Masterclass Framework Banner */
+    .quick-teach-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin: 14px 0 18px 0;
+    }
+
+    .quick-teach-step {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-top: 3px solid #38bdf8;
+    }
+
+    .quick-teach-step.s1 { border-top-color: #38bdf8; }
+    .quick-teach-step.s2 { border-top-color: #a855f7; }
+    .quick-teach-step.s3 { border-top-color: #f59e0b; }
+    .quick-teach-step.s4 { border-top-color: #10b981; }
+
+    .qt-time {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .qt-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .qt-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Responsive Video Embed Container */
+    .video-responsive-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: #020617;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-responsive-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* K-Map Interactive Grid Styling */
+    .kmap-table {
+      border-collapse: separate;
+      border-spacing: 4px;
+      font-family: var(--font-mono);
+      margin: 0 auto;
+    }
+
+    .kmap-th {
+      color: #94a3b8;
+      font-size: 0.82rem;
+      padding: 6px 10px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .kmap-cell {
+      width: 58px;
+      height: 52px;
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      color: #94a3b8;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.18s ease;
+      position: relative;
+    }
+
+    .kmap-cell:hover {
+      border-color: #38bdf8;
+      background: #1e293b;
+    }
+
+    .kmap-cell.active-1 {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .kmap-cell-label {
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 0.62rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* Preset Buttons */
+    .preset-btn {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #cbd5e1;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: #334155;
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    /* Prediction Checkpoint Box */
+    .prediction-box {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+
+    .pred-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .pred-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+
+    .pred-btn.correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+      font-weight: 700;
+    }
+
+    .pred-btn.incorrect {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: #ef4444 !important;
+      color: #f87171 !important;
+    }
+
+    @media (max-width: 900px) {
+      .quick-teach-strip { grid-template-columns: repeat(2, 1fr); }
+      .kmap-cell { width: 46px; height: 42px; font-size: 1.1rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-container">
+    <div id="deck-viewport">
+
+      <!-- Top Navigation Header -->
+      <header class="deck-header">
+        <div class="header-left">
+          <a href="../../index.html" class="nav-hub-link" title="Return to Course Homepage Hub">
+            🏠 Course Hub
+          </a>
+          <div class="brand-badge">
+            <span class="pill" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b;">AIM B • WEEK 4</span>
+            <span>Digital Electronics</span>
+            <span style="color: var(--text-muted);">|</span>
+            <span id="header-slide-topic" style="color: var(--accent-cyan); font-weight: 600;">Karnaugh Maps: Find the Shortest Route</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="https://www.futurlec.com/IC74LS00Series.shtml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" title="Study 74LS-Series Logic IC Datasheets on Futurlec" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            📑 IC Datasheets
+          </a>
+          <button class="btn btn-secondary" id="open-a11y-drawer" title="Accessibility &amp; Inclusion (Key: A)">
+            ⚙️ Accessibility
+          </button>
+          <button class="btn btn-secondary" id="open-slide-matrix" title="View all slides overview (Key: M)">
+            🗺️ Slide Map
+          </button>
+        </div>
+      </header>
+
+      <!-- Slides Wrapper -->
+      <main id="slides-wrapper">
+
+        <!-- =========================================================================
+             SLIDE 1: WELCOME & 60-MINUTE MASTERCLASS FRAMEWORK
+             ========================================================================= -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-body" style="justify-content: flex-start; align-items: flex-start;">
+            <div class="badge-bar">
+              <span class="badge-pill aim-b-pill">Learning Aim B: Digital Electronics • Week 4</span>
+              <span class="badge-pill role-pill">Role: Junior Digital Design Engineer</span>
+              <span class="badge-pill poe-pill">PoE Reference: B04 Optimisation Challenge</span>
+            </div>
+
+            <h1 class="hero-title">Karnaugh Maps: “Find the Shortest Route”</h1>
+            <p class="hero-subtitle">
+              Harness 2D graphical minimization and Gray code geometry to design the lowest gate-count control logic for multi-sensor industrial systems.
+            </p>
+
+            <!-- Learning Outcomes & KSBs -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; margin-top: 10px;">
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">🎯 Session Learning Outcomes</div>
+                <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; margin: 0;">
+                  <li><strong>Construct &amp; Populate K-Maps:</strong> Correctly translate truth tables into 2, 3, and 4-variable Gray code grids.</li>
+                  <li><strong>Apply the 5 Golden Grouping Rules:</strong> Form valid powers-of-two groups with edge wrap-around.</li>
+                  <li><strong>Derive Minimal SOP Expressions:</strong> Cancel changing variables to identify essential prime implicants.</li>
+                  <li><strong>Gate Count Challenge:</strong> Implement and verify the minimal circuit on Multisim and breadboard.</li>
+                </ul>
+              </div>
+
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">📋 Workplace Scenario Brief</div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                  “Apex Robotics is commissioning an automated packaging line with <strong>4 optical quality-control sensors ($A, B, C, D$)</strong>. The raw truth table requires a massive 12-gate logic matrix. Find the shortest route from sensors to reject actuator using a 4-variable K-map!”
+                </p>
+                <div style="display: flex; gap: 8px; font-size: 0.78rem; font-family: var(--font-mono); color: #38bdf8;">
+                  <span>Client: Apex Robotics &amp; Automation</span> &bull; <span>Ref: KMAP-SORT4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 2: ENGINEERING TOOLBOX (CUMULATIVE RETRIEVAL)
+             ========================================================================= -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <div class="slide-tag">START OF LESSON &bull; CUMULATIVE RETRIEVAL</div>
+            <h2 class="slide-title">Engineering Toolbox: Prior Recall</h2>
+            <div class="slide-subtitle">Retrieve Boolean algebraic factoring and truth-table minterms before moving to graphical maps.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <div class="card">
+                <div class="card-title">🧮 Retrieval 1: The Complement Law (Week 3)</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  In Boolean algebra, what is the evaluated result of factoring out a term such that $(X + \overline{X})$ appears inside the expression?
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! (X + !X) is always 1 (TRUE). Multiplying any variable by 1 leaves that variable unchanged, which cancels X!')">
+                      $$(X + \overline{X}) = 1 \text{ (Always TRUE)}$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. X · !X is 0, but X + !X is always 1.')">
+                      $$(X + \overline{X}) = 0 \text{ (Always FALSE)}$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. This does not result in a single variable.')">
+                      $$(X + \overline{X}) = X$$
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">🔍 Retrieval 2: 4-Variable Minterms (Week 2)</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+                  Which product term (minterm) corresponds to row $A=1, B=0, C=1, D=0$ in a 4-variable truth table?
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Logic 1 is represented un-complemented, while Logic 0 is complemented: A · !B · C · !D.')">
+                      $$A \cdot \overline{B} \cdot C \cdot \overline{D}$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. B and D must be complemented because they equal 0 in this row.')">
+                      $$A \cdot B \cdot C \cdot D$$
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. This represents row 0, 1, 0, 1.')">
+                      $$\overline{A} \cdot B \cdot \overline{C} \cdot D$$
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reminder Card -->
+            <div class="card" style="margin-top: 14px; width: 100%; border-left: 4px solid #10b981; padding: 12px 16px;">
+              <div style="font-weight: 700; color: #34d399; font-size: 0.88rem; margin-bottom: 4px;">💡 The Secret Behind Karnaugh Maps</div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                A Karnaugh Map is simply a graphical rearrangement of a truth table where <strong>adjacent squares differ by exactly ONE binary digit</strong>. When two adjacent squares both contain a 1, that changing variable immediately drops out ($X + \overline{X} = 1$), eliminating manual algebraic factoring completely!
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 3: VIDEO MASTERCLASS & VISUAL CONCEPT HOOK
+             ========================================================================= -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <div class="slide-tag">CONCEPT HOOK &bull; VIDEO EXPLANATION</div>
+            <h2 class="slide-title">Video Masterclass: Introduction to Karnaugh Maps</h2>
+            <div class="slide-subtitle">Watch how Maurice Karnaugh's 1953 map transformed complex digital minimization into visual pattern matching.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Embedded Responsive Video Player -->
+              <div>
+                <div class="video-responsive-wrapper">
+                  <iframe src="https://www.youtube-nocookie.com/embed/RO5alU6PpSU?rel=0" 
+                          title="Neso Academy: Introduction to Karnaugh Maps (K-Maps)" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowfullscreen>
+                  </iframe>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                  <span style="font-size: 0.78rem; color: #94a3b8;">Source: Neso Academy (Digital Electronics Tutorial)</span>
+                  <a href="https://www.youtube.com/watch?v=RO5alU6PpSU" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; color: #38bdf8; text-decoration: none;">
+                    ↗ Open Video in New Tab
+                  </a>
+                </div>
+              </div>
+
+              <!-- Masterclass Core Takeaways -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #38bdf8; margin-bottom: 4px;">
+                    1. Why Algebraic Reduction Fails at Scale
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    With 3, 4, or 5 variables, finding which terms can factor together requires trial and error. K-maps make every possible factoring opportunity visible as adjacent geometric rectangles.
+                  </p>
+                </div>
+
+                <div class="card" style="padding: 14px; border-top: 3px solid #f59e0b;">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #fbbf24; margin-bottom: 4px;">
+                    2. The Power of Gray Code
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    Standard binary counts $00 \to 01 \to 10 \to 11$. But Gray code uses $00 \to 01 \to 11 \to 10$. This ensures that consecutive rows and columns change by only <strong>1 bit at a time</strong>!
+                  </p>
+                </div>
+
+                <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #34d399; margin-bottom: 4px;">
+                    3. The Golden Rule: Powers of Two
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    Groups must contain $1, 2, 4, 8,$ or $16$ cells. A group of 2 eliminates 1 variable; a group of 4 eliminates 2 variables; a group of 8 eliminates 3 variables!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 4: WHAT IS A KARNAUGH MAP? (2 & 3 VARIABLES WORKED EXAMPLE)
+             ========================================================================= -->
+        <section class="slide" id="slide-4">
+          <div class="slide-header">
+            <div class="slide-tag">PART 1: K-MAP BASICS (2 &amp; 3 VARIABLES)</div>
+            <h2 class="slide-title">3. What is a Karnaugh Map (K-Map)?</h2>
+            <div class="slide-subtitle">A visual grid method for simplifying Boolean expressions by grouping adjacent 1s — not a different algebra, just a visual shortcut!</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Left: Truth Table + 2-Var intro -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="padding: 12px 14px; border-left: 4px solid #38bdf8;">
+                  <div style="font-weight: 800; color: #38bdf8; font-size: 0.88rem; margin-bottom: 4px;">
+                    From Truth Table to 3-Variable Grid
+                  </div>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin: 0 0 8px 0;">
+                    Instead of manipulating algebraic laws, we copy the $1$s from a truth table into a grid (2-var = $2\times 2$, 3-var = $2\times 4$, 4-var = $4\times 4$). Look at this 3-input example:
+                  </p>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; font-family: var(--font-mono); text-align: center;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid #334155; color: #94a3b8;">
+                        <th>A</th><th>B</th><th>C</th><th style="color: #34d399;">Output</th>
+                      </tr>
+                    </thead>
+                    <tbody style="color: #cbd5e1;">
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>0</td><td>0</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>0</td><td>1</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>1</td><td>0</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                      <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>1</td><td>1</td><td>0</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                      <tr><td>1</td><td>1</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Right: 3-Variable K-Map Grid + 3 Steps -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="padding: 12px 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-weight: 800; color: #ffffff; font-size: 0.88rem;">3-Variable K-Map (Columns use Gray Code)</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.74rem; color: #fbbf24;">00 &rarr; 01 &rarr; 11 &rarr; 10</span>
+                  </div>
+                  <table style="width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.88rem; text-align: center;">
+                    <thead>
+                      <tr style="color: #94a3b8;">
+                        <th style="padding: 5px; color: #fbbf24;">A \ BC</th>
+                        <th style="padding: 5px;">00</th>
+                        <th style="padding: 5px; color: #38bdf8;">01</th>
+                        <th style="padding: 5px; color: #38bdf8;">11</th>
+                        <th style="padding: 5px;">10</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th style="padding: 6px; color: #c084fc;">0</th>
+                        <td style="border: 1px solid #334155; padding: 8px; color: #64748b;">0</td>
+                        <td style="border: 2px solid #10b981; background: rgba(16,185,129,0.2); padding: 8px; color: #34d399; font-weight: 800;">1</td>
+                        <td style="border: 2px solid #10b981; background: rgba(16,185,129,0.2); padding: 8px; color: #34d399; font-weight: 800;">1</td>
+                        <td style="border: 1px solid #334155; padding: 8px; color: #64748b;">0</td>
+                      </tr>
+                      <tr>
+                        <th style="padding: 6px; color: #c084fc;">1</th>
+                        <td style="border: 1px solid #334155; padding: 8px; color: #64748b;">0</td>
+                        <td style="border: 2px solid #10b981; background: rgba(16,185,129,0.2); padding: 8px; color: #34d399; font-weight: 800;">1</td>
+                        <td style="border: 2px solid #f59e0b; background: rgba(16,185,129,0.2); padding: 8px; color: #34d399; font-weight: 800;">1</td>
+                        <td style="border: 2px solid #f59e0b; background: rgba(245,158,11,0.2); padding: 8px; color: #fbbf24; font-weight: 800;">1</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- 3 Clear Steps -->
+                <div class="card" style="padding: 12px 14px; border-left: 4px solid #10b981;">
+                  <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                    <strong style="color: #34d399;">Step 1 (Green Group of 4):</strong> Group the four $1$s in columns <code>01</code> &amp; <code>11</code>. Here $A$ changes, $B$ changes, and only <strong>$C=1$ stays constant</strong> &rarr; Term: <strong>$C$</strong>.<br>
+                    <strong style="color: #fbbf24;">Step 2 (Amber Pair of 2):</strong> Group the remaining $1$ at $(A=1, BC=10)$ with its left neighbour $(A=1, BC=11)$. $C$ changes, while <strong>$A=1, B=1$ stay constant</strong> &rarr; Term: <strong>$A \cdot B$</strong>.<br>
+                    <strong style="color: #ffffff;">Step 3 (Combine with OR):</strong> $$\text{Output} = C + (A \cdot B)$$
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 5: THE ANATOMY OF A 4-VARIABLE K-MAP & GRAY CODE MAGIC
+             ========================================================================= -->
+        <section class="slide" id="slide-5">
+          <div class="slide-header">
+            <div class="slide-tag">K-MAP ANATOMY &bull; GRAY CODE</div>
+            <h2 class="slide-title">K-Map Anatomy &amp; Gray Code Structure</h2>
+            <div class="slide-subtitle">Understand why coordinates are ordered 00, 01, 11, 10 instead of normal binary counting.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; align-items: start;">
+              <!-- Visual Card: Standard Binary vs Gray Code -->
+              <div class="card" style="padding: 16px;">
+                <div class="card-title">🔢 The Gray Code Transition Matrix</div>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                  Notice what happens when counting from 1 to 2 in normal binary vs Gray code:
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: var(--font-mono); font-size: 0.85rem;">
+                  <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 10px;">
+                    <div style="color: #f87171; font-weight: 800; margin-bottom: 4px;">Standard Binary</div>
+                    0: <code>00</code><br>
+                    1: <code>01</code><br>
+                    2: <code style="color: #ef4444;">10</code> (2 bits change!)<br>
+                    3: <code>11</code>
+                  </div>
+
+                  <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 10px;">
+                    <div style="color: #34d399; font-weight: 800; margin-bottom: 4px;">Gray Code</div>
+                    0: <code>00</code><br>
+                    1: <code>01</code><br>
+                    2: <code style="color: #34d399;">11</code> (Only 1 bit changes!)<br>
+                    3: <code style="color: #34d399;">10</code> (Only 1 bit changes!)
+                  </div>
+                </div>
+
+                <div style="margin-top: 12px; font-size: 0.82rem; color: #94a3b8; line-height: 1.45;">
+                  ⚡ <strong>Crucial Consequence:</strong> Because only 1 variable changes state between adjacent cells, two adjacent 1s represent terms like $(A \cdot B \cdot C) + (A \cdot B \cdot \overline{C}) = A \cdot B \cdot (C + \overline{C}) = A \cdot B$!
+                </div>
+              </div>
+
+              <!-- Visual K-Map Structure Diagram -->
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <img src="images/kmap-structure.svg" alt="4-Variable Karnaugh Map Anatomy and 5 Golden Grouping Rules" style="width: 100%; border-radius: 10px; border: 1px solid #334155;">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 5: THE 5 GOLDEN GROUPING RULES
+             ========================================================================= -->
+        <section class="slide" id="slide-6">
+          <div class="slide-header">
+            <div class="slide-tag">SYSTEMATIC METHOD &bull; THE 5 RULES</div>
+            <h2 class="slide-title">The 5 Golden Rules of K-Map Grouping</h2>
+            <div class="slide-subtitle">Follow these five strict rules to guarantee you find the absolute minimal Boolean expression.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+              <!-- Rule 1 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.92rem; margin-bottom: 6px;">
+                  1. Powers of Two Only
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin-bottom: 6px;">
+                  $N = 2^k \in \{1, 2, 4, 8, 16\}$
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                  You can NEVER group 3, 5, 6, or 7 cells! Groups must be exactly $1, 2, 4, 8,$ or $16$ cells.
+                </p>
+              </div>
+
+              <!-- Rule 2 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                <div style="font-weight: 800; color: #34d399; font-size: 0.92rem; margin-bottom: 6px;">
+                  2. Rectangles or Squares Only
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin-bottom: 6px;">
+                  $1 \times 2, 2 \times 2, 2 \times 4, 4 \times 4$
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                  No diagonal lines, L-shapes, or triangular groups. Groups must form continuous rectangular blocks.
+                </p>
+              </div>
+
+              <!-- Rule 3 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #f59e0b;">
+                <div style="font-weight: 800; color: #fbbf24; font-size: 0.92rem; margin-bottom: 6px;">
+                  3. Make Groups as Large as Possible
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin-bottom: 6px;">
+                  Max Size = Minimum Gates
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                  Always look for octets (8) first, then quads (4), then pairs (2). Larger groups eliminate more input variables!
+                </p>
+              </div>
+
+              <!-- Rule 4 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #a855f7;">
+                <div style="font-weight: 800; color: #c084fc; font-size: 0.92rem; margin-bottom: 6px;">
+                  4. Torus Edge Wrap-Around
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin-bottom: 6px;">
+                  Left $\leftrightarrow$ Right | Top $\leftrightarrow$ Bottom
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                  The map is a torus (donut). The far-left column is adjacent to the far-right column; the top row is adjacent to the bottom row!
+                </p>
+              </div>
+
+              <!-- Rule 5 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #ef4444;">
+                <div style="font-weight: 800; color: #f87171; font-size: 0.92rem; margin-bottom: 6px;">
+                  5. Overlap is Allowed &amp; Encouraged
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.05rem; color: #ffffff; margin-bottom: 6px;">
+                  Share 1s for Bigger Groups
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                  You can include a cell in multiple groups if it helps make another group larger. (Remember: $1 + 1 = 1$ in Boolean logic!).
+                </p>
+              </div>
+
+              <!-- Rule Summary -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #06b6d4; background: rgba(6, 182, 212, 0.08);">
+                <div style="font-weight: 800; color: #22d3ee; font-size: 0.92rem; margin-bottom: 6px;">
+                  ⚡ Quick Summary Rule
+                </div>
+                <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.45; margin: 0;">
+                  Every single Logic 1 must be covered by at least one group. But avoid redundant groups where every 1 is already covered by larger groups!
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 6: INDUSTRIAL SCENARIO — 4-SENSOR CONVEYOR SORTER
+             ========================================================================= -->
+        <section class="slide" id="slide-7">
+          <div class="slide-header">
+            <div class="slide-tag">ENGINEERING CHALLENGE &bull; 4-SENSOR SYSTEM</div>
+            <h2 class="slide-title">The Workplace Challenge: 4-Sensor Sorter</h2>
+            <div class="slide-subtitle">Apex Robotics &bull; High-Speed Automated Conveyor Reject Gate Optimization</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 14px; width: 100%; align-items: start;">
+              <!-- Left Column: Memo Card + Hardware Penalty -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="padding: 12px 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-weight: 800; color: #38bdf8; font-size: 0.86rem;">📋 CLIENT SPECIFICATION (REF: KMAP-402)</span>
+                  </div>
+                  <ul style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; padding-left: 16px; margin: 0 0 8px 0;">
+                    <li><strong>A:</strong> Height Defect ($1=\text{Overheight}$) &bull; <strong>B:</strong> Weight ($1=\text{Underweight}$)</li>
+                    <li><strong>C:</strong> Metal Detected ($1=\text{Metal}$) &bull; <strong>D:</strong> Barcode ($1=\text{Valid}$)</li>
+                  </ul>
+                  <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; border-radius: 6px; padding: 8px 10px; font-size: 0.78rem; color: #34d399;">
+                    <strong>Fire Reject ($\text{Reject} = 1$) when:</strong><br>
+                    &bull; Height defect WITHOUT metal ($A \cdot \overline{C}$), OR<br>
+                    &bull; Metal detected WITHOUT height defect ($\overline{A} \cdot C$).
+                  </div>
+                </div>
+
+                <!-- What is a Minterm? Explanation Card -->
+                <div class="card" style="padding: 10px 14px; border-left: 4px solid #fbbf24;">
+                  <div style="font-weight: 800; color: #fbbf24; font-size: 0.84rem; margin-bottom: 4px;">
+                    💡 What is a Minterm ($m$)?
+                  </div>
+                  <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    A <strong>minterm</strong> is one row of a truth table where the output is <strong>1</strong>, written by ANDing all inputs together: use the <strong>normal letter</strong> for $1$ and the <strong>barred letter</strong> for $0$.<br>
+                    <em>Example:</em> Row <strong>$m_2$</strong> ($0010_2 = 2$: $A=0, B=0, C=1, D=0$) &rarr; <strong style="color: #fbbf24; font-family: var(--font-mono);">$\overline{A}\cdot\overline{B}\cdot C\cdot\overline{D}$</strong>.
+                  </p>
+                </div>
+
+                <div class="card" style="padding: 12px 14px; border-left: 4px solid #ef4444;">
+                  <div style="font-weight: 800; color: #f87171; font-size: 0.84rem; margin-bottom: 4px;">❌ Un-Simplified Minterm Expression (8 Minterms)</div>
+                  <div style="background: #0f172a; border-radius: 6px; padding: 8px; font-family: var(--font-mono); font-size: 0.7rem; color: #fca5a5; line-height: 1.5; margin-bottom: 6px;">
+                    $\text{Reject} = m_2 + m_3 + m_6 + m_7 + m_8 + m_9 + m_{12} + m_{13}$<br>
+                    $= \overline{A}\overline{B}C\overline{D} + \overline{A}\overline{B}CD + \overline{A}BC\overline{D} + \overline{A}BCD + A\overline{B}\overline{C}\overline{D} + A\overline{B}\overline{C}D + AB\overline{C}\overline{D} + AB\overline{C}D$
+                  </div>
+                  <div style="font-size: 0.76rem; color: #fca5a5;">
+                    <strong>Penalty:</strong> 8x 4-input AND + 1x 8-input OR + 4 NOT = <strong>13 IC packages!</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Single Continuous 16-Row Truth Table -->
+              <div class="card" style="padding: 10px 14px; border-top: 3px solid #38bdf8;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.84rem; margin-bottom: 4px;">
+                  📊 Complete 16-Row Truth Table ($m_0 \dots m_{15}$)
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.68rem; font-family: var(--font-mono); text-align: center; line-height: 1.25;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; color: #94a3b8;">
+                      <th style="padding: 2px;">m</th><th style="padding: 2px;">A</th><th style="padding: 2px;">B</th><th style="padding: 2px;">C</th><th style="padding: 2px;">D</th><th style="padding: 2px; color:#34d399;">Reject</th>
+                    </tr>
+                  </thead>
+                  <tbody style="color: #cbd5e1;">
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m2</td><td>0</td><td>0</td><td>1</td><td>0</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m3</td><td>0</td><td>0</td><td>1</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m4</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m5</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m6</td><td>0</td><td>1</td><td>1</td><td>0</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m7</td><td>0</td><td>1</td><td>1</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m8</td><td>1</td><td>0</td><td>0</td><td>0</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m9</td><td>1</td><td>0</td><td>0</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m10</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m11</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m12</td><td>1</td><td>1</td><td>0</td><td>0</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35); background: rgba(16,185,129,0.14);"><td style="color:#34d399;font-weight:700;">m13</td><td>1</td><td>1</td><td>0</td><td>1</td><td style="color:#34d399;font-weight:800;">1</td></tr>
+                    <tr style="border-bottom: 1px solid rgba(51,65,85,0.35);"><td>m14</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+                    <tr><td>m15</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 7: INTERACTIVE 4-VARIABLE K-MAP SOLVER TOOL
+             ========================================================================= -->
+        <section class="slide" id="slide-8">
+          <div class="slide-header">
+            <div class="slide-tag">INTERACTIVE TOOL &bull; K-MAP SOLVER</div>
+            <h2 class="slide-title">Interactive 4-Variable K-Map Solver</h2>
+            <div class="slide-subtitle">Click cells to toggle 0 / 1 or load industrial presets to observe real-time minimization.</div>
+          </div>
+          <div class="slide-body">
+            <!-- Preset Selector Bar -->
+            <div style="display: flex; justify-content: center; gap: 10px; width: 100%; margin-bottom: 14px; flex-wrap: wrap;">
+              <button class="preset-btn" onclick="loadKmapPreset('conveyor')">📦 Preset: Conveyor Reject Sorter (8 minterms)</button>
+              <button class="preset-btn" onclick="loadKmapPreset('corners')">🔄 Preset: 4-Corner Wrap-Around (m0, m2, m8, m10)</button>
+              <button class="preset-btn" onclick="loadKmapPreset('quad')">🔲 Preset: Center Quad (m5, m7, m13, m15)</button>
+              <button class="preset-btn" onclick="resetKmap()">🧹 Clear All Cells</button>
+            </div>
+
+            <!-- K-Map Matrix & Output Display Grid -->
+            <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; width: 100%; align-items: center;">
+              <!-- 16-Cell Interactive K-Map Grid -->
+              <div style="background: #0b1120; border: 1px solid #334155; border-radius: 12px; padding: 14px; display: flex; justify-content: center;">
+                <table class="kmap-table">
+                  <thead>
+                    <tr>
+                      <th class="kmap-th" style="color: #fbbf24;">AB \ CD</th>
+                      <th class="kmap-th">00</th>
+                      <th class="kmap-th">01</th>
+                      <th class="kmap-th">11</th>
+                      <th class="kmap-th">10</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Row 00 -->
+                    <tr>
+                      <th class="kmap-th" style="color: #c084fc;">00</th>
+                      <td><div class="kmap-cell" id="kcell-0" onclick="toggleKcell(0)"><span class="kmap-cell-label">m0</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-1" onclick="toggleKcell(1)"><span class="kmap-cell-label">m1</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-3" onclick="toggleKcell(3)"><span class="kmap-cell-label">m3</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-2" onclick="toggleKcell(2)"><span class="kmap-cell-label">m2</span><span class="kcell-val">0</span></div></td>
+                    </tr>
+                    <!-- Row 01 -->
+                    <tr>
+                      <th class="kmap-th" style="color: #c084fc;">01</th>
+                      <td><div class="kmap-cell" id="kcell-4" onclick="toggleKcell(4)"><span class="kmap-cell-label">m4</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-5" onclick="toggleKcell(5)"><span class="kmap-cell-label">m5</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-7" onclick="toggleKcell(7)"><span class="kmap-cell-label">m7</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-6" onclick="toggleKcell(6)"><span class="kmap-cell-label">m6</span><span class="kcell-val">0</span></div></td>
+                    </tr>
+                    <!-- Row 11 -->
+                    <tr>
+                      <th class="kmap-th" style="color: #c084fc;">11</th>
+                      <td><div class="kmap-cell" id="kcell-12" onclick="toggleKcell(12)"><span class="kmap-cell-label">m12</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-13" onclick="toggleKcell(13)"><span class="kmap-cell-label">m13</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-15" onclick="toggleKcell(15)"><span class="kmap-cell-label">m15</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-14" onclick="toggleKcell(14)"><span class="kmap-cell-label">m14</span><span class="kcell-val">0</span></div></td>
+                    </tr>
+                    <!-- Row 10 -->
+                    <tr>
+                      <th class="kmap-th" style="color: #c084fc;">10</th>
+                      <td><div class="kmap-cell" id="kcell-8" onclick="toggleKcell(8)"><span class="kmap-cell-label">m8</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-9" onclick="toggleKcell(9)"><span class="kmap-cell-label">m9</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-11" onclick="toggleKcell(11)"><span class="kmap-cell-label">m11</span><span class="kcell-val">0</span></div></td>
+                      <td><div class="kmap-cell" id="kcell-10" onclick="toggleKcell(10)"><span class="kmap-cell-label">m10</span><span class="kcell-val">0</span></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Real-Time Minimal Equation Output -->
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="card" style="padding: 16px; border: 2px solid #10b981; background: rgba(16, 185, 129, 0.08);">
+                  <div style="font-weight: 800; color: #34d399; font-size: 0.95rem; margin-bottom: 6px;">
+                    ✨ Real-Time Minimal SOP Expression:
+                  </div>
+                  <div id="kmap-derived-eq" style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 800; color: #34d399; margin-bottom: 6px;">
+                    $$\text{Output} = 0$$
+                  </div>
+                  <div id="kmap-group-details" style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.45;">
+                    No cells active. Click cells to place 1s or choose a preset above.
+                  </div>
+                </div>
+
+                <div class="card" style="padding: 12px 14px; font-size: 0.8rem; color: var(--text-secondary);">
+                  <strong style="color: #38bdf8;">Tip for Engineers:</strong> When you select the Conveyor Sorter preset, two 4-cell quad groups form. 8 minterms collapse into only <strong>2 product terms</strong>!
+                </div>
+
+                <div class="card" style="padding: 10px 14px; border-left: 4px solid #f59e0b; background: rgba(15, 23, 42, 0.85);">
+                  <div style="font-weight: 800; color: #fbbf24; font-size: 0.8rem; margin-bottom: 4px;">📌 Conveyor Sorter Minterms Reference</div>
+                  <div style="font-family: var(--font-mono); font-size: 0.74rem; color: #fca5a5; line-height: 1.5;">
+                    $$\text{Reject} = m_2 + m_3 + m_6 + m_7 + m_8 + m_9 + m_{12} + m_{13}$$
+                    $$= \overline{A}\overline{B}C\overline{D} + \overline{A}\overline{B}CD + \overline{A}BC\overline{D} + \overline{A}BCD + A\overline{B}\overline{C}\overline{D} + A\overline{B}\overline{C}D + AB\overline{C}\overline{D} + AB\overline{C}D$$
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 9: GATE COUNT CHALLENGE: HARDWARE COMPARISON
+             ========================================================================= -->
+        <section class="slide" id="slide-9">
+          <div class="slide-header">
+            <div class="slide-tag">ENGINEERING CHALLENGE &bull; GATE COUNT AUDIT</div>
+            <h2 class="slide-title">The Gate Count Challenge: Before vs. After</h2>
+            <div class="slide-subtitle">Quantify the engineering impact: comparing 13 IC packages against minimal hardware.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <!-- Schematic Card -->
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <img src="images/kmap-schematic.svg" alt="Minimal Schematic derived from Karnaugh Map" style="width: 100%; border-radius: 10px; border: 1px solid #334155;">
+              </div>
+
+              <!-- Hardware Audit Table & Datasheet Link -->
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">📊 Gate Count Audit &amp; IC Selection</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 6px; margin-bottom: 12px;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #334155; text-align: left; color: #94a3b8;">
+                      <th style="padding: 6px;">Parameter</th>
+                      <th style="padding: 6px; color: #f87171;">Un-Simplified</th>
+                      <th style="padding: 6px; color: #34d399;">K-Map Minimal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">Logic Gates</td>
+                      <td style="padding: 6px; color: #fca5a5;">13 gates</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">3 gates (-77%)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">IC Packages</td>
+                      <td style="padding: 6px; color: #fca5a5;">4–5 ICs</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">1–2 ICs</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                      <td style="padding: 6px; font-weight: 600;">Current Draw</td>
+                      <td style="padding: 6px; color: #fca5a5;">~85 mA</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">~22 mA (-74%)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px; font-weight: 600;">Propagation Delay</td>
+                      <td style="padding: 6px; color: #fca5a5;">~35 ns</td>
+                      <td style="padding: 6px; color: #6ee7b7; font-weight: 700;">~12 ns (-65%)</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155;">
+                  <span style="font-size: 0.8rem; color: #38bdf8; font-weight: 700;">Hardware Choice:</span>
+                  <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 2px 0 8px 0;">
+                    Can be built using 1x <code>74LS04</code> (NOT), 1x <code>74LS08</code> (AND), 1x <code>74LS32</code> (OR) or a single <code>74LS86</code> (Quad XOR Gate)!
+                  </p>
+                  <a href="https://www.futurlec.com/IC74LS00Series.shtml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                    📑 Check 74LS86 Pinouts on Futurlec &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 11: TINKERCAD / MULTISIM SIMULATION & GATE COUNT COMPARISON
+             ========================================================================= -->
+        <section class="slide" id="slide-10">
+          <div class="slide-header">
+            <div class="slide-tag">VIRTUAL PROTOTYPING &bull; 45–60 MINUTES</div>
+            <h2 class="slide-title">Tinkercad / Multisim Simulation: Build &amp; Compare</h2>
+            <div class="slide-subtitle">Build the original and K-map simplified circuits in Tinkercad or Multisim, compare gate counts, and verify boundary cases.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <div class="card" style="padding: 14px;">
+                <div class="card-title">💻 Simulator Procedure (Tinkercad / Multisim)</div>
+                <ol style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; padding-left: 20px; margin: 0;">
+                  <li><strong>Setup 4 Digital Switches:</strong> Place 4 SPDT or DIP switches for inputs $A, B, C, D$ ($0\,\text{V}$ / $+5\,\text{V}$).</li>
+                  <li><strong>Build &amp; Compare:</strong> Compare the un-simplified 13-gate minterm design against the minimal K-map logic ($\overline{A}\cdot C + A\cdot\overline{C}$ using <code>74LS04</code>, <code>74LS08</code>, <code>74LS32</code> — or a single <code>74LS86</code>).</li>
+                  <li><strong>Attach Output Probe:</strong> Connect a Green LED probe (via $330\,\Omega$ resistor) to the final output ($\text{Reject}$).</li>
+                  <li><strong>Test Boundary Conditions:</strong> Verify that toggling inputs $B$ and $D$ has <strong>zero effect</strong> on the output!</li>
+                </ol>
+                <div style="margin-top: 10px; background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; border-radius: 6px; padding: 8px 10px; font-size: 0.78rem; color: #7dd3fc;">
+                  🎓 <strong>Assignment Prep:</strong> Record your gate-count reduction and simulator screenshots — this directly prepares you for <strong>Unit 19 Assignment 2, Question 1</strong> on combinational logic!
+                </div>
+              </div>
+
+              <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                <div class="card-title">📝 Verification Checklist</div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; margin-top: 6px;">
+                  <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 8px 12px; border-radius: 6px; color: #a7f3d0;">
+                    ✅ <strong>Case 1 ($A=0, C=1$):</strong> Reject = 1 (Overheight absent, metal present). Verified across all B/D combinations.
+                  </div>
+                  <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 8px 12px; border-radius: 6px; color: #a7f3d0;">
+                    ✅ <strong>Case 2 ($A=1, C=0$):</strong> Reject = 1 (Overheight present, metal absent). Verified across all B/D combinations.
+                  </div>
+                  <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 8px 12px; border-radius: 6px; color: #fca5a5;">
+                    🛑 <strong>Case 3 ($A=0, C=0$):</strong> Reject = 0 (Neither fault active &rarr; package passes).
+                  </div>
+                  <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 8px 12px; border-radius: 6px; color: #fca5a5;">
+                    🛑 <strong>Case 4 ($A=1, C=1$):</strong> Reject = 0 (Both active &rarr; diverted to hazardous manual quarantine).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 11: PHYSICAL BREADBOARD BUILD
+             ========================================================================= -->
+        <section class="slide" id="slide-11">
+          <div class="slide-header">
+            <div class="slide-tag">PRACTICAL HARDWARE BUILD &bull; BENCH ASSEMBLY</div>
+            <h2 class="slide-title">Physical Breadboard Build</h2>
+            <div class="slide-subtitle">Assemble and test your minimised K-map logic controller on physical hardware.</div>
+          </div>
+          <div class="slide-body" style="align-items: center; text-align: center; max-width: 820px; margin: 0 auto;">
+            <div class="card" style="padding: 24px; width: 100%; border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.85); box-shadow: 0 12px 32px rgba(0,0,0,0.4);">
+              <div style="font-size: 2.2rem; margin-bottom: 10px;">🔌</div>
+              <h3 style="font-size: 1.45rem; color: #ffffff; margin-bottom: 12px; font-weight: 800;">
+                Assemble your circuit components on the breadboard.
+              </h3>
+              <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                Using your <strong>74LS04</strong> (Inverter), <strong>74LS08</strong> (AND), and <strong>74LS32</strong> (OR) ICs, wire and test the minimal packaging reject controller:
+              </p>
+              
+              <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                <div style="font-size: 1.35rem; font-weight: 800; color: #34d399; font-family: var(--font-mono);">
+                  $$\text{Reject} = (\overline{A} \cdot C) + (A \cdot \overline{C})$$
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; font-size: 0.88rem; color: #94a3b8;">
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">IC 1: <code>74LS04</code> (Hex Inverter)</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">IC 2: <code>74LS08</code> (Quad AND)</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">IC 3: <code>74LS32</code> (Quad OR)</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">Resistor: $330\,\Omega$</span>
+                <span style="background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;">Output: Green Reject LED</span>
+              </div>
+
+              <div style="background: rgba(56, 189, 248, 0.1); border: 1px dashed #38bdf8; border-radius: 8px; padding: 12px 18px; font-size: 0.86rem; color: #cbd5e1; text-align: left;">
+                <strong style="color: #38bdf8;">⚡ Alternative Fast-Build Option:</strong> If available in your lab tray, you may implement this entire expression using a single <code>74LS86</code> Quad 2-Input Exclusive-OR (XOR) IC!
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 12: TROUBLESHOOTING & BOUNDARY CASE TESTING
+             ========================================================================= -->
+        <section class="slide" id="slide-12">
+          <div class="slide-header">
+            <div class="slide-tag">BENCH DIAGNOSTICS &bull; TROUBLESHOOTING</div>
+            <h2 class="slide-title">Circuit Fault-Finding &amp; Diagnostics</h2>
+            <div class="slide-subtitle">Spend time testing and troubleshooting your physical breadboard circuit using these tips.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+              <!-- Tip 1 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #ef4444;">
+                <div style="font-weight: 700; color: #f87171; font-size: 0.9rem; margin-bottom: 6px;">
+                  ⚡ 1. Multimeter Rail Check
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Measure $+5\,\text{V}$ directly between Pin 14 and Pin 7 of each IC. Never assume breadboard power rails connect across the center split!
+                </p>
+              </div>
+
+              <!-- Tip 2 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #f59e0b;">
+                <div style="font-weight: 700; color: #fbbf24; font-size: 0.9rem; margin-bottom: 6px;">
+                  ⚠️ 2. Inverter Output Verification
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Probe Pin 2 of the 74LS04 with your DMM when Input $A=0$. It should read $+3.4\,\text{V}$ to $+5.0\,\text{V}$ (Logic 1).
+                </p>
+              </div>
+
+              <!-- Tip 3 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #38bdf8;">
+                <div style="font-weight: 700; color: #38bdf8; font-size: 0.9rem; margin-bottom: 6px;">
+                  🔍 3. Tie Unused Inputs
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Remember that $B$ and $D$ do not enter the minimal circuit. Tie any unused TTL gate inputs to $0\,\text{V}$ Ground to stop noise pickup.
+                </p>
+              </div>
+
+              <!-- Tip 4 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #10b981;">
+                <div style="font-weight: 700; color: #34d399; font-size: 0.9rem; margin-bottom: 6px;">
+                  💡 4. Verify LED Series Resistor
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Never connect an LED directly between a TTL output and Ground without a $330\,\Omega$ resistor, or you will overload the output stage.
+                </p>
+              </div>
+
+              <!-- Tip 5 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #a855f7;">
+                <div style="font-weight: 700; color: #c084fc; font-size: 0.9rem; margin-bottom: 6px;">
+                  🔌 5. IC Notch Orientation
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Check that all IC orientation notches point LEFT. Plugging in an IC backwards applies $+5\,\text{V}$ to Ground and destroys the chip!
+                </p>
+              </div>
+
+              <!-- Tip 6 -->
+              <div class="card" style="padding: 14px; border-top: 3px solid #06b6d4;">
+                <div style="font-weight: 700; color: #22d3ee; font-size: 0.9rem; margin-bottom: 6px;">
+                  📋 6. Full Truth Table Sweep
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                  Check all 4 operational states: $A=0, C=0 \implies 0$; $A=0, C=1 \implies 1$; $A=1, C=0 \implies 1$; $A=1, C=1 \implies 0$.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 13: ENGINEER EXIT TICKET & PoE B04 WRAP-UP
+             ========================================================================= -->
+        <section class="slide" id="slide-13">
+          <div class="slide-header">
+            <div class="slide-tag">END OF LESSON &bull; FORMATIVE ASSESSMENT</div>
+            <h2 class="slide-title">Engineer Exit Ticket: Week 4</h2>
+            <div class="slide-subtitle">Demonstrate your mastery of Karnaugh maps and minimal digital synthesis.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+              <!-- Exit Question 1 -->
+              <div class="card">
+                <div class="card-title">1. Today's Learning: K-Map Grouping Size</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  How many input variables are eliminated when grouping a block of <strong>4 adjacent 1s (a quad)</strong> in a 4-variable K-map?
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! A group of 4 cells (2^2) eliminates exactly 2 variables from the resulting product term.')">
+                      2 variables eliminated
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. A pair of 2 cells eliminates 1 variable.')">
+                      1 variable eliminated
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. An octet of 8 cells eliminates 3 variables.')">
+                      3 variables eliminated
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Exit Question 2 -->
+              <div class="card">
+                <div class="card-title">2. Edge Wrap-Around Concept</div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 10px;">
+                  Can the 4 extreme outer corners of a 4-variable K-map ($m_0, m_2, m_8, m_{10}$) be grouped together into a single term?
+                </p>
+                <div class="prediction-box" style="margin-top: 0;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! By torus wrap-around, all 4 corners are mathematically adjacent and form a valid quad of 4 cells!')">
+                      Yes, they form a valid quad of 4 cells
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. The map wraps horizontally and vertically like a donut.')">
+                      No, corners are too far apart
+                    </button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Incorrect. Diagonals are illegal, but corner wrap-around is a legal rectangle.')">
+                      Only if the center 4 cells are also 1
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio of Evidence B04 Summary -->
+            <div class="card" style="margin-top: 14px; width: 100%; border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08); padding: 12px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <div style="font-weight: 800; color: #34d399; font-size: 0.95rem;">📁 Portfolio of Evidence B04: Optimisation Challenge</div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 2px 0 0 0;">
+                    Complete your documentation with the 16-row truth table, annotated 4-variable K-map showing groupings, minimal SOP equation, Multisim simulation printout, and bench photo.
+                  </p>
+                </div>
+                <span class="badge-pill poe-pill">PoE B04 Complete</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================================
+             SLIDE 15: PRACTICE QUESTIONS — KARNAUGH MAPS (2, 3 & 4 VARIABLES)
+             ========================================================================= -->
+        <section class="slide" id="slide-14">
+          <div class="slide-header">
+            <div class="slide-tag">INDEPENDENT PRACTICE &bull; KARNAUGH MAPS</div>
+            <h2 class="slide-title">Practice Questions: K-Map Grouping &amp; Minimisation</h2>
+            <div class="slide-subtitle">Test your understanding of Gray code, grouping rules, and reading minimal expressions — click any option for feedback.</div>
+          </div>
+          <div class="slide-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+              <!-- Q1 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q1. Gray Code Sequence</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">What is the correct 2-bit Gray code order for K-map columns?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Correct! Only 1 bit changes between each adjacent column: 00 → 01 → 11 → 10.')">00, 01, 11, 10</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'That is standard binary counting — two bits change between 01 and 10!')">00, 01, 10, 11</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Two bits change between 00 and 11.')">00, 11, 01, 10</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q2 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">Q2. Valid Group Sizes</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Which of these is NOT a valid K-map group size?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Spot on! Groups must be powers of 2 (1, 2, 4, 8, 16). You can never group 6 cells!')">6 cells</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '4 = 2² is a valid quad group.')">4 cells</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '8 = 2³ is a valid octet group.')">8 cells</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q3 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #34d399; font-size: 0.85rem; margin-bottom: 4px;">Q3. Eliminating Variables</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">In a 4-variable K-map, how many variables remain in the product term of an <strong>8-cell octet</strong>?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'An octet (2³) eliminates 3 variables, leaving just 1 variable!')">1 variable</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '2 variables remain for a 4-cell quad.')">2 variables</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, '3 variables remain for a 2-cell pair.')">3 variables</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q4 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #34d399; font-size: 0.85rem; margin-bottom: 4px;">Q4. Reading a 3-Var Group</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">In a 3-var K-map ($A \setminus BC$), a pair covers $(A=1, BC=00)$ and $(A=1, BC=10)$. What is its term?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'A stays 1, B changes (0→1), and C stays 0 (C̄). Result: A · C̄!')">$A \cdot \overline{C}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'B changes from 0 to 1, so B is eliminated.')">$A \cdot \overline{B}$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'C is 0 in both cells, so it must be complemented (C̄).')">$A \cdot C$</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q5 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #fbbf24; font-size: 0.85rem; margin-bottom: 4px;">Q5. Overlapping 1s</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">Why is it helpful to overlap a $1$ that is already in another group?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Sharing a 1 lets you form a larger group (e.g. a quad instead of a pair), which eliminates more variables!')">To make a larger group &amp; simpler term</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Overlapping is legal because 1 + 1 = 1 in Boolean logic, not to add gates.')">To increase the gate count</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'Overlapping is allowed whenever it produces a bigger valid group.')">Overlapping is never allowed</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Q6 -->
+              <div class="card" style="padding: 12px;">
+                <div style="font-weight: 800; color: #c084fc; font-size: 0.85rem; margin-bottom: 4px;">Q6. 2-Variable K-Map</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 8px 0;">In a 2-var K-map, $1$s appear at $(0,1)$, $(1,0)$, and $(1,1)$. What is the minimal expression?</p>
+                <div class="prediction-box" style="margin-top: 0; padding: 8px;">
+                  <div class="prediction-options">
+                    <button class="pred-btn" onclick="checkPrediction(this, true, 'Row A=1 forms a pair (A) and Column B=1 forms a pair (B). Combined: A + B!')">$A + B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'A·B only covers cell (1,1).')">$A \cdot B$</button>
+                    <button class="pred-btn" onclick="checkPrediction(this, false, 'You can overlap cell (1,1) to form two pairs instead of a single cell.')">$A + \overline{A}\cdot B$</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Deck Footer -->
+      <footer class="deck-footer">
+        <div class="nav-controls">
+          <button class="nav-btn" id="prev-slide" title="Previous Slide (Left Arrow)">◀</button>
+          <button class="nav-btn" id="next-slide" title="Next Slide (Right Arrow)">▶</button>
+          <span class="slide-counter" id="slide-counter">1 / 14</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Digital Electronics • Level 3 Engineering</span>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Slide Matrix / Map Modal -->
+    <div id="slide-matrix-modal" class="modal-overlay">
+      <div class="slide-matrix-card">
+        <div class="slide-matrix-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.25rem;">🗺️</span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Session Slide Matrix</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">Click any slide card to jump directly (or press 'M')</p>
+            </div>
+          </div>
+          <button id="close-slide-matrix" class="drawer-close-btn" style="padding: 6px 12px;">✕ Close</button>
+        </div>
+        <div id="slide-matrix-grid" class="slide-matrix-grid"></div>
+      </div>
+    </div>
+
+    <!-- Accessibility Drawer Backdrop -->
+    <div id="a11y-backdrop"></div>
+
+    <!-- Full Parity Accessibility & Neurodiversity Side-Drawer -->
+    <aside id="a11y-drawer">
+      <div class="a11y-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⚙️</span>
+          <h3 style="font-size: 1.05rem; color: #ffffff; margin: 0;">Accessibility &amp; Inclusion</h3>
+        </div>
+        <button id="close-a11y-drawer" class="drawer-close-btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="a11y-body">
+        <!-- Speech Synthesis (TTS) -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔊 Web Speech Slide Narration</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="a11y-speak-active-slide" class="btn btn-secondary"
+              style="flex: 1; padding: 8px 12px; font-size: 0.86rem;">
+              🔊 Read Slide Aloud
+            </button>
+            <button id="a11y-stop-speech" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.86rem;">
+              ⏹️ Stop
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Narration Speed:</span>
+            <span id="a11y-speech-rate-val"
+              style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-cyan);">1.0x</span>
+          </div>
+          <input type="range" id="a11y-speech-rate" min="0.75" max="1.5" step="0.05" value="1.0" class="a11y-slider" />
+        </div>
+
+        <!-- Bionic Reading Mode -->
+        <div class="a11y-switch-row">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #ffffff;">⚡ Bionic Fast-Scan</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted);">Bold first letters for faster reading</div>
+          </div>
+          <input type="checkbox" id="a11y-bionic-toggle"
+            style="width: 20px; height: 20px; accent-color: var(--accent-cyan); cursor: pointer;" />
+        </div>
+
+        <!-- Typography & Dyslexia Toolbar -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>📖 Font Family</span>
+          </div>
+          <select id="a11y-font-select" class="a11y-select">
+            <option value="default">Inter (Default Crisp)</option>
+            <option value="opendyslexic">OpenDyslexic (Dyslexia Friendly)</option>
+            <option value="system">System UI (Clean Sans-Serif)</option>
+          </select>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🔠 Font Size</span>
+            <span id="a11y-font-size-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">100%</span>
+          </div>
+          <input type="range" id="a11y-font-size" min="90" max="130" step="5" value="100" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↕️ Line Spacing</span>
+            <span id="a11y-line-height-val" style="font-family: var(--font-mono); color: var(--accent-cyan);">1.6</span>
+          </div>
+          <input type="range" id="a11y-line-height" min="1.4" max="2.0" step="0.1" value="1.6" class="a11y-slider" />
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>↔️ Letter Spacing</span>
+            <span id="a11y-letter-spacing-val"
+              style="font-family: var(--font-mono); color: var(--accent-cyan);">0px</span>
+          </div>
+          <input type="range" id="a11y-letter-spacing" min="0" max="3" step="0.5" value="0" class="a11y-slider" />
+        </div>
+
+        <!-- Contrast & Colorblind Themes -->
+        <div class="a11y-group">
+          <div class="a11y-label">
+            <span>🎨 Contrast &amp; Colorblind Themes</span>
+          </div>
+          <select id="a11y-theme-select" class="a11y-select">
+            <option value="default">Dark Engineering (Default)</option>
+            <option value="high-contrast-gold">High Contrast Black &amp; Gold</option>
+            <option value="clean-light">Clean Light Mode</option>
+            <option value="colorblind-safe">Colorblind-Safe Circuit Palette</option>
+          </select>
+        </div>
+
+        <button id="a11y-reset-prefs" class="btn btn-secondary" style="padding: 8px; font-size: 0.82rem; margin-top: 10px;">
+          🔄 Reset to Default Theme
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Shared Scripts -->
+  <script src="../../shared/js/accessibility-engine.js"></script>
+  <script src="../../shared/js/presentation-engine.js"></script>
+  <script src="../../shared/js/self-check.js"></script>
+  <script src="../../shared/js/timer.js"></script>
+
+  <!-- Digital Week 4 Interactive Engine -->
+  <script>
+    // State of 16-cell K-map (0 to 15 minterms)
+    const kmapState = new Array(16).fill(0);
+
+    function toggleKcell(m) {
+      kmapState[m] = kmapState[m] === 0 ? 1 : 0;
+      updateKmapUI();
+    }
+
+    function setKcell(m, val) {
+      kmapState[m] = val;
+    }
+
+    function resetKmap() {
+      for (let i = 0; i < 16; i++) kmapState[i] = 0;
+      updateKmapUI();
+    }
+
+    function loadKmapPreset(preset) {
+      resetKmap();
+      if (preset === 'conveyor') {
+        // Minterms: m2, m3, m6, m7 (!A·C) and m8, m9, m12, m13 (A·!C)
+        [2, 3, 6, 7, 8, 9, 12, 13].forEach(m => kmapState[m] = 1);
+      } else if (preset === 'corners') {
+        // 4 corners: m0, m2, m8, m10 (!B·!D)
+        [0, 2, 8, 10].forEach(m => kmapState[m] = 1);
+      } else if (preset === 'quad') {
+        // Center quad: m5, m7, m13, m15 (B·D)
+        [5, 7, 13, 15].forEach(m => kmapState[m] = 1);
+      }
+      updateKmapUI();
+    }
+
+    function updateKmapUI() {
+      // Update cell elements
+      for (let i = 0; i < 16; i++) {
+        const el = document.getElementById(`kcell-${i}`);
+        if (el) {
+          const valEl = el.querySelector('.kcell-val');
+          if (valEl) valEl.textContent = kmapState[i];
+          el.classList.toggle('active-1', kmapState[i] === 1);
+        }
+      }
+
+      // Evaluate active minterms
+      const activeMinterms = [];
+      for (let i = 0; i < 16; i++) {
+        if (kmapState[i] === 1) activeMinterms.push(i);
+      }
+
+      const eqEl = document.getElementById('kmap-derived-eq');
+      const detEl = document.getElementById('kmap-group-details');
+
+      if (activeMinterms.length === 0) {
+        if (eqEl) eqEl.innerHTML = `$$\\text{Reject} = 0$$`;
+        if (detEl) detEl.textContent = 'Quiescent State: All 16 cells are 0. Logic output is unconditionally LOW.';
+      } else if (activeMinterms.length === 16) {
+        if (eqEl) eqEl.innerHTML = `$$\\text{Reject} = 1$$`;
+        if (detEl) detEl.textContent = 'Full Map Group: Entire 16-cell map covered by a single octet of 16. Output is permanently HIGH.';
+      } else {
+        // Check for our known presets / standard patterns
+        const isConveyor = [2, 3, 6, 7, 8, 9, 12, 13].every(m => kmapState[m] === 1) && activeMinterms.length === 8;
+        const isCorners = [0, 2, 8, 10].every(m => kmapState[m] === 1) && activeMinterms.length === 4;
+        const isCenterQuad = [5, 7, 13, 15].every(m => kmapState[m] === 1) && activeMinterms.length === 4;
+
+        if (isConveyor) {
+          if (eqEl) eqEl.innerHTML = `$$\\text{Reject} = (\\overline{A} \\cdot C) + (A \\cdot \\overline{C}) \\equiv A \\oplus C$$`;
+          if (detEl) detEl.innerHTML = '<strong>Two Quads of 4:</strong> Quad 1 ($m_2, m_3, m_6, m_7$) yields $\\overline{A} \\cdot C$. Quad 2 ($m_8, m_9, m_{12}, m_{13}$) yields $A \\cdot \\overline{C}$. 8 minterms reduced to 2 terms!';
+        } else if (isCorners) {
+          if (eqEl) eqEl.innerHTML = `$$\\text{Output} = \\overline{B} \\cdot \\overline{D}$$`;
+          if (detEl) detEl.innerHTML = '<strong>Corner Torus Quad:</strong> All 4 outer corners ($m_0, m_2, m_8, m_{10}$) wrap around horizontally and vertically to form a single 4-cell group eliminating variables A and C!';
+        } else if (isCenterQuad) {
+          if (eqEl) eqEl.innerHTML = `$$\\text{Output} = B \\cdot D$$`;
+          if (detEl) detEl.innerHTML = '<strong>Center Quad:</strong> 4 adjacent center cells ($m_5, m_7, m_{13}, m_{15}$) form a 2x2 square, eliminating variables A and C!';
+        } else {
+          // Generic display
+          if (eqEl) eqEl.innerHTML = `$$\\text{Minterms: } \\sum m(${activeMinterms.join(', ')})$$`;
+          if (detEl) detEl.innerHTML = `Active cells: ${activeMinterms.length}. Look for adjacent powers of two (2, 4, 8) to group and simplify!`;
+        }
+      }
+
+      if (window.renderMathInElement && eqEl) {
+        renderMathInElement(eqEl, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ]
+        });
+      }
+      if (window.renderMathInElement && detEl) {
+        renderMathInElement(detEl, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ]
+        });
+      }
+    }
+
+    // Prediction check helper
+    function checkPrediction(btn, isCorrect, explanation) {
+      const container = btn.closest('.prediction-box') || btn.parentElement;
+      const allBtns = container.querySelectorAll('.pred-btn');
+      allBtns.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('incorrect');
+      }
+
+      let fb = container.querySelector('.prediction-feedback');
+      if (!fb) {
+        fb = document.createElement('div');
+        fb.className = 'prediction-feedback';
+        fb.style.marginTop = '10px';
+        fb.style.padding = '10px 14px';
+        fb.style.borderRadius = '8px';
+        fb.style.fontSize = '0.84rem';
+        fb.style.lineHeight = '1.45';
+        container.appendChild(fb);
+      }
+
+      fb.style.display = 'block';
+      if (isCorrect) {
+        fb.style.background = 'rgba(16, 185, 129, 0.2)';
+        fb.style.border = '1px solid #10b981';
+        fb.style.color = '#34d399';
+        fb.innerHTML = `<strong>Spot on!</strong> ${explanation}`;
+      } else {
+        fb.style.background = 'rgba(239, 68, 68, 0.15)';
+        fb.style.border = '1px solid #ef4444';
+        fb.style.color = '#fca5a5';
+        fb.innerHTML = `<strong>Not quite.</strong> ${explanation}`;
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(fb, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ]
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadKmapPreset('conveyor');
+    });
+  </script>
+</body>
+
+</html>

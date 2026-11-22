@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dmCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="320" rx="14" fill="#0b1120" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Theorem 1: NAND = Inverted Input OR -->
+  <g transform="translate(25, 20)">
+    <rect width="405" height="280" rx="10" fill="url(#dmCard)" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="0" y="0" width="405" height="36" rx="10" fill="rgba(56, 189, 248, 0.15)"/>
+    <text x="18" y="23" fill="#38bdf8" font-family="'Inter', sans-serif" font-weight="800" font-size="13">LAW 1: BREAK THE LINE, CHANGE THE SIGN</text>
+    <text x="385" y="23" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="11" text-anchor="end">NAND Duality</text>
+
+    <!-- Formula Banner -->
+    <rect x="18" y="48" width="369" height="38" rx="6" fill="#0f172a" stroke="#334155"/>
+    <text x="202" y="73" fill="#f8fafc" font-family="'JetBrains Mono', monospace" font-size="15" font-weight="700" text-anchor="middle">!(A · B) ≡ !A + !B</text>
+
+    <!-- Left Gate: Standard NAND -->
+    <g transform="translate(25, 105)">
+      <text x="0" y="32" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">A</text>
+      <line x1="16" y1="28" x2="45" y2="28" stroke="#38bdf8" stroke-width="2"/>
+      <text x="0" y="62" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">B</text>
+      <line x1="16" y1="58" x2="45" y2="58" stroke="#38bdf8" stroke-width="2"/>
+
+      <path d="M 45 15 L 75 15 A 30 30 0 0 1 75 75 L 45 75 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+      <!-- Inversion Bubble -->
+      <circle cx="109" cy="45" r="4" fill="#0f172a" stroke="#ef4444" stroke-width="2"/>
+      <line x1="113" y1="45" x2="140" y2="45" stroke="#ef4444" stroke-width="2"/>
+      <text x="65" y="100" fill="#cbd5e1" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle">Standard NAND</text>
+    </g>
+
+    <!-- Equivalence symbol -->
+    <text x="202" y="160" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="800" text-anchor="middle">≡</text>
+    <text x="202" y="180" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="10" text-anchor="middle">Bubble Push</text>
+
+    <!-- Right Gate: Inverted OR -->
+    <g transform="translate(245, 105)">
+      <text x="0" y="32" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">A</text>
+      <line x1="16" y1="28" x2="35" y2="28" stroke="#38bdf8" stroke-width="2"/>
+      <circle cx="39" cy="28" r="4" fill="#0f172a" stroke="#ef4444" stroke-width="2"/>
+      <line x1="43" y1="28" x2="52" y2="28" stroke="#ef4444" stroke-width="2"/>
+
+      <text x="0" y="62" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">B</text>
+      <line x1="16" y1="58" x2="35" y2="58" stroke="#38bdf8" stroke-width="2"/>
+      <circle cx="39" cy="58" r="4" fill="#0f172a" stroke="#ef4444" stroke-width="2"/>
+      <line x1="43" y1="58" x2="52" y2="58" stroke="#ef4444" stroke-width="2"/>
+
+      <path d="M 52 15 Q 68 45 52 75 Q 95 75 115 45 Q 95 15 52 15 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+      <line x1="115" y1="45" x2="145" y2="45" stroke="#ef4444" stroke-width="2"/>
+      <text x="85" y="100" fill="#cbd5e1" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle">Inverted-Input OR</text>
+    </g>
+
+    <text x="202" y="255" fill="#a7f3d0" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle">Pushing bubble to inputs changes AND gate shape to OR</text>
+  </g>
+
+  <!-- Theorem 2: NOR = Inverted Input AND -->
+  <g transform="translate(470, 20)">
+    <rect width="405" height="280" rx="10" fill="url(#dmCard)" stroke="#a855f7" stroke-width="1.5"/>
+    <rect x="0" y="0" width="405" height="36" rx="10" fill="rgba(168, 85, 247, 0.15)"/>
+    <text x="18" y="23" fill="#c084fc" font-family="'Inter', sans-serif" font-weight="800" font-size="13">LAW 2: BREAK THE LINE, CHANGE THE SIGN</text>
+    <text x="385" y="23" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="11" text-anchor="end">NOR Duality</text>
+
+    <!-- Formula Banner -->
+    <rect x="18" y="48" width="369" height="38" rx="6" fill="#0f172a" stroke="#334155"/>
+    <text x="202" y="73" fill="#f8fafc" font-family="'JetBrains Mono', monospace" font-size="15" font-weight="700" text-anchor="middle">!(A + B) ≡ !A · !B</text>
+
+    <!-- Left Gate: Standard NOR -->
+    <g transform="translate(25, 105)">
+      <text x="0" y="32" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">A</text>
+      <line x1="16" y1="28" x2="45" y2="28" stroke="#c084fc" stroke-width="2"/>
+      <text x="0" y="62" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">B</text>
+      <line x1="16" y1="58" x2="45" y2="58" stroke="#c084fc" stroke-width="2"/>
+
+      <path d="M 45 15 Q 60 45 45 75 Q 85 75 105 45 Q 85 15 45 15 Z" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+      <circle cx="109" cy="45" r="4" fill="#0f172a" stroke="#ef4444" stroke-width="2"/>
+      <line x1="113" y1="45" x2="140" y2="45" stroke="#ef4444" stroke-width="2"/>
+      <text x="75" y="100" fill="#cbd5e1" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle">Standard NOR</text>
+    </g>
+
+    <!-- Equivalence symbol -->
+    <text x="202" y="160" fill="#c084fc" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="800" text-anchor="middle">≡</text>
+    <text x="202" y="180" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="10" text-anchor="middle">Bubble Push</text>
+
+    <!-- Right Gate: Inverted AND -->
+    <g transform="translate(245, 105)">
+      <text x="0" y="32" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">A</text>
+      <line x1="16" y1="28" x2="35" y2="28" stroke="#c084fc" stroke-width="2"/>
+      <circle cx="39" cy="28" r="4" fill="#0f172a" stroke="#ef4444" stroke-width="2"/>
+      <line x1="43" y1="28" x2="55" y2="28" stroke="#ef4444" stroke-width="2"/>
+
+      <text x="0" y="62" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="13">B</text>
+      <line x1="16" y1="58" x2="35" y2="58" stroke="#c084fc" stroke-width="2"/>
+      <circle cx="39" cy="58" r="4" fill="#0f172a" stroke="#ef4444" stroke-width="2"/>
+      <line x1="43" y1="58" x2="55" y2="58" stroke="#ef4444" stroke-width="2"/>
+
+      <path d="M 55 15 L 85 15 A 30 30 0 0 1 85 75 L 55 75 Z" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+      <line x1="115" y1="45" x2="145" y2="45" stroke="#ef4444" stroke-width="2"/>
+      <text x="85" y="100" fill="#cbd5e1" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle">Inverted-Input AND</text>
+    </g>
+
+    <text x="202" y="255" fill="#a7f3d0" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle">Pushing bubble to inputs changes OR gate shape to AND</text>
+  </g>
+</svg>

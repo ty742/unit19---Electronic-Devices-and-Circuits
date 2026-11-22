@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bloatedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="leanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#10b981" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="960" height="400" rx="14" fill="#0b1120" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- =========================================================================
+       LEFT PANEL: UN-OPTIMISED BLOATED PROTOTYPE (5 GATES across 3 ICs)
+       Expression: Vent = (A · B) + (A · B̄) + (B · C)
+       ========================================================================= -->
+  <g transform="translate(20, 20)">
+    <!-- Box Container -->
+    <rect width="450" height="360" rx="12" fill="url(#bloatedGrad)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4" filter="url(#glowRed)"/>
+    
+    <!-- Header Bar -->
+    <rect x="0" y="0" width="450" height="38" rx="12" fill="rgba(239, 68, 68, 0.15)"/>
+    <text x="16" y="24" fill="#f87171" font-family="'Inter', sans-serif" font-weight="800" font-size="12.5" letter-spacing="0.4">❌ UN-OPTIMISED PROTOTYPE (BLOATED)</text>
+    <rect x="345" y="8" width="92" height="22" rx="4" fill="rgba(239, 68, 68, 0.25)" stroke="#ef4444" stroke-width="0.8"/>
+    <text x="391" y="23" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" text-anchor="middle">5 GATES / 3 ICs</text>
+
+    <!-- Formula Subtitle Banner -->
+    <rect x="16" y="44" width="418" height="24" rx="4" fill="#090d16" stroke="#334155"/>
+    <text x="225" y="60" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700" text-anchor="middle">Vent = (A · B) + (A · !B) + (B · C)</text>
+
+    <!-- Schematic Area -->
+    <g transform="translate(10, 75)">
+      <!-- Primary Inputs (A at y=25, B at y=85, C at y=175) -->
+      <!-- Input A -->
+      <text x="8" y="29" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800">A</text>
+      <line x1="26" y1="25" x2="55" y2="25" stroke="#38bdf8" stroke-width="2"/>
+      <!-- Bus for A -->
+      <circle cx="55" cy="25" r="3" fill="#38bdf8"/>
+      <!-- A to Gate 1 (top input at y=25) -->
+      <line x1="55" y1="25" x2="160" y2="25" stroke="#38bdf8" stroke-width="2"/>
+      <!-- A to Gate 2 (top input at y=85) -->
+      <line x1="55" y1="25" x2="55" y2="85" stroke="#38bdf8" stroke-width="2"/>
+      <circle cx="55" cy="85" r="3" fill="#38bdf8"/>
+      <line x1="55" y1="85" x2="160" y2="85" stroke="#38bdf8" stroke-width="2"/>
+
+      <!-- Input B -->
+      <text x="8" y="59" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800">B</text>
+      <line x1="26" y1="55" x2="80" y2="55" stroke="#38bdf8" stroke-width="2"/>
+      <!-- Bus for B -->
+      <circle cx="80" cy="55" r="3" fill="#38bdf8"/>
+      <!-- B up to Gate 1 (bottom input at y=45) -->
+      <line x1="80" y1="55" x2="80" y2="45" stroke="#38bdf8" stroke-width="2"/>
+      <line x1="80" y1="45" x2="160" y2="45" stroke="#38bdf8" stroke-width="2"/>
+      <!-- B into Inverter at y=105 -->
+      <line x1="80" y1="55" x2="80" y2="105" stroke="#38bdf8" stroke-width="2"/>
+      <circle cx="80" cy="105" r="3" fill="#38bdf8"/>
+      <line x1="80" y1="105" x2="95" y2="105" stroke="#38bdf8" stroke-width="2"/>
+      <!-- B down to Gate 3 (top input at y=155) -->
+      <line x1="80" y1="105" x2="80" y2="155" stroke="#38bdf8" stroke-width="2"/>
+      <line x1="80" y1="155" x2="160" y2="155" stroke="#38bdf8" stroke-width="2"/>
+
+      <!-- Inverter for B (at x=95 to 125, y=105) -->
+      <polygon points="95,97 117,105 95,113" fill="#1e293b" stroke="#f59e0b" stroke-width="1.8"/>
+      <circle cx="121" cy="105" r="3" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+      <!-- !B output into Gate 2 (bottom input at y=105) -->
+      <line x1="124" y1="105" x2="160" y2="105" stroke="#f59e0b" stroke-width="2"/>
+
+      <!-- Input C -->
+      <text x="8" y="179" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800">C</text>
+      <line x1="26" y1="175" x2="160" y2="175" stroke="#38bdf8" stroke-width="2"/>
+
+      <!-- GATE 1: AND (Inputs y=25, 45; Output y=35) -->
+      <path d="M 160 15 L 180 15 A 20 20 0 0 1 180 55 L 160 55 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+      <text x="175" y="38" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700">AND1</text>
+      <line x1="200" y1="35" x2="270" y2="35" stroke="#38bdf8" stroke-width="2"/>
+      <text x="210" y="30" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="8.5">A·B</text>
+
+      <!-- GATE 2: AND (Inputs y=85, 105; Output y=95) -->
+      <path d="M 160 75 L 180 75 A 20 20 0 0 1 180 115 L 160 115 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+      <text x="175" y="98" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700">AND2</text>
+      <line x1="200" y1="95" x2="250" y2="95" stroke="#38bdf8" stroke-width="2"/>
+      <text x="210" y="90" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="8.5">A·!B</text>
+      <!-- Route Gate 2 output up to Gate 4 bottom input at y=55 -->
+      <line x1="250" y1="95" x2="250" y2="55" stroke="#38bdf8" stroke-width="2"/>
+      <line x1="250" y1="55" x2="270" y2="55" stroke="#38bdf8" stroke-width="2"/>
+
+      <!-- GATE 3: AND (Inputs y=155, 175; Output y=165) -->
+      <path d="M 160 145 L 180 145 A 20 20 0 0 1 180 185 L 160 185 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+      <text x="175" y="168" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700">AND3</text>
+      <line x1="200" y1="165" x2="330" y2="165" stroke="#38bdf8" stroke-width="2"/>
+      <text x="215" y="160" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="8.5">B·C</text>
+      <!-- Route Gate 3 output to Gate 5 bottom input at y=125 -->
+      <line x1="330" y1="165" x2="330" y2="125" stroke="#38bdf8" stroke-width="2"/>
+      <line x1="330" y1="125" x2="350" y2="125" stroke="#38bdf8" stroke-width="2"/>
+
+      <!-- GATE 4: OR (Inputs at y=35, y=55; Output at y=45) -->
+      <path d="M 270 25 Q 285 45 270 65 Q 305 65 318 45 Q 305 25 270 25 Z" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+      <text x="286" y="48" fill="#c084fc" font-family="'Inter', sans-serif" font-size="8" font-weight="700">OR1</text>
+      <line x1="318" y1="45" x2="335" y2="45" stroke="#a855f7" stroke-width="2"/>
+      <!-- Route Gate 4 output down to Gate 5 top input at y=105 -->
+      <line x1="335" y1="45" x2="335" y2="105" stroke="#a855f7" stroke-width="2"/>
+      <line x1="335" y1="105" x2="350" y2="105" stroke="#a855f7" stroke-width="2"/>
+
+      <!-- GATE 5: OR (Inputs at y=105, y=125; Output at y=115) -->
+      <path d="M 350 95 Q 365 115 350 135 Q 385 135 398 115 Q 385 95 350 95 Z" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+      <text x="366" y="118" fill="#c084fc" font-family="'Inter', sans-serif" font-size="8" font-weight="700">OR2</text>
+      <!-- Final Output -->
+      <line x1="398" y1="115" x2="422" y2="115" stroke="#ef4444" stroke-width="3"/>
+      <circle cx="424" cy="115" r="4.5" fill="#ef4444"/>
+    </g>
+
+    <!-- Bottom Specs Footer -->
+    <g transform="translate(16, 290)">
+      <rect width="418" height="55" rx="6" fill="#090d16" stroke="#334155"/>
+      <text x="12" y="20" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="11">IC Requirements: <tspan fill="#fca5a5" font-weight="700">1x 74LS04, 1x 74LS08, 1x 74LS32 (3 ICs)</tspan></text>
+      <text x="12" y="38" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="10.5">Penalties: <tspan fill="#fca5a5">30ns propagation delay, 48mA current, 14 jumper wires</tspan></text>
+    </g>
+  </g>
+
+  <!-- =========================================================================
+       RIGHT PANEL: MINIMAL OPTIMISED HARDWARE (2 GATES on 1-2 ICs)
+       Expression: Vent = A + (B · C)
+       ========================================================================= -->
+  <g transform="translate(490, 20)">
+    <!-- Box Container -->
+    <rect width="450" height="360" rx="12" fill="url(#leanGrad)" stroke="#10b981" stroke-width="2" filter="url(#glowGreen)"/>
+    
+    <!-- Header Bar -->
+    <rect x="0" y="0" width="450" height="38" rx="12" fill="rgba(16, 185, 129, 0.2)"/>
+    <text x="16" y="24" fill="#34d399" font-family="'Inter', sans-serif" font-weight="800" font-size="12.5" letter-spacing="0.4">✨ MINIMAL OPTIMISED HARDWARE (LEAN)</text>
+    <rect x="345" y="8" width="92" height="22" rx="4" fill="rgba(16, 185, 129, 0.25)" stroke="#10b981" stroke-width="0.8"/>
+    <text x="391" y="23" fill="#a7f3d0" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" text-anchor="middle">2 GATES / 1 IC</text>
+
+    <!-- Formula Subtitle Banner -->
+    <rect x="16" y="44" width="418" height="24" rx="4" fill="#032219" stroke="#10b981"/>
+    <text x="225" y="60" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="800" text-anchor="middle">Vent = A + (B · C)</text>
+
+    <!-- Schematic Area -->
+    <g transform="translate(20, 85)">
+      <!-- Input A -->
+      <text x="8" y="44" fill="#e2e8f0" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="800">A</text>
+      <line x1="28" y1="40" x2="250" y2="40" stroke="#38bdf8" stroke-width="2.5"/>
+
+      <!-- Input B -->
+      <text x="8" y="104" fill="#e2e8f0" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="800">B</text>
+      <line x1="28" y1="100" x2="110" y2="100" stroke="#38bdf8" stroke-width="2.5"/>
+
+      <!-- Input C -->
+      <text x="8" y="134" fill="#e2e8f0" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="800">C</text>
+      <line x1="28" y1="130" x2="110" y2="130" stroke="#38bdf8" stroke-width="2.5"/>
+
+      <!-- GATE 1: AND (Inputs B at y=100, C at y=130; Output at y=115) -->
+      <path d="M 110 85 L 145 85 A 30 30 0 0 1 145 145 L 110 145 Z" fill="#134e4a" stroke="#34d399" stroke-width="2.5"/>
+      <text x="135" y="119" fill="#a7f3d0" font-family="'Inter', sans-serif" font-size="10" font-weight="800">AND</text>
+      <line x1="175" y1="115" x2="230" y2="115" stroke="#34d399" stroke-width="2.5"/>
+      <text x="185" y="108" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="11">B·C</text>
+      <!-- Route to OR bottom input at y=60 -->
+      <line x1="230" y1="115" x2="230" y2="60" stroke="#34d399" stroke-width="2.5"/>
+      <line x1="230" y1="60" x2="250" y2="60" stroke="#34d399" stroke-width="2.5"/>
+
+      <!-- GATE 2: OR (Inputs A at y=40, B·C at y=60; Output at y=50) -->
+      <path d="M 250 25 Q 275 50 250 75 Q 305 75 325 50 Q 305 25 250 25 Z" fill="#134e4a" stroke="#34d399" stroke-width="2.5"/>
+      <text x="272" y="54" fill="#a7f3d0" font-family="'Inter', sans-serif" font-size="10" font-weight="800">OR</text>
+
+      <!-- Final Output Terminal -->
+      <line x1="325" y1="50" x2="380" y2="50" stroke="#10b981" stroke-width="3.5"/>
+      <circle cx="383" cy="50" r="5" fill="#10b981"/>
+      <text x="393" y="55" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="800">Vent</text>
+    </g>
+
+    <!-- Bottom Specs Footer -->
+    <g transform="translate(16, 290)">
+      <rect width="418" height="55" rx="6" fill="#032219" stroke="#10b981"/>
+      <text x="12" y="20" fill="#a7f3d0" font-family="'Inter', sans-serif" font-size="11">IC Requirements: <tspan fill="#34d399" font-weight="700">1x 74LS08 (AND) + 1x 74LS32 (OR)</tspan></text>
+      <text x="12" y="38" fill="#a7f3d0" font-family="'Inter', sans-serif" font-size="10.5">Benefits: <tspan fill="#6ee7b7">60% faster (12ns delay), 67% less power (16mA), 5 wires only</tspan></text>
+    </g>
+  </g>
+</svg>
